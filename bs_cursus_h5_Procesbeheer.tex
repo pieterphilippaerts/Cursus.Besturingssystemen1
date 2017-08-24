@@ -1,0 +1,440 @@
+\chapter{Procesbeheer}
+
+Een computersysteem voert programma's uit. De gebruiker wil
+programma's kunnen opstarten, tijdelijk onderbreken en afsluiten. Meerdere
+programma's tegelijk uitvoeren en eventueel prioriteiten toekennen moet
+ook mogelijk zijn.
+
+\section{Processen}
+
+Een \emph{proces} is niet hetzelfde als een
+programma. Een proces is een programma in uitvoering. Een programma is
+niet meer dan uitvoerbare code.
+
+Wanneer zo'n programma uitgevoerd wordt moet de code in het
+werkgeheugen geladen worden, maar er moet ook plaats zijn voor b.v. de
+waarden van de variabelen tijdens de uitvoering.
+
+Wanneer een programma uitgevoerd wordt omvat het proces
+verschillende componenten. Er is een gereserveerd deel van het geheugen,
+met daarin de uit te voeren code, maar ook de waarden van variabelen. De
+processortoestand omvat de inhoud van de bevelenteller en verschillende
+registers. Het besturingssysteem houdt ook gegevens bij om de uitvoering
+te kunnen organiseren, zoals b.v. de bestandsbeschrijvingen van
+bestanden die door het proces geopend zijn of de eigenaar en de
+toegangsrechten van het proces.
+
+Eenzelfde programma kan tegelijkertijd door verschillende
+processen uitgevoerd worden, zoals de schermafdruk illustreert. Dan moet
+voor iedere uitvoering een apart deel van het geheugen beschikbaar zijn
+om de toestand van het proces bij te houden.
+
+\subsection{Multiprogrammatie}
+
+Een processor kan maar \'e\'en programma tegelijkertijd uitvoeren.
+Als we toch meerdere processen willen uitvoeren is de meest voor de
+hand liggende oplossing meerdere processoren gebruiken. Maar als het
+aantal gelijktijdige processen groeit, stijgt ook het aantal
+processoren dat we nodig hebben. Dit is natuurlijk een te dure
+oplossing voor een eenvoudig computersysteem. Bovendien zullen een
+aantal van de processoren stilstaan als niet het maximum aantal
+gelijktijdige processen beschikbaar is voor uitvoering.
+
+Als we op een uniprocessor-systeem op hetzelfde ogenblik
+meerdere processen willen uitvoeren, moeten we het
+\emph{multiprogrammatie} principe toepassen. De
+rekentijd op \'e\'en processor wordt dan verdeeld over meerdere processen.
+De processen kunnen om beurt voor een bepaalde tijd gebruik maken van
+de processor.
+
+Het kan gaan om verschillende processen van dezelfde gebruiker.
+Als we verschillende gebruikers tegelijkertijd op \'e\'en processor laten
+werken door hun processen via multiprogrammatie uit te voeren spreken
+we van \emph{timesharing}. Het lijkt alsof
+verschillende processen tegelijkertijd verwerkt worden, maar in
+werkelijkheid wisselt de processor van het ene proces naar het andere.
+Het is het besturingssysteem dat de uitvoering van meerdere processen
+gaat verweven om het processorgebruik te maximaliseren en tegelijk te
+zorgen voor een aanvaardbare responstijd. Het onderdeel van het
+besturingssysteem dat deze taak verzorgt heet de
+\emph{scheduler}.
+
+\begin{figure}
+\begin{center}
+\subfigure[Zonder multiprogrammatie]{
+  \includegraphics[width=100mm]{images/fig0501a.png}
+  \label{multprogr:a}
+}
+\\
+\subfigure[Met multiprogrammatie]{
+  \includegraphics[width=75mm]{images/fig0501b.png}
+  \label{multprogr:b}
+}
+\end{center}
+\caption{Multiprogrammatie}
+\label{multprogr}
+\end{figure}
+
+Als we geen gebruik maken van multiprogrammatie worden de
+verschillende processen na mekaar uitgevoerd. Wanneer het proces in
+uitvoering moet wachten op een externe gebeurtenis, zoals b.v. het
+afwerken van een leesopdracht door een schijf of het resultaat van een
+ander proces, staat de processor stil.
+
+Door multiprogrammatie toe te passen kunnen we het
+processorgebruik verbeteren. Als \'e\'en proces wacht op een gebeurtenis
+kan de processor een ander proces uitvoeren.
+
+In fig. \ref{multprogr} zien we duidelijk dat de processor bijna niet
+meer werkloos is, alleen op het einde wanneer processen A en B
+voltooid zijn is er geen ander proces beschikbaar om uit te voeren
+terwijl C wacht. Merk op dat proces A eigenlijk nadeel ondervindt van
+de multiprogrammatie, aangezien het nu later voltooid zal zijn.
+
+Naast het optimaliseren van het processorgebruik zorgt
+multiprogrammatie ook voor een lagere gemiddelde responstijd. De
+\emph{responstijd} is de tijd tussen het geven van een
+opdracht en het moment dat de ontvangst van het antwoord begint. Dit
+is van belang bij interactief werken met een systeem. Bij timesharing
+is het dus van belang om de responstijd zo laag mogelijk voor alle
+gebruikers die het systeem delen.
+
+Zoals we multiprogrammatie nu voorstellen blijven we een proces
+uitvoeren tot het proces op een gebeurtenis wacht. Een proces dat zeer
+veel rekenwerk moet doen, en weinig invoer- of uitvoeropdrachten bevat
+waarop gewacht moet worden kan de processor dan relatief lang bezet
+houden. Dit is slecht voor de gemiddelde responstijd omdat alle andere
+processen dan zolang moeten wachten. Daarom zal het besturingssysteem
+een proces soms na een bepaalde tijd onderbreken om andere processen
+uit te kunnen voeren. Dit onderbreken noemen we
+\emph{preemption}.
+
+\subsection{Toestanden van een proces}
+
+Tijdens zijn uitvoering doorloopt een proces een aantal
+toestanden. De overgangen tussen deze verschillende toestanden worden
+teweeggebracht door de werking van het uitgevoerde programma ofwel
+door de scheduler.
+
+In het eenvoudigste geval zijn er twee toestanden: actief en
+niet-actief. Een proces is actief als het uitgevoerd wordt door de
+processor.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=100mm]{images/fig0502.png}
+\caption{Twee toestanden van een proces}
+\label{toestproc1}
+\end{center}
+\end{figure}
+
+Wanneer een proces gestart wordt, zal het klaargemaakt worden
+voor uitvoering en komt het in een niet-actieve toestand. De scheduler
+zal dan een proces om uit te voeren kiezen uit alle niet-actieve
+processen. Dit proces wordt dan actief. Wanneer het actieve proces
+onderbroken wordt, en dus niet-actief wordt zal een ander proces
+gekozen worden om uitgevoerd te worden.
+
+Een proces wordt be\"eindigd als alle code is uitgevoerd. Omdat de
+processor de code uitvoert kan een proces enkel aflopen vanuit de
+actieve toestand. Wanneer het proces niet-actief is wacht het om
+uitgevoerd te worden, en kan het dus nog niet be\"eindigd zijn.
+
+Zoals reeds besproken zijn er 2 soorten onderbrekingen mogelijk
+voor een proces in uitvoering. Enerzijds kan het proces door het
+aanvragen van een invoer- of uitvoeropdracht moeten wachten. Dan wordt
+het niet-actief. Anderzijds is er preemption, waarbij de scheduler het
+actieve proces onderbreekt om een ander proces te kunnen starten. De
+niet-actieve toestand moet dus opgesplitst worden in 2 aparte
+toestanden: een geblokkeerd proces wacht op in- of uitvoer, en de
+processen die gereed zijn kunnen door de scheduler gekozen worden om
+uitgevoerd te worden.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=100mm]{images/fig0503.png}
+\caption{Drie toestanden van een proces}
+\label{toestproc2}
+\end{center}
+\end{figure}
+
+
+Processen die 'gereed' zijn, worden door het besturingssysteem
+in een wachtrij bijgehouden. De scheduler kan uit deze wachtrij \'e\'en
+proces activeren. Dit proces wordt dan actief en wordt door de
+processor uitgevoerd. Er zijn drie manieren waarop een proces de
+actieve toestand kan verlaten. Wanneer het proces afgelopen is zal het
+natuurlijk niet langer actief zijn. Als het proces via een system call
+een aanvraag doet waarvan het resultaat niet onmiddellijk beschikbaar
+is zal het 'geblokkeerd' worden. Dit gebeurt dus op initiatief van het
+proces zelf. Tenslotte kan ook het besturingssysteem een actief proces
+onderbreken en terug aan de wachtrij toevoegen d.m.v. preemption. Dit
+mechanisme is niet in alle systemen beschikbaar. Er zijn preemptive en
+non-preemptive schedulers.
+
+Processen die vaak in- en uitvoer nodig hebben, en dus vaak
+'geblokkeerd' zijn, noemen we \emph{I/O-gebonden
+processen}. Processen die veel rekenwerk doen en zelden op
+externe gebeurtenissen wachten noemen we verwerkingsgebonden of
+\emph{CPU-gebonden} processen.
+
+\section{Scheduling}
+
+Het is nu duidelijk dat de belangrijkste taak van de scheduler is
+om te beslissen welk proces uitgevoerd zal worden. De bedoeling van deze
+component van het besturingssysteem is om het computersysteem, en
+meerbepaald de processor, zo goed en effici\"ent mogelijk te gebruiken. De
+eerste vraag die zich stelt is hoe we deze kwaliteit en effici\"entie
+moeten meten zodat we verschillende strategie\"en kunnen vergelijken. We
+proberen effici\"entie daarom te vertalen in een aantal concrete
+doelstellingen:
+
+\begin{description}
+\item[Rechtvaardigheid] Alle processen dienen op een rechtvaardige wijze te
+worden behandeld. Geen enkel proces mag blijvend achteruit gesteld worden,
+waardoor de uitvoering ervan onmogelijk zou worden.
+\item[Doorvoer maximaliseren] De \emph{doorvoer}
+(\emph{throughput}) is de hoeveelheid werk die per tijdseenheid
+wordt gepresteerd (b.v. het aantaljobs dat per uur wordt afgewerkt).
+\item[Omlooptijd minimaliseren] De \emph{omlooptijd}
+(\emph{turnaround time}) is de tijd die verloopt tussen het
+indienen van een proces en het voltooien ervan en wordt bekomen als een som van
+wachttijden en de werkelijke uitvoeringstijd. In andere woorden, de omplooptijd 
+is de het verschil tussen het tijdstip waarop het proces voltooid is en het 
+tijdstip waarop het proces gestart wordt. Deze maat is vooral geschikt voor
+batch-taken.
+\item[Responstijd minimaliseren] De responstijd (response time) is de tijd die
+verloopt tussen het ingeven van een bevel en het moment waarop de ontvangst van
+het antwoord begint. Deze grootheid speelt vooral een rol bij interactief
+werken, omdat een gebruiker dan niet al te lang op een reactie van het systeem
+wil wachten.
+\item[Voorspelbaarheid] De werking van het systeem moet voorspelbaar zijn. Zo
+mogen doorvoer, omlooptijd en responstijd niet te sterk veranderen in de tijd,
+bijvoorbeeld onder invloed van een wisselende belasting van het systeem.
+\item[Overhead beperken] De processortijd die het besturingssysteem zelf
+gebruikt voor berekeningen of om processen te wisselen kan ook niet gebruikt
+worden om de processen van de gebruikers uit te voeren. Deze overhead moet
+binnen redelijke grenzen blijven.
+\end{description}
+
+Het is duidelijk dat niet ieder van deze doelstellingen even
+gemakkelijk te meten is. De doelstellingen met de prestaties van het
+systeem te maken hebben, zoals bij responstijd of omlooptijd, zijn het
+best te meten. Doelstellingen als voorspelbaarheid en rechtvaardigheid
+laten zich niet zo gemakkelijk in getallen vatten.
+
+Er is ook een onderscheid tussen gebruikersgerichte en
+systeemgerichte doelstellingen. Zo be�vloeden de respons- en omlooptijd
+rechtstreeks de ervaring van de gebruiker met het systeem. De doorvoer
+daarentegen geeft aan hoe effici\"ent het systeem werkt, vandaar dat het
+een geschikte maat is voor batchverwerking.
+
+\section{Niet-pre\"emptieve Scheduling-strategie\"en}
+
+Bij deze eerste strategie\"en heeft de scheduler niet de
+mogelijkheid een proces te onderbreken. Eens een proces uitgevoerd wordt
+kan alleen het proces zelf de processor terug vrijgeven, hetzij doordat
+het zichzelf blokkeert om te wachten op een gebeurtenis, of omdat het
+proces zichzelf be\"eindigt. Er is dus geen overgang van 'actief' naar
+'gereed'.
+
+Het ontbreken van de mogelijkheid tot onderbreken zorgt ervoor dat
+de scheduler slechts een beperkte invloed heeft, en b.v. heel moeilijk
+voor voorspelbaarheid of een lage responstijd kan zorgen.
+
+\subsection{First Come First Served (FCFS)}
+
+Dit algoritme gaat de processen verwerken in dezelfde volgorde
+waarin ze in de wachtrij werden geplaatst. We noemen zo'n wachtrij ook
+een First In First Out of FIFO wachtrij. De scheduler moet enkel het
+eerste element uit de FIFO-rij nemen. Je kan het vergelijken met een
+rij mensen die aanschuift aan een loket.
+
+Dit is een erg eenvoudig algoritme, en het lijkt natuurlijk erg
+rechtvaardig. Om dit na te gaan bekijken we een situatie met 4 processen. Het
+moment waarop de processen in de wachtrij aankomen, en hun uitvoeringstijden
+($T_u$) zijn gekend. We berekenen dan de omlooptijd ($T_o$).
+
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|r|r|}
+\hline
+Proces & Aankomst & $T_u$ & Start & $T_o$ & ${T_o}$/${T_u}$ \\
+\hline
+A & 0 &   1 &   0 &   1 &    1 \\
+B & 1 & 100 &   1 & 100 &    1 \\
+C & 2 &   1 & 101 & 100 &  100 \\
+D & 3 & 100 & 102 & 199 & 1,99 \\
+\hline
+\end{tabular}
+\end{center}
+
+Om de resultaten gemakkelijker te interpreteren berekenen we ook de
+genormaliseerde omlooptijd. De \emph{genormaliseerde omlooptijd} bekom
+je door de omlooptijd te delen door de uitvoeringstijd. Het is een maat
+voor de relatieve vertraging die een proces ondervindt. Het proces
+werd niet vertraagd als $\frac{T_o}{T_u} = 1$. Hoe hoger $\frac{T_o}{T_u}$, hoe
+slechter het proces werd bediend. De genormaliseerde omlooptijd brengt houdt
+rekening met het feit dat een bijkomende wachttijd van 10 ms een grotere
+nadelige
+invloed heeft op een proces met een korte uitvoeringstijd dan op een proces met
+een langere uitvoeringstijd. Een half uur in de file staan is minder vervelend 
+tijdens een verplaatsing over een lange afstand dan bij een korte trip van een 
+kwartier\footnote{Het gaat hier om het nadelige effect van de tijd in de file
+op de totale duur van de verplaatsing. We meten niet hoe hard je vloekt op het
+moment dat je in de file terechtkomt...}.
+
+Proces C is hiervan een extreem voorbeeld. Meestal geldt ook: hoe
+langer de uitvoeringstijd van een proces, hoe groter de absolute
+vertraging die men kan tolereren. Vergelijk daartoe proces D met C. D
+heeft even lang moeten wachten om te beginnen maar
+$\frac{T_u}{T_t}$ is veel lager en acceptabel. Men kan besluiten dat FCFS
+meestal gunstiger is voor lange processen.
+
+Hierdoor is FCFS ook voordelig voor verwerkingsgebonden
+processen, omdat I/O-gebonden processen de processor zelf vlugger
+vrijgeven en dan weer achteraan de FIFO-rij moeten gaan staan.
+
+\subsection{Shortest Job First (SJF)}
+
+De bevoordeling van langere processen door FCFS kan verminderd
+worden door telkens dat proces te kiezen dat het minst lang actief zal
+zijn, m.a.w. het kortste proces. Deze strategie kan wel lijden tot
+\emph{starvation}: langere processen
+\emph{verhongeren} zolang er een aanvoer is van
+kortere processen.
+
+Algemeen zal deze strategie een lagere gemiddelde omlooptijd
+opleveren. De omlooptijd zal altijd bestaan uit de eigenlijke
+uitvoeringstijd, verhoogd met eventuele wachttijden. Wanneer twee
+processen na mekaar uitgevoerd worden, dan zal voor het tweede proces
+de omlooptijd bestaan uit een wachttijd gelijk aan de uitvoeringtijd
+van het eerste proces, en de eigen uitvoeringstijd. Voor het eerste
+proces is de omlooptijd uiteraard gelijk aan de uitvoeringstijd. De
+enige wachttijd bestaat dus uit de uitvoeringstijd van het eerst
+uitgevoerde proces.
+
+De volgorde, waarin de twee processen aan bod komen, bepaalt nu
+de grootte van de wachttijd. De kleinste gemiddelde omlooptijd zal
+worden verkregen indien eerst het proces met de kleinste
+uitvoeringstijd aan bod komt. Zo wordt immers het enige veranderlijke
+element, de wachttijd voor het tweede proces, minimaal.
+
+De grootste moeilijkheid bij deze methode is echter dat de
+uitvoeringstijd moet gekend zijn, wat eigenlijk een element is uit de
+toekomst. Bij processor scheduling kan men alleen het gedrag van het
+betrokken proces in het verleden nagaan en hieruit een prognose
+afleiden voor de toekomstige uitvoerperiodes. Merk op dat we het hier
+niet hebben over de totale uitvoeringstijd van een proces, maar over
+de tijd tot het proces de volgende keer geblokkeerd wordt.
+
+Stel dat $t_i$ de uitvoeringstijd is van uitvoeringsperiode $i$, en
+$T_i$ een voorspelling voor uitvoeringsperiode $i$. De eenvoudigste
+voorspelling is een gemiddelde van de duur van de vorige
+uitvoeringstijden:
+
+\begin{displaymath}
+T_{n+1} = \frac{\sum_{i=1}^{n}t_i}{n} = \frac{t_1 + t_2 + \ldots + t_n}{n}
+\end{displaymath}
+
+Om niet telkens het gemiddelde van alle vorige
+uitvoeringsperiodes te moeten berekenen kunnen we de vorige schatting
+gebruiken, waarvoor we al een berekening gemaakt hadden. We krijgen
+dan:
+
+\begin{displaymath}
+T_{n+1} = \frac{t_n}{n} + \frac{n-1}{n}T_n
+\end{displaymath}
+
+Dit komt overeen met een een opeenvolging van
+schattingen:
+
+%\begin{displaymath}
+\begin{eqnarray*}
+T_2 & = & \frac{t_1}{1} + \frac{0}{1}T_1 = t_1 \\
+T_3 & = & \frac{t_2}{2} + \frac{1}{2}T_2       \\
+T_4 & = & \frac{t_3}{3} + \frac{2}{3}T_3
+\end{eqnarray*}
+%\end{displaymath}
+
+Om te zien dat dit eigenlijk opnieuw het gemiddelde is van de
+vorige uitvoeringsperioden werken we de formule uit voor b.v.
+T4:
+
+\begin{eqnarray*}
+T_4 & = & \frac{t_3}{3} + \frac{2}{3}T_3 \\
+    & = & \frac{t_3}{3} + \frac{2}{3}\Bigg(\frac{t_2}{2} + \frac{1}{2}T_2\Bigg)
+\\
+    & = & \frac{t_3}{3} + \frac{2}{3}\frac{t_2}{2} + \frac{2}{3}\frac{1}{2}T_2
+\\
+    & = & \frac{t_3}{3} + \frac{t_2}{3} + \frac{1}{3}T_2 \\
+    & = & \frac{t_3}{3} + \frac{t_2}{3} + \frac{1}{3}t_1 \\
+T_4 & = & \frac{t_1 + t_2 + t_3}{3}
+\end{eqnarray*}
+
+Meestal wordt ervoor gezorgd dat de tijd van meer recente
+uitvoeringsperioden een grotere invloed heeft op de schatting dan die
+van oudere uitvoeringsperioden. Dit kan je bekomen door een
+exponentieel gewogen gemiddelde te berekenen. Met a als gewichtsfactor
+tussen 0 en 1 krijgen we de volgende recursieve formule:
+
+\begin{displaymath}
+T_{n+1} = at_n + (1-a)T_n
+\end{displaymath}
+
+
+We bekomen dus weer een opeenvolging van schattingen:
+
+\begin{eqnarray*}
+T_2 & = & at_1 + (1-a)T_1 \\
+T_3 & = & at_2 + (1-a)T_2 \\
+T_4 & = & at_3 + (1-a)T_3
+\end{eqnarray*}
+
+Als we T4 weer als voorbeeld nemen krijgen we:
+
+\begin{eqnarray*}
+T_4 & = & at_3 + (1-a)T_3 \\
+    & = & at_3 + (1-a)\Big(at_2 + (1-a)T_2\Big) \\
+    & = & at_3 + (1-a)at_2 + (1-a)^2T_2 \\
+    & = & at_3 + (1-a)at_2 + (1-a)^2\Big(at_1 + (1-a)T_1\Big) \\
+    & = & at_3 + (1-a)at_2 + (1-a)^2at_1 + (1-a)^3T_1
+\end{eqnarray*}
+
+
+Als a tussen $0$ en $1$ ligt, dan geldt dat ook voor $(1-a)$. Een
+oudere uitvoeringsperiode wordt vermenigvuldigd met een steeds hogere
+macht van $(1-a)$, dus het belang van deze factor neemt steeds
+af.
+
+Voor $a=0,5$ krijgen we voor $T_4$ bijvoorbeeld:
+
+\begin{displaymath}
+T_4 = \frac{1}{2}t_3 + \frac{1}{4}t_2 + \frac{1}{8}t_1 + \frac{1}{8}T_1
+\end{displaymath}
+
+
+\subsection{Priority Scheduling}
+
+In dit algoritme wordt met elk proces een prioriteit $p$
+verbonden. We selecteren dan telkens het proces met de hoogste
+prioriteit (veelal, maar niet altijd, aangeduid door de grootste
+waarde van $p$). Het vorige algoritme, SJF, is eigenlijk een voorbeeld
+van priority scheduling. Voor een proces dat een hoeveelheid T processortijd
+nodig heeft neemt men dan $p = \frac{1}{T}$ als waarde voor de prioriteit.
+Prioriteiten kunnen intern bepaald zijn, d.w.z. afgeleid van een eigenschap van
+het betrokken proces, zoals het gebruik van hulpbronnen, de geschatte
+uitvoeringstijd of het al dan niet verwerkingsgebonden karakter. Externe
+prioriteiten worden van buitenaf opgelegd, b.v. naar gelang de herkomst van het
+proces. Processen van docenten zouden een hogere prioriteit kunnen krijgen dan
+processen van studenten.
+
+Een probleem bij priority scheduling is terug het verhongeren
+van een proces. De mogelijkheid bestaat dat een proces met de
+laagste prioriteit voortdurend wordt voorafgegaan door nieuwe
+processen met een hogere prioriteit, en zo nooit aan de beurt komt. Om dit te
+voorkomen wordt meestal een systeem van \emph{veroudering} (\emph{aging})
+ingevoerd. Dit betekent dat de prioriteit van een proces stijgt naarmate het
+proces langer in de wachtrij zit. De scheduler zou b.v. bij elke tussenkomst de
+prioriteit van alle processen in de wachtrij met 1 kunnen verhogen (tot een
+maximale waarde). Op die manier zal uiteindelijk elk proces binnen een redelijke
+termijn aan bod komen.
