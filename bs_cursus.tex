@@ -5,8 +5,16 @@
 \usepackage[dutch]{babel}
 \usepackage{graphicx}
 \usepackage{url}
-\usepackage{subfigure}
-
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
 
 %
 % Zorgt voor headers die over de marge lopen
@@ -35,7 +43,7 @@
     \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 \makeatother
 
-% 
+%
 % Zorgt voor default sans serif font
 %
 \renewcommand{\familydefault}{\sfdefault}
@@ -67,5 +75,7 @@
 \include{bs_cursus_h3_Bootproces}
 \include{bs_cursus_h4_Bestandssystemen}
 \include{bs_cursus_h5_Procesbeheer}
+\include{bs_cursus_h6_Threads}
+\include{bs_cursus_h7_Geheugenbeheer}
 
 \end{document}

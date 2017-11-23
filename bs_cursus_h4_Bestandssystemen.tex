@@ -205,7 +205,7 @@ C:\Windows\system32>
 \end{verbatim}
 
 In dit geval is de werkdirectory dus \verb|C:\Windows\system32|. Het
-relatieve pad \verb|drivers\etc\hosts| verwijst vanuit deze werkdirectory 
+relatieve pad \verb|drivers\etc\hosts| verwijst vanuit deze werkdirectory
 naar het bestand met absoluut pad \verb|C:\Windows\system32\drivers\etc\hosts|.
 
 Sommige bewerkingen zullen ook heel wat complexer worden. Het
@@ -303,19 +303,23 @@ probleem. Stel dat we in fig. \ref{problalg2:a} de aangeduide directory
 willen verwijderen.
 
 \begin{figure}
-\begin{center}
-\subfigure[Voor het verwijderen]{
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
   \includegraphics[width=60mm]{images/fig0404a.png}
+  \caption{Voor het verwijderen}
   \label{problalg2:a}
-}
-\subfigure[Na het verwijderen]{
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
   \includegraphics[width=60mm]{images/fig0404b.png}
+  \caption{Na het verwijderen}
   \label{problalg2:b}
-}
-\end{center}
+\end{subfigure}
 \caption{Problemen bij een algemene structuur}
 \label{problalg2}
 \end{figure}
+
 
 Als we dan alle onderliggende directories recursief
 verwijderen, zullen we uiteindelijk een directory verwijderen die
@@ -868,7 +872,7 @@ gebeuren.
 
 Ook een directory kan bijgehouden worden als een gelinkte lijst.
 In de tabel verwijst ieder element naar de positie van het volgende.
-We moeten dan alleen de startpositie kennen. 
+We moeten dan alleen de startpositie kennen.
 
 \begin{figure}
 \begin{center}
@@ -960,12 +964,12 @@ FAT-bestandssystemen in Windows XP:
 \hline
 Partitiegrootte  & Blokgrootte \\
 \hline
-33MB - 64MB      & 512B \\ 
-65MB - 128MB     & 1KB \\ 
-129MB - 256MB    & 2KB \\ 
-257MB - 8GB      & 4KB \\ 
-8GB - 16GB       & 8KB \\ 
-16GB - 32GB      & 16KB \\ 
+33MB - 64MB      & 512B \\
+65MB - 128MB     & 1KB \\
+129MB - 256MB    & 2KB \\
+257MB - 8GB      & 4KB \\
+8GB - 16GB       & 8KB \\
+16GB - 32GB      & 16KB \\
 $>$ 33GB         & Niet ondersteund\\
 \hline
 \end{tabular}
@@ -1154,16 +1158,16 @@ toevoegen van elementen toelaten.
 \section{Second Extended Filesystem}
 
 Hoewel je bij het installeren van een Linux-distributie de keuze krijgt
-uit een hele lijst met bestandssystemen om de partities te formatteren, 
-wordt het \emph{Extended Filesystem} vaak beschouwd als het standaard-bestandssysteem 
-voor Linux. De meest recente versie is het Third Extended Filesystem of ext3. Het 
-grootste verschil met voorganger Ext2 is dat Ext3 gebruik maakt van een journal, 
+uit een hele lijst met bestandssystemen om de partities te formatteren,
+wordt het \emph{Extended Filesystem} vaak beschouwd als het standaard-bestandssysteem
+voor Linux. De meest recente versie is het Third Extended Filesystem of ext3. Het
+grootste verschil met voorganger Ext2 is dat Ext3 gebruik maakt van een journal,
 waarover later meer. We zullen ons hier beperken tot een analyse van de werking van ext2.
 
 \subsection{Inodes}
 
-Net zoals Linux zelf is het Extended Filesystem, en dus ook de opvolgers, gebaseerd op 
-Unix. De algemene structuur van een ext2-partitie is dan ook dezelfde als bij het 
+Net zoals Linux zelf is het Extended Filesystem, en dus ook de opvolgers, gebaseerd op
+Unix. De algemene structuur van een ext2-partitie is dan ook dezelfde als bij het
 Unix Filesystem. De blokken van de schijf kunnen worden ingedeeld in 4 soorten:
 
 \begin{itemize}
@@ -1173,20 +1177,20 @@ Unix Filesystem. De blokken van de schijf kunnen worden ingedeeld in 4 soorten:
 \item Datablokken
 \end{itemize}
 
-In het \emph{bootblok} staat bootstrap code die het besturingssysteem moet laden en opstarten. 
-Het heeft geen specifieke functie in het bestandssysteem, en het is altijd . Het \emph{superblok} bevat globale 
+In het \emph{bootblok} staat bootstrap code die het besturingssysteem moet laden en opstarten.
+Het heeft geen specifieke functie in het bestandssysteem, en het is altijd . Het \emph{superblok} bevat globale
 gegevens over het bestandssysteem, en enkele instellingen.
 
-Met ieder bestand in ext2 wordt een gegevensstructuur geassoci\"eerd, die \emph{inode} wordt genoemd. 
-Hierin vinden we alle metadata en de verwijzingen naar de datablokken waarin de inhoud 
-van het bestand opgeslagen is. Achter het superblok staat een lijst met inodeblokken, soms ook 
-I-list genoemd. De overige blokken in het bestandssysteem worden gebruikt om de inhoud van bestanden 
+Met ieder bestand in ext2 wordt een gegevensstructuur geassoci\"eerd, die \emph{inode} wordt genoemd.
+Hierin vinden we alle metadata en de verwijzingen naar de datablokken waarin de inhoud
+van het bestand opgeslagen is. Achter het superblok staat een lijst met inodeblokken, soms ook
+I-list genoemd. De overige blokken in het bestandssysteem worden gebruikt om de inhoud van bestanden
 in weg te schrijven.
 
-Aangezien de broncode van Linux vrij beschikbaar is, kunnen we de eigenlijke structuur van een inode 
-bekijken. Linux is geschreven in C, en de inode struct\footnote{Een struct in C kan je vergelijken 
-met een vereenvoudigde klasse uit Java. Een struct in C bevat enkel dataleden, en geen methodes.} 
-wordt gedefini\"eerd in het bestand \verb|include/ext2_fs.h|. Dit komt uit de broncode van versie 1.0 
+Aangezien de broncode van Linux vrij beschikbaar is, kunnen we de eigenlijke structuur van een inode
+bekijken. Linux is geschreven in C, en de inode struct\footnote{Een struct in C kan je vergelijken
+met een vereenvoudigde klasse uit Java. Een struct in C bevat enkel dataleden, en geen methodes.}
+wordt gedefini\"eerd in het bestand \verb|include/ext2_fs.h|. Dit komt uit de broncode van versie 1.0
 van de Linux kernel (1994):
 
 \begin{verbatim}
@@ -1218,9 +1222,9 @@ struct ext2_inode {
 };
 \end{verbatim}
 
-Een inode bevat dus allerlei gegevens, waaronder b.v. de eigenaar en toegangsrechten. Merk op 
-dat de bestandsnaam niet in de inode wordt bewaard. De bestandsnamen vinden we in de directories, 
-samen met een verwijzing naar de inode. Dit verschilt van b.v. FAT, waarbij de volledige 
+Een inode bevat dus allerlei gegevens, waaronder b.v. de eigenaar en toegangsrechten. Merk op
+dat de bestandsnaam niet in de inode wordt bewaard. De bestandsnamen vinden we in de directories,
+samen met een verwijzing naar de inode. Dit verschilt van b.v. FAT, waarbij de volledige
 bestandsbeschrijving in de directory wordt bijgehouden.
 
 \begin{verbatim}
@@ -1237,24 +1241,24 @@ struct ext2_dir_entry {
 };
 \end{verbatim}
 
-Zoals je in de code kan zien kan een ext2-bestandsnaam kan tot 255 tekens bevatten. Zoals gezegd is 
-een directory een bestand met daarin een lijst van bestandsnamen gekoppeld aan een inode. Omdat dergelijke 
-lange namen niet vaak voorkomen werd gekozen voor directory-elementen met variabele lengte. Het inode-nummer 
-wordt opgeslagen, gevolgd door 2 variabelen die resp. de lengte van de entry en de naam aangeven. Als laatste 
-wordt de eigenlijke bestandsnaam opgeslagen. Doordat de lengte van de bestandsnaam gekend is kan er 
-naar het volgende element gesprongen worden\footnote{Het lijkt misschien vreemd dat we zowel 
-rec\_len als name\_len moeten kennen, maar rec\_len is niet altijd gelijk aan de waarde van name\_len 
-opgeteld bij de lengte van een short en een long. rec\_len wordt als volgt berekend: 
-(((name\_len) + 8 + 3) \& ~3), en is dus altijd een veelvoud van 4. Bovendien wordt rec\_len 
-gebruikt om bij het verwijderen van een bestand te vermijden dat de overige elementen naar voor 
-geschoven moeten worden. Door de rec\_len van het vorige bestand te verhogen kan over de lege 
-ruimte van het verwijderde element gesprongen worden.}. 
+Zoals je in de code kan zien kan een ext2-bestandsnaam kan tot 255 tekens bevatten. Zoals gezegd is
+een directory een bestand met daarin een lijst van bestandsnamen gekoppeld aan een inode. Omdat dergelijke
+lange namen niet vaak voorkomen werd gekozen voor directory-elementen met variabele lengte. Het inode-nummer
+wordt opgeslagen, gevolgd door 2 variabelen die resp. de lengte van de entry en de naam aangeven. Als laatste
+wordt de eigenlijke bestandsnaam opgeslagen. Doordat de lengte van de bestandsnaam gekend is kan er
+naar het volgende element gesprongen worden\footnote{Het lijkt misschien vreemd dat we zowel
+rec\_len als name\_len moeten kennen, maar rec\_len is niet altijd gelijk aan de waarde van name\_len
+opgeteld bij de lengte van een short en een long. rec\_len wordt als volgt berekend:
+(((name\_len) + 8 + 3) \& ~3), en is dus altijd een veelvoud van 4. Bovendien wordt rec\_len
+gebruikt om bij het verwijderen van een bestand te vermijden dat de overige elementen naar voor
+geschoven moeten worden. Door de rec\_len van het vorige bestand te verhogen kan over de lege
+ruimte van het verwijderde element gesprongen worden.}.
 
-Bestanden kunnen in ext2 niet-aaneengesloten gealloceerd worden. In de inode is ruimte voorzien om de 
+Bestanden kunnen in ext2 niet-aaneengesloten gealloceerd worden. In de inode is ruimte voorzien om de
 adressen van 15 blokken te bewaren. De eerste 12 zijn directe blokadressen, die verwijzen naar blokken
-die data bevatten. Het dertiende adres verwijst naar een indexblok, waarin de adressen van datablokken kunnen 
-opgeslagen worden. Dit wordt een indirect adres genoemd. Het veertiende en vijftiende adres in de inode 
-zijn respectievelijk dubbel en driedubbel indirect. Het twaalfde adres verwijst dus naar een datablok met 
+die data bevatten. Het dertiende adres verwijst naar een indexblok, waarin de adressen van datablokken kunnen
+opgeslagen worden. Dit wordt een indirect adres genoemd. Het veertiende en vijftiende adres in de inode
+zijn respectievelijk dubbel en driedubbel indirect. Het twaalfde adres verwijst dus naar een datablok met
 daarin adressen van indexblokken. Deze structuur wordt weergegeven in fig. \ref{extAdressering}.
 
 \begin{figure}
@@ -1266,78 +1270,76 @@ daarin adressen van indexblokken. Deze structuur wordt weergegeven in fig. \ref{
 \end{figure}
 
 Het grote voordeel van deze structuur is dat de adresinformatie voor kleine bestanden volledig in het werkgeheugen
-beschikbaar is. Met bestanden die maximaal 12 datablokken in beslag nemen kan dus erg snel gewerkt worden. Dat de 
-grootte van een bestand in ext2 beperkt is, volgt ook uit deze adresseringsstructuur. De maximale bestandsgrootte 
+beschikbaar is. Met bestanden die maximaal 12 datablokken in beslag nemen kan dus erg snel gewerkt worden. Dat de
+grootte van een bestand in ext2 beperkt is, volgt ook uit deze adresseringsstructuur. De maximale bestandsgrootte
 in bytes wordt gegeven door:
 
 \begin{displaymath}
 S_{max} = \left[12 + \left(\frac{b}{4}\right) + \left(\frac{b}{4}\right)^{2} + \left(\frac{b}{4}\right)^{3}\right]b
 \end{displaymath}
 
-Hierin is $b$ de blokgrootte in bytes, en gaan we uit van adressen van 32 bits, dus 4 bytes per adres. Voor een 
+Hierin is $b$ de blokgrootte in bytes, en gaan we uit van adressen van 32 bits, dus 4 bytes per adres. Voor een
 blokgrootte van 1 kB geeft dit een maximale grootte van 16GB.
 
 \subsection{Vrije blokken en inodes}
 
-In het superblok worden tabellen bijgehouden met de adressen van een aantal vrije datablokken en een aantal vrije 
+In het superblok worden tabellen bijgehouden met de adressen van een aantal vrije datablokken en een aantal vrije
 inodes. In deze tabellen is echter niet voldoende plaats om alle vrije elementen te bewaren.
 
-Wanneer b.v. een bestand moet worden uitgebreid, wordt een adres van een vrij blok uit de tabel in het superblok 
-genomen. Bij het verwijderen van een bestand worden de adressen van de vrijgekomen blokken in de tabel ingeschreven. 
-Indien de tabel leeg is op het ogenblik dat een blok aan een file moet worden toegekend zal de tabel uit het eerste 
-blok in de gelinkte lijst naar het superblok worden gekopieerd. Het hierdoor vrijgekomen blok wordt aan het bestand 
+Wanneer b.v. een bestand moet worden uitgebreid, wordt een adres van een vrij blok uit de tabel in het superblok
+genomen. Bij het verwijderen van een bestand worden de adressen van de vrijgekomen blokken in de tabel ingeschreven.
+Indien de tabel leeg is op het ogenblik dat een blok aan een file moet worden toegekend zal de tabel uit het eerste
+blok in de gelinkte lijst naar het superblok worden gekopieerd. Het hierdoor vrijgekomen blok wordt aan het bestand
 toegevoegd. Als de tabel helemaal gevuld is met adressen, en er wordt een blok vrijgegeven, dan wordt de tabel uit
 het superblok naar het vrijgekomen blok gekopieerd, waarna dit als eerste blok in de gelinkte lijst wordt opgenomen.
 
-Voor vrije inodes wordt een gelijkaardige methode gebruikt. In het superblok staat een tabel voor 100 nummers van 
-vrije inodes.  Wanneer een nieuw bestand vindt men hier het nummer van een beschikbare inode. Bij het verwijderen 
+Voor vrije inodes wordt een gelijkaardige methode gebruikt. In het superblok staat een tabel voor 100 nummers van
+vrije inodes.  Wanneer een nieuw bestand vindt men hier het nummer van een beschikbare inode. Bij het verwijderen
 van een bestand wordt het nummer van de hierdoor vrijgekomen inode aan de tabel toegevoegd.
 
-Een belangrijk verschil met de vrije blokken is de mogelijkheid om een vrije inode te herkennen aan zijn inhoud. Het 
-veld voor het bestandstype staat namelijk op 0 als de inode niet in gebruik is. Hierdoor moeten niet alle nummers van 
-vrije inodes bijgehouden worden. Wanneer de tabel in het superblok leeg is, kan de kernel de i-list doorlopen en de 
+Een belangrijk verschil met de vrije blokken is de mogelijkheid om een vrije inode te herkennen aan zijn inhoud. Het
+veld voor het bestandstype staat namelijk op 0 als de inode niet in gebruik is. Hierdoor moeten niet alle nummers van
+vrije inodes bijgehouden worden. Wanneer de tabel in het superblok leeg is, kan de kernel de i-list doorlopen en de
 nummers van de 100 eerste vrije inodes in de tabel plaatsen.
 
-Om het zoeken naar vrije inodes zo effici\"ent mogelijk te laten verlopen, wordt de positie van de laatst gevonden 
-vrije inode apart bijgehouden, om de volgende zoektocht vanop die positie te kunnen starten. Wanneer er een inode 
-vrijkomt door het verwijderen van een bestand zijn er dan 2 mogelijkheden. Als de positie van deze inode voor de 
-opgeslagen positie komt wordt de opgeslagen positie erdoor vervangen. Als de positie erna komt moet er niets gebeuren, 
+Om het zoeken naar vrije inodes zo effici\"ent mogelijk te laten verlopen, wordt de positie van de laatst gevonden
+vrije inode apart bijgehouden, om de volgende zoektocht vanop die positie te kunnen starten. Wanneer er een inode
+vrijkomt door het verwijderen van een bestand zijn er dan 2 mogelijkheden. Als de positie van deze inode voor de
+opgeslagen positie komt wordt de opgeslagen positie erdoor vervangen. Als de positie erna komt moet er niets gebeuren,
 want dan wordt de nieuwe vrije inode zowiezo gevonden bij \'e\'en van de volgende zoektochten.
 
 \subsection{Harde en zachte links}
 
-Omdat de bestandsbeschrijving niet in de directory bewaard wordt, kan men op een eenvoudige en effici�te 
-manier eenzelfde bestand via verschillende paden aanspreken. Men laat in dit geval 2 bestanden verwijzen 
-naar eenzelfde inode, en dus ook naar hetzelfde bestand. Dit wordt een \emph{hard link} genoemd. Om een 
-acylische structuur te behouden is het niet toegelaten om hard links te cre�en naar directories 
-(zie eerder). Een hard link naar een bestand in een ander bestandssysteem kan ook niet. Voor 
-\emph{symbolische links} gelden deze beperkingen niet, maar in dit geval wordt verwezen naar een ander pad, 
+Omdat de bestandsbeschrijving niet in de directory bewaard wordt, kan men op een eenvoudige en effici\"ente
+manier eenzelfde bestand via verschillende paden aanspreken. Men laat in dit geval 2 bestanden verwijzen
+naar eenzelfde inode, en dus ook naar hetzelfde bestand. Dit wordt een \emph{hard link} genoemd. Om een
+acylische structuur te behouden is het niet toegelaten om hard links te cre\"eren naar directories
+(zie eerder). Een hard link naar een bestand in een ander bestandssysteem kan ook niet. Voor
+\emph{symbolische links} gelden deze beperkingen niet, maar in dit geval wordt verwezen naar een ander pad,
 niet naar een inode.
 
-Het gebruik van hard links vraagt ook om een speciale aanpak bij het verwijderen. De inode en de datablokken van 
-een bestand mogen pas vrijgegeven worden als er geen enkele link meer is. Daarom wordt in een inode een teller 
-met het aantal links bijgehouden (\verb|i_nlink|). Bij symbolic links is dit niet nodig. Wanneer het bestand 
-waarnaar een symbolic link verwijst verwijderd wordt, blijft de link bestaan. Zo'n link wordt een wees (orphan) 
+Het gebruik van hard links vraagt ook om een speciale aanpak bij het verwijderen. De inode en de datablokken van
+een bestand mogen pas vrijgegeven worden als er geen enkele link meer is. Daarom wordt in een inode een teller
+met het aantal links bijgehouden (\verb|i_nlink|). Bij symbolic links is dit niet nodig. Wanneer het bestand
+waarnaar een symbolic link verwijst verwijderd wordt, blijft de link bestaan. Zo'n link wordt een wees (orphan)
 genoemd.
 
 \subsection{Bijzonderheden}
 
-Ext2 heeft enkele specifieke eigenschappen die we nog niet tegenkwamen in andere bestandssystemen. Zo wordt 
-het aantal inodes in de I-list bepaald bij het aanmaken van het bestandssysteem. Een vervelend 
-gevolg hiervan is dat het kan gebeuren dat je geen nieuw bestand kan aanmaken, hoewel er toch nog vrije 
-datablokken beschikbaar zijn. Een ext2 bestandssysteem heeft dus een maximum aantal bestanden. Standaard 
-wordt er \'e\'en inode aangemaakt voor iedere 4096 bytes beschikbare schijfruimte. Als de gemiddelde grootte 
+Ext2 heeft enkele specifieke eigenschappen die we nog niet tegenkwamen in andere bestandssystemen. Zo wordt
+het aantal inodes in de I-list bepaald bij het aanmaken van het bestandssysteem. Een vervelend
+gevolg hiervan is dat het kan gebeuren dat je geen nieuw bestand kan aanmaken, hoewel er toch nog vrije
+datablokken beschikbaar zijn. Een ext2 bestandssysteem heeft dus een maximum aantal bestanden. Standaard
+wordt er \'e\'en inode aangemaakt voor iedere 4096 bytes beschikbare schijfruimte. Als de gemiddelde grootte
 van je bestanden kleiner is dan 4kB, kan je dus met een tekort aan inodes te maken krijgen.
 
-Bij het cre\"eren van het bestandssysteem wordt een deel (standaard 5\%) van de blokken gereserveerd voor 
-de beheerder van het syteem (root). Dit voorkomt dat een gebruiker of een gebruikersproces het volledige 
+Bij het cre\"eren van het bestandssysteem wordt een deel (standaard 5\%) van de blokken gereserveerd voor
+de beheerder van het syteem (root). Dit voorkomt dat een gebruiker of een gebruikersproces het volledige
 bestandssysteem volschrijft, waardoor het besturingssysteem zou kunnen vastlopen.
 
-Een laatste bijzonder bestandstype is de zogenaamde \emph{device file}. Deze bestanden bevatten geen data, maar 
-stellen een systeemapparaat voor. Zo kan men communiceren met een apparaat door te lezen en te schrijven van of 
-naar de bijhorende device file. Het toetsenbord zou je dan b.v. kunnen beschouwen als een oneindig alleen-lezen 
-tekstbestand. Ieder getypt karakter verschijnt in het bestand. Omdat lezen per blok voor een apparaat als een 
-toetsenbord niet erg effici\"ent zou zijn, wordt bij device files een onderscheid gemaakt tussen karakter- en 
+Een laatste bijzonder bestandstype is de zogenaamde \emph{device file}. Deze bestanden bevatten geen data, maar
+stellen een systeemapparaat voor. Zo kan men communiceren met een apparaat door te lezen en te schrijven van of
+naar de bijhorende device file. Het toetsenbord zou je dan b.v. kunnen beschouwen als een oneindig alleen-lezen
+tekstbestand. Ieder getypt karakter verschijnt in het bestand. Omdat lezen per blok voor een apparaat als een
+toetsenbord niet erg effici\"ent zou zijn, wordt bij device files een onderscheid gemaakt tussen karakter- en
 blokapparaten.
-
-

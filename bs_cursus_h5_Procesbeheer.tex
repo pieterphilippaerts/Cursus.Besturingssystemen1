@@ -60,17 +60,19 @@ besturingssysteem dat deze taak verzorgt heet de
 \emph{scheduler}.
 
 \begin{figure}
-\begin{center}
-\subfigure[Zonder multiprogrammatie]{
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
   \includegraphics[width=100mm]{images/fig0501a.png}
+  \caption{Zonder multiprogrammatie}
   \label{multprogr:a}
-}
-\\
-\subfigure[Met multiprogrammatie]{
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
   \includegraphics[width=75mm]{images/fig0501b.png}
+  \caption{Met multiprogrammatie}
   \label{multprogr:b}
-}
-\end{center}
+\end{subfigure}
 \caption{Multiprogrammatie}
 \label{multprogr}
 \end{figure}
@@ -199,8 +201,8 @@ wordt gepresteerd (b.v. het aantaljobs dat per uur wordt afgewerkt).
 \item[Omlooptijd minimaliseren] De \emph{omlooptijd}
 (\emph{turnaround time}) is de tijd die verloopt tussen het
 indienen van een proces en het voltooien ervan en wordt bekomen als een som van
-wachttijden en de werkelijke uitvoeringstijd. In andere woorden, de omplooptijd 
-is de het verschil tussen het tijdstip waarop het proces voltooid is en het 
+wachttijden en de werkelijke uitvoeringstijd. In andere woorden, de omplooptijd
+is de het verschil tussen het tijdstip waarop het proces voltooid is en het
 tijdstip waarop het proces gestart wordt. Deze maat is vooral geschikt voor
 batch-taken.
 \item[Responstijd minimaliseren] De responstijd (response time) is de tijd die
@@ -224,7 +226,7 @@ best te meten. Doelstellingen als voorspelbaarheid en rechtvaardigheid
 laten zich niet zo gemakkelijk in getallen vatten.
 
 Er is ook een onderscheid tussen gebruikersgerichte en
-systeemgerichte doelstellingen. Zo be�vloeden de respons- en omlooptijd
+systeemgerichte doelstellingen. Zo be\"invloeden de respons- en omlooptijd
 rechtstreeks de ervaring van de gebruiker met het systeem. De doorvoer
 daarentegen geeft aan hoe effici\"ent het systeem werkt, vandaar dat het
 een geschikte maat is voor batchverwerking.
@@ -277,8 +279,8 @@ slechter het proces werd bediend. De genormaliseerde omlooptijd brengt houdt
 rekening met het feit dat een bijkomende wachttijd van 10 ms een grotere
 nadelige
 invloed heeft op een proces met een korte uitvoeringstijd dan op een proces met
-een langere uitvoeringstijd. Een half uur in de file staan is minder vervelend 
-tijdens een verplaatsing over een lange afstand dan bij een korte trip van een 
+een langere uitvoeringstijd. Een half uur in de file staan is minder vervelend
+tijdens een verplaatsing over een lange afstand dan bij een korte trip van een
 kwartier\footnote{Het gaat hier om het nadelige effect van de tijd in de file
 op de totale duur van de verplaatsing. We meten niet hoe hard je vloekt op het
 moment dat je in de file terechtkomt...}.
