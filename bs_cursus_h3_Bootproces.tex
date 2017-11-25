@@ -52,8 +52,7 @@ inleest waarvan het adres in de bevelenteller staat, wordt de inhoud van
 de BIOS-chip beschikbaar gesteld via een deel van het adresbereik van
 het werkgeheugen. Hiervoor is een deel van het Upper Memory\footnote{De Upper
 Memory Area is de laatste 384 kilobyte van de eerste megabyte van het
-werkgeheugen.}
-</footnote> gereserveerd: van F0000h tot FFFFFh. In sommige systemen
+werkgeheugen.} gereserveerd: van F0000h tot FFFFFh. In sommige systemen
 blijft dit deel van het werkgeheugen leeg en wordt van de ROM-chip
 gelezen. Andere systemen kopi\"eren de inhoud van de chip naar dit
 gedeelte van het werkgeheugen omdat RAM sneller is dat ROM. Deze
@@ -172,11 +171,11 @@ aantal logische partities door de grootte van de gebruikte tabel. Een
 structuur waarin ieder element verwijst naar het volgende noemen we
 een \emph{gelinkte lijst}. Als limiet voor het aantal
 logische partities wordt vaak 24 opgegeven. De gelinkte lijst kan
-zonder problemen langer zijn, maar aangezien DOS letters vanaf 'C'
+zonder problemen langer zijn, maar aangezien MS-DOS letters vanaf 'C'
 toekent aan partities kunnen er niet meer dan 24 partities
 zijn\footnote{Opgelet, als je 2 primaire partities en 1 extended partitie
 cre\"eert, kan je in de extended partitie natuurlijk nog maar 22 logische
-partities aanmaken als je wil dat DOS ze allemaal kan bereiken.}.
+partities aanmaken als je wil dat MS-DOS ze allemaal kan bereiken.}.
 
 Een logische partitie bevat een \emph{Extended
 MBR} (\emph{EMBR}), met een eigen

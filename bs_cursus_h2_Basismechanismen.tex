@@ -13,7 +13,7 @@ niet in kernel-toestand is, maar in
 instructies niet toegelaten.
 
 Tussen de machine-instructies, ingebouwd in de processor, zijn er
-namelijk een aantal die men \emph{geprivilegieerde instructies} 
+namelijk een aantal die men \emph{geprivilegieerde instructies}
 noemt. Deze laatste (b.v. instructies voor I/O, voor het
 reserveren van geheugenruimte, om de toestand van de processor te
 wijzigen enz.) kunnen alleen worden uitgevoerd in kernel-toestand en
@@ -273,7 +273,7 @@ interrupt aan het besturingssysteem vragen. In Intel x86 assembler wordt de INT-
 software interrupt aan te geven. Met deze instructie kan een getal
 tussen 0 en 255 meegegeven worden.
 
-Er is een subtiel verschil tussen de verschillende interrupt types: interne interrupts zijn 
+Er is een subtiel verschil tussen de verschillende interrupt types: interne interrupts zijn
 \emph{synchroon}, terwijl externe interrupts \emph{asynchroon} zijn.
 
 Bij synchrone interrupts gebeurt de afhandeling ``actief'' in die zin dat de code van de
@@ -304,7 +304,7 @@ gebruikte besturingssysteem.
 In Intel x86 assembler programma's voor MS-DOS wordt vaak 'INT 21h'
 opgeroepen. Deze software interrupt zorgt ervoor dat MS-DOS een
 interrupt handler uitvoert. Deze specifieke interrupt handler is een
-soort manusje-van-alles in DOS, en je moet via het AH-register
+soort manusje-van-alles in MS-DOS, en je moet via het AH-register
 aangeven wat je van de interrupt handler verwacht. Als er b.v. '4Ch'
 in AH staat moet het besturingssysteem je programma be\"eindigen.
 
@@ -425,8 +425,8 @@ operand voor de trap-instructie een code meegegeven. Extra informatie kan
 eventueel in welbepaalde registers worden geplaatst.
 
 Figuur~\ref{fig:systemcalls} toont hoe een programma zichzelf kan afsluiten door
-de juiste software interrupt op te roepen. Op Intel x86 wordt de \texttt{int}-instructie 
-als trap-instructie gebruikt, terwijl op een ARM-processor de \texttt{swi}-instructie 
+de juiste software interrupt op te roepen. Op Intel x86 wordt de \texttt{int}-instructie
+als trap-instructie gebruikt, terwijl op een ARM-processor de \texttt{swi}-instructie
 gebruikt wordt. Afhankelijk van de operanden van deze instructie en de waardes in de registers
 weet het besturingssysteem wat de applicatie wil doen.
 
@@ -503,7 +503,7 @@ programma deze functie aanroept zal het volgende gebeuren:
 \item Oproepend programma zet de waarden van de drie parameters op de stapel.
 \item Read functie wordt aangeroepen (sprong naar code van read-functie).
 \item Functie zet system call nummer in het juiste register en voert
-TRAP-instructie uit (in Intel x86 assembly zou dit de instructies \texttt{mov eax, 3} 
+TRAP-instructie uit (in Intel x86 assembly zou dit de instructies \texttt{mov eax, 3}
 en \texttt{int 80h} opleveren; de 3 in eax geeft aan dat het om een lees-operatie gaat).
 \item Besturingssysteem zoekt juiste routine op voor de system call.
 \item BS start systeemroutine (sprong).
