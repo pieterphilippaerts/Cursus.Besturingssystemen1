@@ -25,90 +25,128 @@ werken, maar welke code moet er uitgevoerd worden? Er zijn nog geen
 programma's in het werkgeheugen geladen, dus de opstartcode moet elders
 gevonden worden.
 
-\section{Basic Input/Output System (BIOS)}
+\section{Unified Extensible Firmware Interface}
 
-Het eerste programma dat de processor uitvoert is het
-\emph{Basic Input/Output System}, vaak afgekort tot
-\emph{BIOS}. Het zorgt dat er communicatie mogelijk is
-tussen enkele onderdelen van het computersysteem, in de eerste plaats
-tussen secundaire opslagapparaten en het werkgeheugen. Zo kunnen
-programma's van b.v. een harde schijf in het werkgeheugen geladen
-worden, en kunnen deze programma's uitgevoerd worden. Het Basic
-Input/Output System dankt zijn naam aan het feit dat het naast deze
-communicatie ook zorgt voor uitvoer op het scherm, en de mogelijkheid
-tot invoer via het toetsenbord. Je kan de BIOS zien als een klein en
-eenvoudig besturingssysteem.
+Moderne systemen volgen de \emph{Unified Extensible Firmware Interface}-specificatie
+(\emph{UEFI}) om de computer verder op te starten. UEFI zorgt voor een zogenaamde
+\emph{pre-boot execution environment} die er voor zorgt dat de hardware ge\"initialiseerd
+wordt en het besturingssysteem ingeladen wordt. Het is in essentie een gestandardiseerd
+mini-besturingssysteem dat een aantal basisfunctionaliteiten aanbiedt (zoals bijvoorbeeld
+het starten van het hoofdbesturingssysteem).
 
-Aangezien het net de BIOS ervoor moet zorgen dat de
-opslagapparaten bruikbaar worden kan de BIOS-code niet op een dergelijk
-apparaat bewaard worden. Daarom wordt deze code in een ROM-chip op het
-moederbord bewaard. Tegenwoordig wordt EEPROM gebruikt zodat het toch
-mogelijk is een nieuwe versie van de code op de chip te zetten. Deze
-chip wordt ook vaak gewoon 'BIOS' genoemd. Merk op dat de BIOS opnieuw
-een voorbeeld is van firmware.
+De belangrijkste eigenschappen die de UEFI-standaard voorziet, zijn:
 
-Omdat een processor altijd de opdracht uit het werkgeheugen
-inleest waarvan het adres in de bevelenteller staat, wordt de inhoud van
-de BIOS-chip beschikbaar gesteld via een deel van het adresbereik van
-het werkgeheugen. Hiervoor is een deel van het Upper Memory\footnote{De Upper
-Memory Area is de laatste 384 kilobyte van de eerste megabyte van het
-werkgeheugen.} gereserveerd: van F0000h tot FFFFFh. In sommige systemen
-blijft dit deel van het werkgeheugen leeg en wordt van de ROM-chip
-gelezen. Andere systemen kopi\"eren de inhoud van de chip naar dit
-gedeelte van het werkgeheugen omdat RAM sneller is dat ROM. Deze
-techniek wordt \emph{ROM shadowing} genoemd.
+\begin{itemize}
+\item \textbf{Ondersteuning voor grote schijven} De voorganger van UEFI ---{} het Basic Input/Output System (BIOS) ---{} bood maar ondersteuning voor harde schijven tot 2TB. De UEFI-standaard verhoogt deze limiet tot 8ZB (d.i. 8 miljard terabyte).
+\item \textbf{CPU-onafhankelijke architectuur} De UEFI-specificatie is zo opgesteld dat de services die worden aangeboden niet processor-specifiek zijn. Er zijn dan ook UEFI-implementaties voor de x86-, x86-64-, ARM-, ARM64-, en Itanium-processoren.
+\item \textbf{CPU-onafhankelijke stuurprogramma's} EFI Byte Code (EBC) is een processor-onafhankelijke machinetaal die een beetje vergelijkbaar is met Java bytecode\footnote{https://en.wikipedia.org/wiki/Java\_bytecode} of Common Intermediate Language\footnote{https://en.wikipedia.org/wiki/Common\_Intermediate\_Language}. Een UEFI-implementatie kan dan een vertolker bevatten om die EBC uit te voeren. Zo moet een auteur van een stuurprogramma slechts \'e\'en versie van het stuurprogramma schrijven (in EBC), dat dan op alle processorarchitecturen waar UEFI op ondersteund wordt kan gebruikt worden.\footnote{In praktijk gaan hardwareontwerpers echter nog vaak processor-specifieke drivers voorzien omdat die vaak een stuk sneller zijn dan de EBC-varianten.}
+\item \textbf{Modulair ontwerp} De UEFI-standaard voorziet een aantal mogelijke diensten die kunnen aangeboden worden, maar niet alle diensten \emph{moeten} aangeboden worden.
+\item \textbf{Flexibele pre-OS omgeving} Hardwareverkopers krijgen de vrijheid om te kiezen hoe de layout van de pre-OS-omgeving eruit ziet en welke features ze willen ondersteunen. Verder kunnen gebruikers ook nog UEFI-applicaties installeren die dan uitgevoerd worden voordat het besturingssysteem opgestart is. Voorbeelden van zulke applicaties zijn bijvoorbeeld \emph{boot loaders} die dienen om de gebruiker te laten kiezen tussen verschillende besturingssystemen die ge\"installeerd zijn.
+\item \textbf{Backward en forward compatibiliteit} UEFI voorziet een compatibiliteits-module om achterwaarts compatibel te zijn met besturingssystemen die geschreven zijn voor de BIOS-voorganger. Verder proberen de auteurs van UEFI ook voorwaarts compatibel te zijn, zodat nieuwe technologie\"en naadloos kunnen gebruikt worden op reeds bestaande UEFI-systemen.
+\end{itemize}
 
-Wanneer een processor geactiveerd wordt zal hij altijd beginnen
-met de instructie op adres FFFF0h\footnote{Het adres FFFF0h wordt ook vaak
-genoteerd als FFFF:0000. De eerste notatie is lineair vanaf de start van het
-werkgeheugen. De tweede notatie geeft aan dat we werken in een geheugensegment
-dat begint op FFFF0, en dat we vanaf dat adres 0 plaatsen verder moeten gaan.}.
-Dit adres ligt in het gebied dat aan de BIOS is toegekend, maar ligt achteraan.
-Hier staat dan een JMP (jump) instrucie naar de eigenlijke opstartcode.
+UEFI voorziet \emph{boot services} en \emph{runtime services}. Boot services zijn enkel beschikbaar voordat het besturingssysteem opgestart is. Zo zijn er services om uitvoer op het scherm te tonen, communicatie met hardware te verzorgen, enz. De runtime services blijven beschikbaar, ook wanneer het besturingssysteem operationeel is. Zo kan het besturingssysteem bijvoorbeeld de datum en de tijd opvragen, of kan het kleine stukjes data opslaan in de chip waar de UEFI-implementatie in staat.\footnote{Dit is ook de reden waarom je bij het vervangen van een harde schijf je Windows 10 productsleutel niet opnieuw moet ingeven; de Windows 10-setup gaat automatisch je productsleutel opslaan in de UEFI-chip, zodat je die later niet meer opnieuw moet ingeven.}
 
-\subsection{Power-On Self Test}
+% \section{Basic Input/Output System (BIOS)}
 
-De BIOS-opstartcode begint met het testen van de vitale
-systeemonderdelen. Het geheel van deze tests wordt \emph{Power-On
-Self Test} genoemd, of kortweg \emph{POST}.
-De aanwezigheid en/of correcte werking van b.v. de processor,
-werkgeheugen en toetsenbord worden getest. De feedback gebeurt d.m.v.
-geluidssignalen die we beeps noemen. Wanneer alles naar behoren werkt
-wordt meestal 1 korte beep weergegeven. Bij problemen kan men aan het
-aantal beeps en hun duur horen wat de oorzaak is. De concrete codes
-hangen af van de producent van de BIOS. Soms wordt bijkomend gebruik
-gemaakt van bijkomende indicaties van problemen, zoals een digitaal
-display of LEDs.
-\subsection{Opstartvolgorde}
+% Het eerste programma dat de processor uitvoert is het
+% \emph{Basic Input/Output System}, vaak afgekort tot
+% \emph{BIOS}. Het zorgt dat er communicatie mogelijk is
+% tussen enkele onderdelen van het computersysteem, in de eerste plaats
+% tussen secundaire opslagapparaten en het werkgeheugen. Zo kunnen
+% programma's van b.v. een harde schijf in het werkgeheugen geladen
+% worden, en kunnen deze programma's uitgevoerd worden. Het Basic
+% Input/Output System dankt zijn naam aan het feit dat het naast deze
+% communicatie ook zorgt voor uitvoer op het scherm, en de mogelijkheid
+% tot invoer via het toetsenbord. Je kan de BIOS zien als een klein en
+% eenvoudig besturingssysteem.
 
-Als de POST succesvol voltooid is zal de BIOS-code beginnen met
+% Aangezien het net de BIOS ervoor moet zorgen dat de
+% opslagapparaten bruikbaar worden kan de BIOS-code niet op een dergelijk
+% apparaat bewaard worden. Daarom wordt deze code in een ROM-chip op het
+% moederbord bewaard. Tegenwoordig wordt EEPROM gebruikt zodat het toch
+% mogelijk is een nieuwe versie van de code op de chip te zetten. Deze
+% chip wordt ook vaak gewoon 'BIOS' genoemd. Merk op dat de BIOS opnieuw
+% een voorbeeld is van firmware.
+
+% Omdat een processor altijd de opdracht uit het werkgeheugen
+% inleest waarvan het adres in de bevelenteller staat, wordt de inhoud van
+% de BIOS-chip beschikbaar gesteld via een deel van het adresbereik van
+% het werkgeheugen. Hiervoor is een deel van het Upper Memory\footnote{De Upper
+% Memory Area is de laatste 384 kilobyte van de eerste megabyte van het
+% werkgeheugen.} gereserveerd: van F0000h tot FFFFFh. In sommige systemen
+% blijft dit deel van het werkgeheugen leeg en wordt van de ROM-chip
+% gelezen. Andere systemen kopi\"eren de inhoud van de chip naar dit
+% gedeelte van het werkgeheugen omdat RAM sneller is dat ROM. Deze
+% techniek wordt \emph{ROM shadowing} genoemd.
+
+% Wanneer een processor geactiveerd wordt zal hij altijd beginnen
+% met de instructie op adres FFFF0h\footnote{Het adres FFFF0h wordt ook vaak
+% genoteerd als FFFF:0000. De eerste notatie is lineair vanaf de start van het
+% werkgeheugen. De tweede notatie geeft aan dat we werken in een geheugensegment
+% dat begint op FFFF0, en dat we vanaf dat adres 0 plaatsen verder moeten gaan.}.
+% Dit adres ligt in het gebied dat aan de BIOS is toegekend, maar ligt achteraan.
+% Hier staat dan een JMP (jump) instrucie naar de eigenlijke opstartcode.
+
+De UEFI-specificatie bepaalt niet hoe de machine opgestart moet worden. Typisch zullen UEFI-implementaties beginnen met
+het oplijsten van alle beschikbare stukken hardware en controleren of die correct werken. Het geheel van deze tests
+wordt \emph{Power-On Self Test} genoemd, of kortweg \emph{POST}. Op sommige systemen kan je kiezen om deze POST
+aan te passen of grotendeels over te slaan. Het voordeel is dan dat je computer sneller opstart, maar je zal een aantal
+opties (zoals het opstarten vanaf een USB stick) niet meer kunnen gebruiken.
+
+% De BIOS-opstartcode begint met het testen van de vitale
+% systeemonderdelen. Het geheel van deze tests wordt \emph{Power-On
+% Self Test} genoemd, of kortweg \emph{POST}.
+% De aanwezigheid en/of correcte werking van b.v. de processor,
+% werkgeheugen en toetsenbord worden getest. De feedback gebeurt d.m.v.
+% geluidssignalen die we beeps noemen. Wanneer alles naar behoren werkt
+% wordt meestal 1 korte beep weergegeven. Bij problemen kan men aan het
+% aantal beeps en hun duur horen wat de oorzaak is. De concrete codes
+% hangen af van de producent van de BIOS. Soms wordt bijkomend gebruik
+% gemaakt van bijkomende indicaties van problemen, zoals een digitaal
+% display of LEDs.
+
+Als de initialisatie succesvol voltooid is zal de UEFI-code beginnen met
 het laden van het besturingssysteem. Dit staat typisch op een
 secundair opslagapparaat. Wanneer een computersysteem meerdere van
-dergelijke opslagapparaten bevat moet in de BIOS aangegeven zijn vanop
+dergelijke opslagapparaten bevat moet de gebruiker aangeven vanop
 welk apparaat een besturingssysteem geladen moet worden. Het
 besturingssysteem kan op een harde schijf staan, maar het zou ook op
 een CD-ROM, diskette of USB-opslagapparaat. In welke volgorde op alle
 aanwezige apparaten naar een besturingssysteem gezocht moet worden
 staat in de zogenaamde \emph{opstartvolgorde} of
-\emph{boot sequence}. Naast de opstartvolgorde kan je
-mogelijk ook instellingen voor bepaalde randapparaten of een paswoord
-dat de instellingen wijzigen.
+\emph{boot sequence}. De gebruiker kan deze opstartvolgorde naar eigen keuze aanpassen.
 
-Omdat deze instellingen gewijzigd moeten kunnen worden kunnen ze
-niet samen met de code van de BIOS bewaard worden in een ROM-chip.
-Voor de veranderlijke BIOS-instellingen is een afzonderlijke CMOS-chip
-voorzien, die door een batterij onder spanning gehouden wordt wanneer
-het systeem uitgeschakeld is. Zo gaan de instellingen niet verloren.
-Omdat het in het begin de enige component met CMOS-technologie was
-wordt de chip met de BIOS-instellingen nog vaak 'CMOS' genoemd. In
-hedendaagse computersystemen worden echter ook de processoren en het
-werkgeheugen m.b.v. CMOS ge\"implementeerd.
+% Naast de opstartvolgorde kan je
+% mogelijk ook instellingen voor bepaalde randapparaten of een paswoord
+% dat de instellingen wijzigen.
 
-\subsection{Partities}
+% Omdat deze instellingen gewijzigd moeten kunnen worden kunnen ze
+% niet samen met de code van de BIOS bewaard worden in een ROM-chip.
+% Voor de veranderlijke BIOS-instellingen is een afzonderlijke CMOS-chip
+% voorzien, die door een batterij onder spanning gehouden wordt wanneer
+% het systeem uitgeschakeld is. Zo gaan de instellingen niet verloren.
+% Omdat het in het begin de enige component met CMOS-technologie was
+% wordt de chip met de BIOS-instellingen nog vaak 'CMOS' genoemd. In
+% hedendaagse computersystemen worden echter ook de processoren en het
+% werkgeheugen m.b.v. CMOS ge\"implementeerd.
+
+\section{Schijven en partities}
+
+% TODO: EFI System Partition
+
+%\begin{figure}
+%\begin{center}
+%\includegraphics[width=125mm]{images/diskmgr.png}
+%\end{center}
+%\caption{DE EFI System Partition}
+%\label{efisyspart}
+%\end{figure}
+
 
 Als in de opstartvolgorde verwezen wordt naar een harde schijf
 is de vraag weer hoe we het besturingssysteem terugvinden op zo'n
-schijf. De code in de BIOS zal een sprong uitvoeren naar opstartcode
+schijf. De code in de UEFI-implementatie zal een sprong uitvoeren naar opstartcode
 opgeslagen op de eerste sector van de schijf, de \emph{Master
 Boot Record} (\emph{MBR}). Deze code wordt
 vaak Initial Program Loader (IPL) genoemd. Na het uitvoeren van de
