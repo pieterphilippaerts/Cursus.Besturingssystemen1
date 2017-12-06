@@ -921,7 +921,7 @@ bestand is bevat het overeenkomstige FAT-element het adres van het
 volgende blok van het bestand, zoals hierboven algemeen beschreven
 voor file maps. Het laatste blok van een bestand wordt aangeduid met
 de End Of File (EOF)-code 0xFFFF, en een vrij blok met 0x0000. Er zijn
-ook codes om gereserveerde en slechte blokken.
+ook codes om gereserveerde en slechte blokken aan te duiden.
 
 Er zijn verschillende varianten van het FAT bestandssysteem. De
 oorspronkelijke versie wordt nu FAT12 genoemd, naast de nieuwere
@@ -930,14 +930,14 @@ aan hoeveel bits er gebruikt worden voor ieder element in de FAT. In
 een FAT12 systeem bevat ieder element van de FAT dus 12 bits.
 
 Het aantal bits dat een FAT-element bevat bepaalt welke adressen
-gebruikt kunnen worden voor de blokken. In een FAT12 tabel zijn er
+gebruikt kunnen worden voor de blokken. In een FAT12-tabel zijn er
 voor ieder element $2^{12}$ of $4096$
 mogelijkheden. Dat betekent dat er maximum 4096 verschillende adressen
-kunnen gebruikt worden. Wanneer de blokgrootte 512 B (1 sector) is,
+kunnen gebruikt worden. Wanneer de blokgrootte 512B (1 sector) is,
 betekent dit dat er niet meer dan 4096 x 512 B of 2MB kunnen
 geadresseerd worden. Omwille van deze limiet op de schijfgrootte was
 het nodig om de nieuwe versies FAT16 en FAT32 in te voeren. Met
-dezelfde blokgrootte kan een FAT32 systeem een schijf van 2 terabyte
+dezelfde blokgrootte kan een FAT32 systeem een schijf van 2TB
 adresseren. We stellen dus vast dat de maximale adresseerbare
 schijfcapaciteit bepaald wordt door het beschikbaar aantal bits voor
 het adres, maar dat ook de blokgrootte een rol speelt. Hoe groter de
@@ -949,9 +949,9 @@ het werkgeheugen willen houden. Aangezien bij een FAT12
 bestandssysteem $2^{12}$ of $4096$ verschillende
 adressen mogelijk zijn, is dit ook het maximaal aantal elementen in de
 tabel (1 element per blok). De grootte van de tabel is dan
-$2^{12}x12$ bits, dus $49152$ bits of 6 KB. Voor
+$2^{12}x12$ bits, dus $49152$ bits of 6KB. Voor
 FAT32 wordt dit $2^{32}x32$ bits, wat
-overeenkomt met 16 GB. Het is duidelijk niet haalbaar om een
+overeenkomt met 16GB. Het is duidelijk niet haalbaar om een
 dergelijke tabel in het werkgeheugen bij te houden.
 
 Door de blokgrootte te verhogen kunnen we dus ofwel zorgen voor
@@ -975,10 +975,10 @@ $>$ 33GB         & Niet ondersteund\\
 \end{tabular}
 \end{center}
 
-Wanneer je dus een partitie van 12 GB als FAT32 formatteert in
-Windows XP, zullen er blokken van 8 KB gebruikt worden. Dit betekent
+Wanneer je dus een partitie van 12GB als FAT32 formatteert in
+Windows XP, zullen er blokken van 8KB gebruikt worden. Dit betekent
 dat ieder blok 16 sectoren op de schijf inneemt. Merk op dat je voor
-partities van meer dan 32 GB het NTFS bestandssysteem moet gebruiken
+partities van meer dan 32GB het NTFS bestandssysteem moet gebruiken
 in Windows XP.
 
 \subsection{Directories}
@@ -1047,7 +1047,7 @@ bijgehouden wordt.
 \section{Voorbeeld 2: NTFS}
 
 NTFS staat voor New Technology File System. Het is het standaard
-bestandssysteem voor Windows NT, 2000, XP en 2003 Server. Het lost
+bestandssysteem voor Windows NT, 2000, XP en hoger. Het lost
 enkele problemen met FAT op en bevat heel wat extra
 functionaliteit.
 
@@ -1059,7 +1059,7 @@ alfabet allerlei andere tekens gebruikt worden.
 
 NTFS maakt gebruik van een \emph{Master File
 Table} (\emph{MFT}). In deze tabel wordt
-voor ieder bestand 1 bestandsbeschrijving bijgehouden. Deze
+voor ieder bestand \'e\'en bestandsbeschrijving bijgehouden. Deze
 beschrijving bevat naast de bestandsnaam, de grootte en de
 toegangsdata informatie over de toegangsrechten tot het
 bestand.
@@ -1118,7 +1118,7 @@ binnen het data-attribuut in het MFT-record opgeslagen. Dit zorgt
 ervoor dat met dergelijke bestanden zeer snel gewerkt kan worden. Zo
 gauw het bestand is opgezocht is directe toegang mogelijk zonder
 verdere schijftoegangen. Dit gebeurt typisch voor bestanden die
-kleiner zijn dan 1 tot 1,5 KB. Als we dit geval als standaard
+kleiner zijn dan 1 tot 1,5KB. Als we dit geval als standaard
 beschouwen, kunnen we zeggen dat als een bestand te groot wordt het
 data-attribuut non-resident gemaakt wordt.
 
@@ -1155,14 +1155,13 @@ bijgehouden m.b.v. B-bomen. Dit zijn vrij ingewikkelde gebalanceerde
 en gesorteerde boomvormige gegevensstructuren die snel opzoeken en
 toevoegen van elementen toelaten.
 
-\section{Second Extended Filesystem}
+\section{Voorbeeld 3: Second Extended Filesystem}
 
 Hoewel je bij het installeren van een Linux-distributie de keuze krijgt
 uit een hele lijst met bestandssystemen om de partities te formatteren,
 wordt het \emph{Extended Filesystem} vaak beschouwd als het standaard-bestandssysteem
-voor Linux. De meest recente versie is het Third Extended Filesystem of ext3. Het
-grootste verschil met voorganger Ext2 is dat Ext3 gebruik maakt van een journal,
-waarover later meer. We zullen ons hier beperken tot een analyse van de werking van ext2.
+voor Linux. De meest recente versie is het Fourth Extended Filesystem of ext4. We zullen
+ons hier beperken tot een analyse van de werking van ext2.
 
 \subsection{Inodes}
 
@@ -1279,7 +1278,7 @@ S_{max} = \left[12 + \left(\frac{b}{4}\right) + \left(\frac{b}{4}\right)^{2} + \
 \end{displaymath}
 
 Hierin is $b$ de blokgrootte in bytes, en gaan we uit van adressen van 32 bits, dus 4 bytes per adres. Voor een
-blokgrootte van 1 kB geeft dit een maximale grootte van 16GB.
+blokgrootte van 1KB geeft dit een maximale grootte van 16GB.
 
 \subsection{Vrije blokken en inodes}
 
