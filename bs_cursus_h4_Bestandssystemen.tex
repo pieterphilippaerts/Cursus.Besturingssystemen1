@@ -8,7 +8,7 @@ gegevensopslag.
 
 Het onderdeel van het besturingssysteem dat instaat voor de
 permanente opslag van gegevens is het
-\emph{bestandssysteem}. De term bestandssysteem wordt ook
+\emph{bestandssysteem}.\index{bestandssysteem} De term bestandssysteem wordt ook
 soms gebruikt voor de in het systeem opgeslagen gegevens zelf. De
 doelstellingen van het bestandssysteem zijn opnieuw samen te vatten als
 gebruiksgemak en effici\"entie.
@@ -26,7 +26,7 @@ gegevens.
 
 \subsection{Fysische ordening: Sectoren}
 
-Een \emph{sector} is de kleinste adresseerbare
+Een \emph{sector}\index{sector} is de kleinste adresseerbare
 eenheid voor gegevensopslag op een harde schijf. Een veelvoorkomende
 waarde voor de sectorgrootte van een schijf is 512 bytes. Wanneer we
 beschikken over een harde schijf, kunnen we dus blokjes gegevens van
@@ -42,7 +42,7 @@ van gebruiksvriendelijkheid is weinig sprake. Een gebruiker wil een
 \emph{logische gegevensordening}, die er b.v. voor zorgt
 dat gegevens makkelijk terug te vinden zijn. In de logische ordening
 wordt als basiselement meestal het bestand gebruikt. Een
-\emph{bestand} is een persistent opgeslagen logische
+\emph{bestand}\index{bestand} is een persistent opgeslagen logische
 verzameling gerelateerde gegevens.
 
 De taak van het bestandssysteem kan omschreven worden als het
@@ -55,7 +55,7 @@ boekhouding. Zo wordt een bestand altijd voorgesteld als een
 aaneengesloten reeks gegevens, zelfs als dat in de fysische ordening
 niet zo is. Het opzetten van de nodige gegevensstructuren voor de
 fysische ordening van een bestandssysteem op een partitie noemt men
-\emph{formatteren}.
+\emph{formatteren}.\index{formatteren}
 
 \section{Bestanden}
 
@@ -68,7 +68,7 @@ ze een naam, en opdat het bestandssysteem de gegevens kan terugvinden
 moeten de adressen van de gebruikte sectoren bijgehouden worden. Het
 bestandssysteem verzamelt alle gegevens over een bestand in de
 \emph{bestandsbeschrijving} of \emph{file
-descriptor}.
+descriptor}.\index{file descriptor}
 
 De \emph{bestandsnaam} verhoogt het gebruiksgemak
 doordat de gebruiker zijn bestanden eenvoudig kan identificeren. Voor de
@@ -90,11 +90,11 @@ met een extensie van 3 tekens, die aangeeft welk soort gegevens het
 bestand bevat.
 
 Naast de bestandsnaam worden in de bestandsbeschrijving allerlei
-andere \emph{bestandskenmerken} bijgehouden. Deze zijn
+andere \emph{bestandskenmerken}\index{bestandskenmerken} bijgehouden. Deze zijn
 voor ieder bestandssysteem anders, maar meestal vindt men minstens de
 grootte van het bestand en de tijdstippen waarop het bestand aangemaakt
 en/of voor het laatst gewijzigd werd. In een besturingssysteem met
-meerdere gebruikers zal ook de eigenaar van het bestandworden vermeld en
+meerdere gebruikers zal ook de eigenaar van het bestand worden vermeld en
 op welke manier de toegang tot het bestand wordt geregeld. Verder kan de
 aard van de inhoud, de interne structuur van het bestand of een
 verplichte periode van bewaring opgeslagen zijn.
@@ -119,7 +119,7 @@ massale hoeveelheden aanwezige informatie is het noodzakelijk dat, net
 als in een bibiotheek, een catalogus beschikbaar is. De gebruiker krijgt
 vaak de mogelijkheid om deze catalogus zelf te organiseren, en kan dan
 bij elkaar horende bestanden groeperen in
-\emph{directories}.
+\emph{directories}.\index{directory}
 
 Directories zijn een toevoeging aan het logische beeld dat de
 gebruiker van de opgeslagen gegevens krijgt. Gelijkaardige of
@@ -134,7 +134,7 @@ bestandsbeschrijvingen van de elementen (bestanden) bevat.
 
 De meest eenvoudige organisatievorm voor een bestandssysteem is
 de \emph{lineaire of vlakke directory}
-(\emph{flat directory}). Hierbij worden de
+(\emph{flat directory}\index{flat directory}). Hierbij worden de
 bestandsbeschrijvingen van alle in het bestandssysteem aanwezige
 bestanden in \'e\'en enkele directory opgenomen. Hoewel dit een erg
 eenvoudige organisatievorm is, vertoont hij enkele zeer belangrijke
@@ -168,7 +168,7 @@ heel wat overzichtelijker maakt.
 De verschillende directories worden in een hi\"erarchisch verband
 samengebracht. Een directory bevat dus bestanden en/of directories. De
 directories waarnaar een directory verwijst noemen we zijn
-\emph{subdirectories}.
+\emph{subdirectories}.\index{subdirectory}
 
 Indien de gebruiker zorgt draagt voor een goed doordachte
 groepering van de bestanden en directories zal een bestand in deze
@@ -181,7 +181,7 @@ Toch vertoont ook deze organisatievorm nadelen. Eerst en vooral
 volstaat de bestandsnaam niet meer om een bestand eenduidig aan te
 wijzen. Er moet een manier worden gevonden om aan te geven waar het
 bestand in de hi\"erarchische structuur te vinden is. Meestal gebruikt
-men hiervoor het concept van het \emph{pad}: de
+men hiervoor het concept van het \emph{pad}\index{pad}: de
 opsomming van alle directories die moeten worden doorlopen vanaf de
 hoofddirectory om de directory waarin de file wordt beschreven te
 bereiken.
@@ -192,12 +192,12 @@ toevoegen en verwijderen van directories. Om het werken in deze
 structuur te vereenvoudigen wordt ook vaak een positie gedefinieerd.
 De directory waarin de gebruiker zich bevindt wordt de
 \emph{werkdirectory} (\emph{working
-directory}) genoemd. Hierdoor moet niet telkens het
+directory}\index{working directory}) genoemd. Hierdoor moet niet telkens het
 volledige pad gebruikt worden om een bestand aan te duiden. Een pad
 dat vertrekt van de huidige werkdirectory wordt een
 \emph{relatief pad} genoemd, een pad dat vertrekt
 vanuit de wortel van de boomstructuur wordt een \emph{absoluut
-pad ge}noemd. Wanneer je in een MS-DOS omgeving werkt wordt
+pad} genoemd. Wanneer je in een MS-DOS omgeving werkt wordt
 de werkdirectory aangegeven in de commandoprompt:
 
 \begin{verbatim}
@@ -365,7 +365,7 @@ De meest voor de hand liggende manier om een bestand op de schijf
 te zetten is als een aaneengesloten geheel: vanaf een bepaald adres
 worden alle bytes van de file achtereenvolgens op de schijf gezet, in
 een reeks op elkaar volgende sectoren. We noemen dit een
-\emph{aaneengesloten bestand}.
+\emph{aaneengesloten bestand}.\index{aaneengesloten bestand}
 
 \begin{figure}
 \begin{center}
@@ -410,13 +410,13 @@ bestandssysteem een tabel bij met de adressen en de lengte van alle
 vrije ruimten. Er zijn 3 algoritmes om een element van de tabel te
 kiezen wanneer een nieuw bestand moet bewaard worden:
 
-Het \emph{First Fit} algoritme kiest de eerste
+Het \emph{First Fit}\index{first fit} algoritme kiest de eerste
 vrije ruimte die voldoende groot is voor het bestand. Bij dit algoritme
 is de benodigde tijd om de plaats te zoeken natuurlijk minimaal.
 
-Wanneer men gebruik maakt van het \emph{Best Fit}
+Wanneer men gebruik maakt van het \emph{Best Fit}\index{best fit}
 algoritme wordt de kleinste vrije ruimte gekozen die groot genoeg is
-voor het bestand. \emph{Worst Fit} daarentegen kiest de
+voor het bestand. \emph{Worst Fit}\index{worst fit} daarentegen kiest de
 grootste beschikbare vrije ruimte. Deze algoritmes zullen trager zijn
 dan first fit, omdat in dit geval de volledige tabel moet doorzocht
 worden. Best and worst fit proberen de fragmentatie tegen te gaan, door
@@ -468,7 +468,7 @@ ofwel moet het bestandssysteem het programma onderbreken en het reeds
 bestaande deel van het bestand naar een grotere vrije ruimte kopi\"eren.
 In beide gevallen betekent dit een ernstig prestatieverlies.
 
-Bij het gebruik van aaneengesloten bestanden zorgt fragmentatie
+Bij het gebruik van aaneengesloten bestanden zorgt fragmentatie\index{fragmentatie}
 ervoor dat het bijna onmogelijk is de capaciteit van de schijf volledig
 te gebruiken. Na een tijd kan de vrije ruimte op zo'n manier verdeeld
 zijn, dat er in het totaal wel voldoende ruimte vrij is om een bepaald
@@ -478,7 +478,7 @@ In dat geval is een reorganisatie van de gegevens op het schijf
 nodig. zijn. Dit kan gebeuren door alle bestanden op een ander medium te
 kopi\"eren, de schijf leeg te maken en er nadien alle bestanden achter
 mekaar op terug te plaatsen. Zo wordt opnieuw \'e\'en grote vrije ruimte
-gecre\"eerd. Dit \emph{defragmenteren} kan eventueel ook
+gecre\"eerd. Dit \emph{defragmenteren}\index{defragmenteren} kan eventueel ook
 zonder tweede medium. Bestanden worden dan verplaatst op de schijf zelf.
 Het eenvoudigste algoritme om dit te doen is bovenaan beginnen, en ieder
 bestand verplaatsen zodat het aansluit met het vorige. Het resultaat is
@@ -514,8 +514,8 @@ De kleinst mogelijke eenheid waarin we een bestand kunnen
 opsplitsen is natuurlijk een sector. Kleinere hoeveelheden gegevens
 zijn niet adresseerbaar op een schijf. Vaak wordt echter een grotere
 eenheid gebruikt. Het bestandssysteem groepeert een aantal sectoren in
-een \emph{blok}, ook soms
-\emph{cluster} genoemd. Binnen het bestandssysteem
+een \emph{blok}\index{blok}, ook soms
+\emph{cluster}\index{cluster} genoemd. Binnen het bestandssysteem
 worden de adressen van blokken gebruikt, die dan vertaald worden naar
 de adressen van de juiste sectoren.
 
@@ -529,7 +529,7 @@ bestand terug te vinden, kleiner zijn omdat het aantal delen kleiner
 is.
 
 Kleinere eenheden hebben dan weer als voordeel dat het
-plaatsverlies aan \emph{interne fragmentatie} kleiner
+plaatsverlies aan \emph{interne fragmentatie}\index{interne fragmentatie} kleiner
 zal zijn. Bij het verdelen van een bestand over een aantal blokken zal
 het laatste blok zelden volledig gevuld zijn. Het laatste stuk van dit
 laatste blok is onbruikbaar om andere gegevens op te slaan, en gaat
@@ -627,7 +627,7 @@ Het is ook mogelijk dat er schijfruimte verloren gaat als er iets
 misloopt met de lijst met vrije blokken.
 
 Om dergelijke problemen op te vangen wordt soms gewerkt met een
-\emph{dubbel gelinkte lijst}, waarin ieder blok ook
+\emph{dubbel gelinkte lijst}\index{dubbel gelinkte lijst}, waarin ieder blok ook
 verwijst naar het vorige blok in de lijst (zie fig. \ref{dubellink}). Een foutieve verwijzing kan
 dan hersteld worden door de lijst van achter naar voor te
 doorlopen.
@@ -648,7 +648,7 @@ blokken wordt veroorzaakt door de verspreiding van de adresinformatie
 doorheen het bestand. Dit probleem kan worden opgelost door de
 adressen van de verschillende onderdelen van een bestand te verzamelen
 in een speciaal daarvoor voorbehouden blok op schijf: een
-\emph{indexblok}. In de file descriptor zal dan als
+\emph{indexblok}\index{indexblok}. In de file descriptor zal dan als
 plaatsaanduiding het adres van dit indexblok worden opgenomen.
 
 \begin{figure}
@@ -707,7 +707,7 @@ ook iets sneller omdat er \'e\'en schijftoegang uitgespaard wordt.
 
 De toegangssnelheid kan verder worden geoptimaliseerd door
 zogenaamde extents te gebruiken in plaats van afzonderlijke blokken.
-Een \emph{extent} is een verzameling opeenvolgende
+Een \emph{extent}\index{extent} is een verzameling opeenvolgende
 blokken op de schijf (fig. \ref{extents}). Hierdoor zullen grotere delen van een file op
 een zelfde plaats van de schijf terechtkomen, zodat het lezen of
 schrijven minder onderbroken hoeft te worden voor een verplaatsing van
@@ -728,11 +728,11 @@ figuur verwijst indexblok 3 naar 2 extents.
 \subsection{Bestanden beschrijven in een file map}
 
 In de derde oplossing beschrijven we de inhoud van de schijf in
-een aparte tabel. In deze tabel, de \emph{file map},
+een aparte tabel. In deze tabel, de \emph{file map}\index{file map},
 wordt voor ieder blok van de schijf aangegeven of het vrij is, en
 indien niet, tot welk bestand het behoort.
 
-De eenvoudigste versie van een file map is een bitvector, die
+De eenvoudigste versie van een file map is een bitvector\index{bitvector}, die
 voor ieder blok aangeeft of het vrij is of niet. Met ieder blok komt
 een bit overeen, 1 betekent dat het blok in gebruik is, 0 betekent dat
 het blok beschikbaar is. Deze structuur zou kunnen gebruikt worden
@@ -901,7 +901,7 @@ operaties.
 
 \section{Voorbeeld 1: FAT}
 
-Het FAT-bestandssysteem is het oorspronkelijke bestandssysteem van
+Het FAT-bestandssysteem\index{FAT-bestandssysteem} is het oorspronkelijke bestandssysteem van
 het MS-DOS besturingssysteem. Voor steeds groter wordende harde schijven
 raadt Microsoft vanaf Windows NT het NTFS bestandssysteem aan, maar FAT
 wordt nog steeds gebruikt op diskettes en allerlei USB-opslagmedia zoals
@@ -910,7 +910,7 @@ MP3-spelers en digitale camera's.
 \subsection{File Allocation Table}
 
 \emph{FAT} staat voor \emph{File Allocation
-Table}. Deze FAT is een file map met daarin de nodige
+Table}\index{file allocation table}. Deze FAT is een file map met daarin de nodige
 informatie over ieder blok van de schijf. Een FAT-partitie bevat een
 boot sector, 2 kopie\"en van de FAT, en een datagebied dat de
 directories en bestanden bevat.
@@ -1046,7 +1046,7 @@ bijgehouden wordt.
 
 \section{Voorbeeld 2: NTFS}
 
-NTFS staat voor New Technology File System. Het is het standaard
+NTFS\index{NTFS-bestandssysteem} staat voor New Technology File System. Het is het standaard
 bestandssysteem voor Windows NT, 2000, XP en hoger. Het lost
 enkele problemen met FAT op en bevat heel wat extra
 functionaliteit.
@@ -1058,7 +1058,7 @@ alfabet allerlei andere tekens gebruikt worden.
 \subsection{Master File Table}
 
 NTFS maakt gebruik van een \emph{Master File
-Table} (\emph{MFT}). In deze tabel wordt
+Table}\index{master file table} (\emph{MFT}). In deze tabel wordt
 voor ieder bestand \'e\'en bestandsbeschrijving bijgehouden. Deze
 beschrijving bevat naast de bestandsnaam, de grootte en de
 toegangsdata informatie over de toegangsrechten tot het
@@ -1088,7 +1088,7 @@ gebruikte attributen op de partitie worden in het systeembestand
 
 De standaardinformatie omvat de grootte van het bestand, de
 toegangsdatums en andere eigenschappen. De toegangsrechten worden
-bewaard in de security descriptor. Omdat attributen geen vaste lengte
+bewaard in de security descriptor\index{security descriptor}. Omdat attributen geen vaste lengte
 hebben is er een hoofding nodig die de structuur van het record
 beschrijft.
 
@@ -1155,19 +1155,19 @@ bijgehouden m.b.v. B-bomen. Dit zijn vrij ingewikkelde gebalanceerde
 en gesorteerde boomvormige gegevensstructuren die snel opzoeken en
 toevoegen van elementen toelaten.
 
-\section{Voorbeeld 3: Second Extended Filesystem}
+\section{Voorbeeld 3: Second Extended File System}
 
 Hoewel je bij het installeren van een Linux-distributie de keuze krijgt
 uit een hele lijst met bestandssystemen om de partities te formatteren,
-wordt het \emph{Extended Filesystem} vaak beschouwd als het standaard-bestandssysteem
-voor Linux. De meest recente versie is het Fourth Extended Filesystem of ext4. We zullen
+wordt het \emph{Extended File System}\index{extended file system} vaak beschouwd als het standaard-bestandssysteem
+voor Linux. De meest recente versie is het Fourth Extended File System of ext4. We zullen
 ons hier beperken tot een analyse van de werking van ext2.
 
 \subsection{Inodes}
 
-Net zoals Linux zelf is het Extended Filesystem, en dus ook de opvolgers, gebaseerd op
+Net zoals Linux zelf is het Extended File System, en dus ook de opvolgers, gebaseerd op
 Unix. De algemene structuur van een ext2-partitie is dan ook dezelfde als bij het
-Unix Filesystem. De blokken van de schijf kunnen worden ingedeeld in 4 soorten:
+Unix File System. De blokken van de schijf kunnen worden ingedeeld in 4 soorten:
 
 \begin{itemize}
 \item Bootblok
@@ -1176,18 +1176,18 @@ Unix Filesystem. De blokken van de schijf kunnen worden ingedeeld in 4 soorten:
 \item Datablokken
 \end{itemize}
 
-In het \emph{bootblok} staat bootstrap code die het besturingssysteem moet laden en opstarten.
-Het heeft geen specifieke functie in het bestandssysteem, en het is altijd . Het \emph{superblok} bevat globale
+In het \emph{bootblok}\index{bootblok} staat bootstrap code die het besturingssysteem moet laden en opstarten.
+Het heeft geen specifieke functie in het bestandssysteem, en het is altijd . Het \emph{superblok}\index{superblok} bevat globale
 gegevens over het bestandssysteem, en enkele instellingen.
 
 Met ieder bestand in ext2 wordt een gegevensstructuur geassoci\"eerd, die \emph{inode} wordt genoemd.
 Hierin vinden we alle metadata en de verwijzingen naar de datablokken waarin de inhoud
-van het bestand opgeslagen is. Achter het superblok staat een lijst met inodeblokken, soms ook
+van het bestand opgeslagen is. Achter het superblok staat een lijst met inodeblokken\index{inodeblok}, soms ook
 I-list genoemd. De overige blokken in het bestandssysteem worden gebruikt om de inhoud van bestanden
 in weg te schrijven.
 
 Aangezien de broncode van Linux vrij beschikbaar is, kunnen we de eigenlijke structuur van een inode
-bekijken. Linux is geschreven in C, en de inode struct\footnote{Een struct in C kan je vergelijken
+bekijken.\index{inode} Linux is geschreven in C, en de inode struct\footnote{Een struct in C kan je vergelijken
 met een vereenvoudigde klasse uit Java. Een struct in C bevat enkel dataleden, en geen methodes.}
 wordt gedefini\"eerd in het bestand \verb|include/ext2_fs.h|. Dit komt uit de broncode van versie 1.0
 van de Linux kernel (1994):
@@ -1311,10 +1311,10 @@ want dan wordt de nieuwe vrije inode zowiezo gevonden bij \'e\'en van de volgend
 
 Omdat de bestandsbeschrijving niet in de directory bewaard wordt, kan men op een eenvoudige en effici\"ente
 manier eenzelfde bestand via verschillende paden aanspreken. Men laat in dit geval 2 bestanden verwijzen
-naar eenzelfde inode, en dus ook naar hetzelfde bestand. Dit wordt een \emph{hard link} genoemd. Om een
+naar eenzelfde inode, en dus ook naar hetzelfde bestand. Dit wordt een \emph{hard link}\index{hard link} genoemd. Om een
 acylische structuur te behouden is het niet toegelaten om hard links te cre\"eren naar directories
 (zie eerder). Een hard link naar een bestand in een ander bestandssysteem kan ook niet. Voor
-\emph{symbolische links} gelden deze beperkingen niet, maar in dit geval wordt verwezen naar een ander pad,
+\emph{symbolic links}\index{symbolic link} gelden deze beperkingen niet, maar in dit geval wordt verwezen naar een ander pad,
 niet naar een inode.
 
 Het gebruik van hard links vraagt ook om een speciale aanpak bij het verwijderen. De inode en de datablokken van

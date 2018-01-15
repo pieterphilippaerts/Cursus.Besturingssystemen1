@@ -4,16 +4,16 @@
 
 Kenmerkend voor het besturingssysteem is dat de programma's, die
 er deel van uitmaken, worden uitgevoerd in
-\emph{kernel-toestand} (kernel mode, ook wel supervisor-
+\emph{kernel-toestand}\index{kernel mode}\index{supervisor mode} (kernel mode, ook wel supervisor-
 of monitor-toestand genoemd). Hiermee duidt men een bijzondere toestand
 aan van de processor. Wanneer de processor zich in kernel-toestand
 bevindt, beschikt hij over al zijn mogelijkheden. Wanneer de processor
 niet in kernel-toestand is, maar in
-\emph{gebruikerstoestand} (user mode), zijn bepaalde
+\emph{gebruikerstoestand} (user mode)\index{user mode}, zijn bepaalde
 instructies niet toegelaten.
 
 Tussen de machine-instructies, ingebouwd in de processor, zijn er
-namelijk een aantal die men \emph{geprivilegieerde instructies}
+namelijk een aantal die men \emph{geprivilegieerde instructies}\index{gepriviligeerde instructie}
 noemt. Deze laatste (b.v. instructies voor I/O, voor het
 reserveren van geheugenruimte, om de toestand van de processor te
 wijzigen enz.) kunnen alleen worden uitgevoerd in kernel-toestand en
@@ -56,7 +56,7 @@ driven} is.
 \subsection{Interrupt requests}
 
 Wanneer vanuit de hardware behoefte is aan een tussenkomst van
-het besturingssysteem treedt een \emph{interrupt request} of
+het besturingssysteem treedt een \emph{interrupt request}\index{interrupt request} of
 \emph{onderbrekingsaanvraag} op. Dit zijn in feite berichtjes die de hardware naar de processor kan sturen wanneer er \emph{iets} gebeurt. De processor ziet dat er een berichtje binnengekomen is, gaat dan de actieve applicatie onderbreken en springt naar code van het besturingssysteem om de interrupt request af te handelen. Wanneer er niets gebeurt komen er geen interrupt requests binnen, en kan de processor volledig gebruikt worden voor het uitvoeren van het actieve programma.
 
 Voor het genereren en afhandelen van interrupt requests is de nodige hardwareondersteuning nodig. Zo moet er bijvoorbeeld bepaald worden wanneer de processor kijkt of er een interrupt request binnengekomen is en hoe die dan afgehandeld moet worden.
@@ -69,7 +69,7 @@ In het vak Computersystemen werd uitvoerig uitgelegd hoe de processor instructie
   \caption{Een processor zonder interrupt-ondersteuning.}\label{fig:nointerrupts}
 \end{figure}
 
-Wanneer een processor echter het concept van interrupts ondersteunt, wordt het verhaal iets ingewikkelder. Er moet nu namelijk ook regelmatig gecontroleerd worden of er een interrupt request binnengekomen is. Uiteindelijk komen we dan tot het resultaat in figuur~\ref{fig:withinterrupts}. De processor voert nog altijd een haalcyclus en dan een uitvoeringscyclus uit, maar gaat daarna eerst controleren of er een interrupt request binnengekomen is. Indien dit niet het geval is, gaat de processor naar de volgende haalcyclus. Ook indien de afhandeling van interrupt requests (tijdelijk) afgezet is, zal de processor rechtstreeks van de uitvoeringscyclus naar de volgende haalcyclus gaan. In het geval dat er echter wel een interrupt request binnengekomen is, zal de processor de afhandeling van van die interrupt request opstarten (de afhandeling van een interrupt request noemen we \emph{een interrupt}).
+Wanneer een processor echter het concept van interrupts ondersteunt, wordt het verhaal iets ingewikkelder. Er moet nu namelijk ook regelmatig gecontroleerd worden of er een interrupt request binnengekomen is. Uiteindelijk komen we dan tot het resultaat in figuur~\ref{fig:withinterrupts}. De processor voert nog altijd een haalcyclus en dan een uitvoeringscyclus uit, maar gaat daarna eerst controleren of er een interrupt request binnengekomen is. Indien dit niet het geval is, gaat de processor naar de volgende haalcyclus. Ook indien de afhandeling van interrupt requests (tijdelijk) afgezet is, zal de processor rechtstreeks van de uitvoeringscyclus naar de volgende haalcyclus gaan. In het geval dat er echter wel een interrupt request binnengekomen is, zal de processor de afhandeling van van die interrupt request opstarten (de afhandeling van een interrupt request noemen we \emph{een interrupt}\index{interrupt}).
 
 \begin{figure}
 \centering
@@ -87,7 +87,7 @@ melden. Binnen de processor zou een interrupt request kunnen optreden wanneer
 een programma deelt door nul, of wanneer een programma een
 geprivilegieerde (en dus niet toegelaten) instructie gebruikt.
 
-Deze verschillende types van interrupts moeten allemaal op andere manieren behandeld worden. Om het een en ander te vereenvoudigen bestaat er een \emph{interrupttabel} die voor elk type interrupt een geheugenadres van een methode bijhoudt die opgeroepen moet worden wanneer een overeenkomstige interrupt request binnenkomt.
+Deze verschillende types van interrupts moeten allemaal op andere manieren behandeld worden. Om het een en ander te vereenvoudigen bestaat er een \emph{interrupttabel}\index{interrupttabel} die voor elk type interrupt een geheugenadres van een methode bijhoudt die opgeroepen moet worden wanneer een overeenkomstige interrupt request binnenkomt.
 
 Op de Intel x86-processor bestaat de interrupttabel uit 256 waardes (ook wel \emph{interrupt vectors} genoemd). De eerste 32 waardes zijn gereserveerd voor Intel en worden gebruikt om processorfouten af te handelen. De overige waardes kunnen ingesteld worden door het besturingssysteem, afhankelijk van de hardware die aanwezig is in het systeem. Als er bijvoorbeeld een netwerkkaart aanwezig is, kan het besturingssysteem bijvoorbeeld het interrupt nummer 97 toekennen aan die kaart (eender welk vrij nummer kan natuurlijk gekozen worden). Wanneer die netwerkkaart dan een netwerkpakketje binnenkrijgt, moet het een interrupt request met waarde 97 sturen naar de processor. Zo weet het besturingssysteem dat de interrupt van de netwerkkaart komt. Een overzicht vind je in figuur~\ref{table:ivt}.
 
@@ -172,7 +172,7 @@ opgetreden interrupt af te handelen, de Interrupt Handler. Deze zal
 eerst nagaan wat de reden is van de interrupt en zal dan de gepaste
 acties ondernemen.
 
-Stappen 6 en 7 worden een \emph{context switch}
+Stappen 6 en 7 worden een \emph{context switch}\index{context switch}
 genoemd. Een context switch wijzigt de toestand van de processor zodat
 die een ander programma gaat uitvoeren, en bovendien zo dat de
 toestand weer hersteld kan worden om verder te gaan met de uitvoering
@@ -321,7 +321,7 @@ algemene manieren.
 \end{figure}
 
 Als iedere controller een eigen
-\emph{interruptlijn} heeft, bepaalt de lijn waarop het
+\emph{interruptlijn}\index{interruptlijn} heeft, bepaalt de lijn waarop het
 interruptsignaal verschijnt meteen welke handler moet worden
 uitgevoerd (figuur \ref{eigenlijn}). Dit is een snelle en eenvoudige methode
 maar legt
@@ -366,7 +366,7 @@ D, enz. Als A een signaal ontvangt stuurt hij het door naar B, eventueel na het
 aanbrengen van een wijziging. De naam komt van het vormen van een slinger van
 madeliefjes (Eng.: daisy) door een gaatje te maken in de stengel van een bloem
 en er een andere bloem door te steken. Een ander voorbeeld van het gebruik van
-een daisy chain structuur zijn SCSI-apparaten.} genoemd, is erg snel omdat ze
+een daisy chain structuur zijn SCSI-apparaten.}\index{daisy chaining} genoemd, is erg snel omdat ze
 volledig via de hardware verloopt.
 
 \subsection{Prioriteiten voor interrupts}
@@ -406,7 +406,7 @@ hogere prioriteit.
 \section{System Calls}\label{systemcalls}
 
 Interrupts vormen de schakel tussen het besturingssysteem en de
-hardware. \emph{System calls} of
+hardware. \emph{System calls}\index{system calls} of
 \emph{systeemaanroepen} leggen een link tussen de
 overige software en het besturingssysteem (zie figuur \ref{sysint}). Bij alle
 activiteiten, uitgevoerd in gebruikerstoestand, is immers zeer frequent de
@@ -417,7 +417,7 @@ alleen in kernel-toestand mogelijk zijn.
 
 Essentieel bij een system call is het overschakelen van de
 processor naar kernel- toestand. Dit gebeurt altijd via een
-trap-instructie (software-interrupt), waardoor wordt vermeden dat na
+trap-instructie (software-interrupt)\index{trap}, waardoor wordt vermeden dat na
 het instellen van de kernel-toestand het gebruikersprogramma de
 controle zou kunnen behouden. De trap-instructie zorgt er namelijk
 voor dat de gepaste systeemroutine wordt gestart. Daartoe wordt als

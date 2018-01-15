@@ -5,7 +5,7 @@
 Het opstartproces van een computer begint wanneer de voeding van
 de computer ingeschakeld wordt. Bij het inschakelen controleert de
 voeding zijn eigen spanningsniveaus. Wanneer de spanning stabiel is
-tussen aanvaardbare waarden wordt een 'Power Good' signaal
+tussen aanvaardbare waarden wordt een 'Power Good'\index{power good} signaal
 gestuurd naar het moederbord. Het duurt typisch tussen 0,1 en 0,5
 seconden voor de voeding stabiele stroom kan leveren.
 
@@ -28,7 +28,7 @@ gevonden worden.
 \section{Unified Extensible Firmware Interface}
 
 Moderne systemen volgen de \emph{Unified Extensible Firmware Interface}-specificatie
-(\emph{UEFI}) om de computer verder op te starten. De UEFI-standaard zorgt voor afspraken omtrent een zogenaamde
+(\emph{UEFI})\index{UEFI} om de computer verder op te starten. De UEFI-standaard zorgt voor afspraken omtrent een zogenaamde
 \emph{pre-boot execution environment} die er voor zorgt dat de hardware ge\"initialiseerd
 wordt en het besturingssysteem ingeladen wordt. Implementaties van deze standaard zijn in essentie een 
 mini-besturingssysteem die een aantal basisfunctionaliteiten aanbieden (zoals bijvoorbeeld
@@ -37,7 +37,7 @@ het starten van het hoofdbesturingssysteem).
 De belangrijkste eigenschappen die de UEFI-standaard voorziet, zijn:
 
 \begin{itemize}
-\item \textbf{Ondersteuning voor grote schijven} De voorganger van UEFI ---{} het Basic Input/Output System (BIOS) ---{} bood maar ondersteuning voor harde schijven tot 2TB. De UEFI-standaard verhoogt deze limiet tot 8ZB (d.i. 8 miljard terabyte).
+\item \textbf{Ondersteuning voor grote schijven} De voorganger van UEFI ---{} het Basic Input/Output System (BIOS)\index{basic input/output system} ---{} bood maar ondersteuning voor harde schijven tot 2TB. De UEFI-standaard verhoogt deze limiet tot 8ZB (d.i. 8 miljard terabyte).
 \item \textbf{CPU-onafhankelijke architectuur} De UEFI-specificatie is zo opgesteld dat de services die worden aangeboden niet processor-specifiek zijn. Er zijn dan ook UEFI-implementaties voor de x86-, x86-64-, ARM-, ARM64-, en Itanium-processoren.
 \item \textbf{CPU-onafhankelijke stuurprogramma's} EFI Byte Code (EBC) is een processor-onafhankelijke machinetaal die een beetje vergelijkbaar is met Java bytecode\footnote{https://en.wikipedia.org/wiki/Java\_bytecode} of Common Intermediate Language\footnote{https://en.wikipedia.org/wiki/Common\_Intermediate\_Language}. Een UEFI-implementatie kan dan een vertolker bevatten om die EBC uit te voeren. Zo moet een auteur van een stuurprogramma slechts \'e\'en versie van het stuurprogramma schrijven (in EBC), dat dan op alle processorarchitecturen waar UEFI op ondersteund wordt kan gebruikt worden.\footnote{In praktijk gaan hardwareontwerpers echter nog vaak processor-specifieke drivers voorzien omdat die vaak een stuk sneller zijn dan de EBC-varianten.}
 \item \textbf{Modulair ontwerp} De UEFI-standaard voorziet een aantal mogelijke diensten die kunnen aangeboden worden, maar niet alle diensten \emph{moeten} aangeboden worden.
@@ -90,7 +90,7 @@ UEFI voorziet \emph{boot services} en \emph{runtime services}. Boot services zij
 
 De UEFI-specificatie bepaalt niet hoe de machine opgestart moet worden. Typisch zullen UEFI-implementaties beginnen met
 het oplijsten van alle beschikbare stukken hardware en controleren of die correct werken. Het geheel van deze tests
-wordt \emph{Power-On Self Test} genoemd, of kortweg \emph{POST}. Op sommige systemen kan je kiezen om deze POST
+wordt \emph{Power-On Self Test}\index{power-on self test} genoemd, of kortweg \emph{POST}. Op sommige systemen kan je kiezen om deze POST
 aan te passen of grotendeels over te slaan. Het voordeel is dan dat je computer sneller opstart, maar je zal een aantal
 opties (zoals het opstarten vanaf een USB stick) niet meer kunnen gebruiken.
 
@@ -115,7 +115,7 @@ besturingssysteem kan op een harde schijf staan, maar het zou ook op
 een CD-ROM, diskette of USB-opslagapparaat. In welke volgorde op alle
 aanwezige apparaten naar een besturingssysteem gezocht moet worden
 staat in de zogenaamde \emph{opstartvolgorde} of
-\emph{boot sequence}. De gebruiker kan deze opstartvolgorde naar eigen keuze aanpassen.
+\emph{boot sequence}\index{boot sequence}. De gebruiker kan deze opstartvolgorde naar eigen keuze aanpassen.
 
 % Naast de opstartvolgorde kan je
 % mogelijk ook instellingen voor bepaalde randapparaten of een paswoord
@@ -148,20 +148,20 @@ staat in de zogenaamde \emph{opstartvolgorde} of
 
 Als in de opstartvolgorde verwezen wordt naar een harde schijf
 is de vraag weer hoe we het besturingssysteem terugvinden. De schijf kan in verschillende stukken
-opgedeeld zijn (zogenaamde \emph{partities}), en op eender welke partitie kan het besturingssysteem staan.
+opgedeeld zijn (zogenaamde \emph{partities})\index{partitie}, en op eender welke partitie kan het besturingssysteem staan.
 Het is aan de gebruiker om via de UEFI-gebruikersinterface de juiste partitie te kiezen.
 
 Het opsplitsen van een schijf in verschillende stukken heeft praktisch nut:
 \begin{itemize}
 \item Er kan een partitie worden gemaakt voor de bestanden van het besturingssysteem, die enkel bestaat uit de snelste sporen van de schijf.\footnote{\textbf{vraag:} \emph{Welke sporen op de harde schijf zijn de snelste? Denk aan de `zone bit recording'-technologie die in Computersystemen besproken is.}}
 \item Het systeem is iets robuuster: je kan makkelijker de beveiliging per partitie instellen, als een programma vanwege een bug de schijf helemaal vult dan heb je daar maar last van op \'e\'en partitie, ...
-\item Verschillende partities kunnen verschillende besturingssystemen bevatten (dit noemt men een zogenaamde \emph{multiboot}-opstelling).
+\item Verschillende partities kunnen verschillende besturingssystemen bevatten (dit noemt men een zogenaamde \emph{multiboot}-opstelling)\index{multiboot}.
 \item Zorgt voor een duidelijk scheiding tussen bijvoorbeeld het systeem en databestanden.
 \item ...
 \end{itemize}
 
 Indien de gebruiker op meerdere partities een besturingssysteem ge\"installeerd heeft, dan kan er een
-\emph{boot manager} gebruikt worden. De boot manager toont tijdens het opstartproces een lijst van alle
+\emph{boot manager}\index{boot manager} gebruikt worden. De boot manager toont tijdens het opstartproces een lijst van alle
 ge\"installeerde besturingssystemen en laat de gebruiker kiezen welke hij wil opstarten. Figuur~\ref{fig:bootloaders}
 toont twee voorbeelden van boot managers.
 
@@ -183,9 +183,9 @@ toont twee voorbeelden van boot managers.
 \label{fig:bootloaders}
 \end{figure}
 
-Informatie over de partities wordt op de schijf zelf opgeslagen op een gestandardiseerde manier. UEFI ondersteunt de oudere \emph{master boot record}-manier (MBR) om partitie-informatie op te slaan, maar deze manier biedt maar ondersteuning voor schijven tot 2TB. Bij voorkeur wordt dan ook het nieuwere \emph{GUID partition table}-systeem (GPT) gebruikt. GPT biedt ondersteuning voor schijven tot 8ZB (d.i. 8 miljard TB).
+Informatie over de partities wordt op de schijf zelf opgeslagen op een gestandardiseerde manier. UEFI ondersteunt de oudere \emph{master boot record}-manier\index{master boot record} (MBR) om partitie-informatie op te slaan, maar deze manier biedt maar ondersteuning voor schijven tot 2TB. Bij voorkeur wordt dan ook het nieuwere \emph{GUID partition table}-systeem\index{GUID partition table} (GPT) gebruikt. GPT biedt ondersteuning voor schijven tot 8ZB (d.i. 8 miljard TB).
 
-Figuur~\ref{fig:gpt-layout} toont de layout van een GPT-schijf. Het eerste blok bevat een \emph{protective master boot record} voor compatibiliteitsdoeleinden met oudere systemen die geen GPT ondersteunen. Deze protective master boot record is grotendeels leeg, en bevat slechts informatie over \'e\'en partitie die de hele schijf beslaat (of voor schijven groter dan 2TB: zo veel plaats beslaat als mogelijk). Het partitietype staat op \byte{EE} wat betekent dat de partitie in feite een GPT-partitie is. Tools die GPT niet ondersteunen zullen dit partitietype niet herkennen, en zouden normaal gezien de partitie (en dus de schijf) met rust laten.
+Figuur~\ref{fig:gpt-layout} toont de layout van een GPT-schijf. Het eerste blok bevat een \emph{protective master boot record}\index{protective master boot record} voor compatibiliteitsdoeleinden met oudere systemen die geen GPT ondersteunen. Deze protective master boot record is grotendeels leeg, en bevat slechts informatie over \'e\'en partitie die de hele schijf beslaat (of voor schijven groter dan 2TB: zo veel plaats beslaat als mogelijk). Het partitietype staat op \byte{EE} wat betekent dat de partitie in feite een GPT-partitie is. Tools die GPT niet ondersteunen zullen dit partitietype niet herkennen, en zouden normaal gezien de partitie (en dus de schijf) met rust laten.
 
 \begin{figure}
 \centering
@@ -195,7 +195,7 @@ Figuur~\ref{fig:gpt-layout} toont de layout van een GPT-schijf. Het eerste blok 
 
 Na de protective MBR staat de primaire GPT header. Deze header bevat informatie over de schijf (grootte, beschikbare sectors, ), een uniek identificatienummer van de schijf, en een wijzer naar een backup-kopie van de header. Deze backup-kopie staat helemaal aan het eind van de schijf en bevat exact dezelfde informatie. Als de primaire header beschadigd raakt, dan kan de backupkopie gebruikt worden om alsnog de partitie-informatie uit te lezen.
 
-Na de primaire GPT header volgt een lijst van \emph{partition entries}. Elk van deze entries kan informatie bevatten over \'e\'en partitie. Zo bevat een entry onder andere informatie over het partitietype, een uniek identificatienummer, de start- en eindsector, en de attributen van de partitie (alleen-lezen, verborgen, ...). Ook van de lijst van partition entries wordt een backup op het einde van de schijf bijgehouden.
+Na de primaire GPT header volgt een lijst van \emph{partition entries}.\index{partition entry} Elk van deze entries kan informatie bevatten over \'e\'en partitie. Zo bevat een entry onder andere informatie over het partitietype, een uniek identificatienummer, de start- en eindsector, en de attributen van de partitie (alleen-lezen, verborgen, ...). Ook van de lijst van partition entries wordt een backup op het einde van de schijf bijgehouden.
 
 
 % De code in de UEFI-implementatie zal een sprong uitvoeren naar opstartcode die
@@ -278,7 +278,7 @@ Na de primaire GPT header volgt een lijst van \emph{partition entries}. Elk van 
 De taak van de opstartcode is om in de
 partitietabel de gewenste opstartpartitie op te sporen. De eerste sector van
 deze partitie heet de \emph{partition boot sector} of wordt soms ook de
-\emph{partition boot block} of het \emph{partition boot record} genoemd. Deze boot sector
+\emph{partition boot block} of het \emph{partition boot record} genoemd.\index{boot sector} Deze boot sector
 bevat ook weer een stuk opstartcode. De code in de UEFI-implementatie zal de bootsector van 
 de gewenste GPT-partitie in het geheugen zetten, en die dan uitvoeren door er naar te springen. Het is de code in 
 de boot sector die uiteindelijk het besturingssysteem op de partitie zal inladen en

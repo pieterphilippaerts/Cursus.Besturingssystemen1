@@ -7,7 +7,7 @@ ook mogelijk zijn.
 
 \section{Processen}
 
-Een \emph{proces} is niet hetzelfde als een
+Een \emph{proces}\index{proces} is niet hetzelfde als een
 programma. Een proces is een programma in uitvoering. Een programma is
 niet meer dan uitvoerbare code.
 
@@ -42,7 +42,7 @@ gelijktijdige processen beschikbaar is voor uitvoering.
 
 Als we op een uniprocessor-systeem op hetzelfde ogenblik
 meerdere processen willen uitvoeren, moeten we het
-\emph{multiprogrammatie} principe toepassen. De
+\emph{multiprogrammatie}\index{multiprogrammatie} principe toepassen. De
 rekentijd op \'e\'en processor wordt dan verdeeld over meerdere processen.
 De processen kunnen om beurt voor een bepaalde tijd gebruik maken van
 de processor.
@@ -50,14 +50,14 @@ de processor.
 Het kan gaan om verschillende processen van dezelfde gebruiker.
 Als we verschillende gebruikers tegelijkertijd op \'e\'en processor laten
 werken door hun processen via multiprogrammatie uit te voeren spreken
-we van \emph{timesharing}. Het lijkt alsof
+we van \emph{timesharing}\index{time sharing}. Het lijkt alsof
 verschillende processen tegelijkertijd verwerkt worden, maar in
 werkelijkheid wisselt de processor van het ene proces naar het andere.
 Het is het besturingssysteem dat de uitvoering van meerdere processen
 gaat verweven om het processorgebruik te maximaliseren en tegelijk te
 zorgen voor een aanvaardbare responstijd. Het onderdeel van het
 besturingssysteem dat deze taak verzorgt heet de
-\emph{scheduler}.
+\emph{scheduler}\index{scheduler}.
 
 \begin{figure}
 \centering
@@ -109,7 +109,7 @@ houden. Dit is slecht voor de gemiddelde responstijd omdat alle andere
 processen dan zolang moeten wachten. Daarom zal het besturingssysteem
 een proces soms na een bepaalde tijd onderbreken om andere processen
 uit te kunnen voeren. Dit onderbreken noemen we
-\emph{preemption}.
+\emph{preemption}\index{preemption}.
 
 \subsection{Toestanden van een proces}
 
@@ -176,9 +176,9 @@ non-preemptive schedulers.
 
 Processen die vaak in- en uitvoer nodig hebben, en dus vaak
 'geblokkeerd' zijn, noemen we \emph{I/O-gebonden
-processen}. Processen die veel rekenwerk doen en zelden op
+processen}\index{I/O-gebonden processen}. Processen die veel rekenwerk doen en zelden op
 externe gebeurtenissen wachten noemen we verwerkingsgebonden of
-\emph{CPU-gebonden} processen.
+\emph{CPU-gebonden} processen.\index{CPU-gebonden processen}
 
 \section{Scheduling}
 
@@ -196,16 +196,16 @@ doelstellingen:
 worden behandeld. Geen enkel proces mag blijvend achteruit gesteld worden,
 waardoor de uitvoering ervan onmogelijk zou worden.
 \item[Doorvoer maximaliseren] De \emph{doorvoer}
-(\emph{throughput}) is de hoeveelheid werk die per tijdseenheid
+(\emph{throughput})\index{throughput} is de hoeveelheid werk die per tijdseenheid
 wordt gepresteerd (b.v. het aantaljobs dat per uur wordt afgewerkt).
 \item[Omlooptijd minimaliseren] De \emph{omlooptijd}
-(\emph{turnaround time}) is de tijd die verloopt tussen het
+(\emph{turnaround time})\index{turnaround time} is de tijd die verloopt tussen het
 indienen van een proces en het voltooien ervan en wordt bekomen als een som van
 wachttijden en de werkelijke uitvoeringstijd. In andere woorden, de omplooptijd
 is de het verschil tussen het tijdstip waarop het proces voltooid is en het
 tijdstip waarop het proces gestart wordt. Deze maat is vooral geschikt voor
 batch-taken.
-\item[Responstijd minimaliseren] De responstijd (response time) is de tijd die
+\item[Responstijd minimaliseren] De responstijd (response time)\index{response time} is de tijd die
 verloopt tussen het ingeven van een bevel en het moment waarop de ontvangst van
 het antwoord begint. Deze grootheid speelt vooral een rol bij interactief
 werken, omdat een gebruiker dan niet al te lang op een reactie van het systeem
@@ -246,7 +246,7 @@ voor voorspelbaarheid of een lage responstijd kan zorgen.
 
 \subsection{First Come First Served (FCFS)}
 
-Dit algoritme gaat de processen verwerken in dezelfde volgorde
+Dit algoritme\index{first come first served} gaat de processen verwerken in dezelfde volgorde
 waarin ze in de wachtrij werden geplaatst. We noemen zo'n wachtrij ook
 een First In First Out of FIFO wachtrij. De scheduler moet enkel het
 eerste element uit de FIFO-rij nemen. Je kan het vergelijken met een
@@ -271,7 +271,7 @@ D & 3 & 100 & 102 & 199 & 1,99 \\
 \end{center}
 
 Om de resultaten gemakkelijker te interpreteren berekenen we ook de
-genormaliseerde omlooptijd. De \emph{genormaliseerde omlooptijd} bekom
+genormaliseerde omlooptijd. De \emph{genormaliseerde omlooptijd}\index{genormaliseerde omlooptijd} bekom
 je door de omlooptijd te delen door de uitvoeringstijd. Het is een maat
 voor de relatieve vertraging die een proces ondervindt. Het proces
 werd niet vertraagd als $\frac{T_o}{T_u} = 1$. Hoe hoger $\frac{T_o}{T_u}$, hoe
@@ -300,8 +300,8 @@ vrijgeven en dan weer achteraan de FIFO-rij moeten gaan staan.
 
 De bevoordeling van langere processen door FCFS kan verminderd
 worden door telkens dat proces te kiezen dat het minst lang actief zal
-zijn, m.a.w. het kortste proces. Deze strategie kan wel lijden tot
-\emph{starvation}: langere processen
+zijn, m.a.w. het kortste proces. Deze strategie\index{shortest job first} kan wel leiden tot
+\emph{starvation}\index{starvation}: langere processen
 \emph{verhongeren} zolang er een aanvoer is van
 kortere processen.
 
@@ -421,7 +421,7 @@ In dit algoritme wordt met elk proces een prioriteit $p$
 verbonden. We selecteren dan telkens het proces met de hoogste
 prioriteit (veelal, maar niet altijd, aangeduid door de grootste
 waarde van $p$). Het vorige algoritme, SJF, is eigenlijk een voorbeeld
-van priority scheduling. Voor een proces dat een hoeveelheid T processortijd
+van priority scheduling\index{priority scheduling}. Voor een proces dat een hoeveelheid T processortijd
 nodig heeft neemt men dan $p = \frac{1}{T}$ als waarde voor de prioriteit.
 Prioriteiten kunnen intern bepaald zijn, d.w.z. afgeleid van een eigenschap van
 het betrokken proces, zoals het gebruik van hulpbronnen, de geschatte
@@ -434,7 +434,7 @@ Een probleem bij priority scheduling is terug het verhongeren
 van een proces. De mogelijkheid bestaat dat een proces met de
 laagste prioriteit voortdurend wordt voorafgegaan door nieuwe
 processen met een hogere prioriteit, en zo nooit aan de beurt komt. Om dit te
-voorkomen wordt meestal een systeem van \emph{veroudering} (\emph{aging})
+voorkomen wordt meestal een systeem van \emph{veroudering} (\emph{aging}\index{aging})
 ingevoerd. Dit betekent dat de prioriteit van een proces stijgt naarmate het
 proces langer in de wachtrij zit. De scheduler zou b.v. bij elke tussenkomst de
 prioriteit van alle processen in de wachtrij met 1 kunnen verhogen (tot een
