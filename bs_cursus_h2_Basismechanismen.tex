@@ -503,7 +503,7 @@ programma deze functie aanroept zal het volgende gebeuren:
 \item Oproepend programma zet de waarden van de drie parameters op de stapel.
 \item Read functie wordt aangeroepen (sprong naar code van read-functie).
 \item Functie zet system call nummer in het juiste register en voert
-TRAP-instructie uit (in Intel x86 assembly zou dit de instructies \texttt{mov eax, 3}
+TRAP-instructie uit (in Linux op een Intel x86 processor zou dit de instructies \texttt{mov eax, 3}
 en \texttt{int 80h} opleveren; de 3 in eax geeft aan dat het om een lees-operatie gaat).
 \item Besturingssysteem zoekt juiste routine op voor de system call.
 \item BS start systeemroutine (sprong).
@@ -514,6 +514,6 @@ terug aan oproepend programma's.
 \item Uitvoer oproepend programma gaat verder.
 \end{enumerate}
 
-Stappen 3 t/m 6 verlopen in kernel mode, de overige stappen worden in user mode
+Stappen 4 t/m 6 verlopen in kernel mode, de overige stappen worden in user mode
 uitgevoerd.
 
