@@ -21,10 +21,10 @@ herstarten omdat de processor weer tijdelijk het reset-signaal ontvangt
 wanneer het power good signaal vanuit de voeding wegvalt.
 
 Wanneer het reset-signaal wegvalt kan de processor beginnen
-werken. De processor draait nu in kernel mode (d.i.: alle instructies 
+werken. De processor draait nu in kernel mode (d.i.: alle instructies
 ---ook de gepriviligeerde instructies--- zijn toegelaten) en gebruikt
 uit compatibiliteitsoverwegingen \emph{real mode}\index{real mode}
-als addresseringsmodus\footnote{Indien je niet meer weet wat \emph{real mode} 
+als addresseringsmodus\footnote{Indien je niet meer weet wat \emph{real mode}
 is, dan kan je dat best nog eens opzoeken in hoofdstuk 3 van de cursus
 Computersystemen}. Maar welke code moet er uitgevoerd worden? Er zijn nog geen
 instructies in het werkgeheugen geladen, dus de opstartcode moet elders
@@ -34,7 +34,7 @@ De oplossing voor dit probleem is om bepaalde adressen in de geheugenruimte niet
 mappen op het werkgeheugen maar op iets anders. Dit noemt men \emph{memory mapped I/O}. Figuur~\ref{memorymapped}
 toont de layout van de x86-geheugenruimte en welke stukken waarop gemapped worden.
 Het rode stuk in de tekening is het stuk van de geheugenruimte waar de processor
-de opstartcode verwacht. Concreet begint de processor instructies uit te voeren 
+de opstartcode verwacht. Concreet begint de processor instructies uit te voeren
 vanaf adres 0xFFFFFFF0 (merk op dat dit adres binnen het rode stuk valt). Wanneer
 de processor het geheugenadres 0xFFFFFFF0 opvraagt aan de geheugen controller, zal
 die echter geen bytes vanuit het werkgeheugen halen, maar zal die de data halen uit
@@ -69,47 +69,6 @@ De belangrijkste eigenschappen die de UEFI-standaard voorziet, zijn:
 
 UEFI voorziet \emph{boot services} en \emph{runtime services}. Boot services zijn enkel beschikbaar voordat het besturingssysteem opgestart is. Zo zijn er services om uitvoer op het scherm te tonen, communicatie met hardware te verzorgen, enz. De runtime services blijven beschikbaar, ook wanneer het besturingssysteem operationeel is. Zo kan het besturingssysteem bijvoorbeeld de datum en de tijd opvragen, of kan het kleine stukjes data opslaan in de chip waar de UEFI-implementatie in staat.\footnote{Dit is ook de reden waarom je bij het vervangen van een harde schijf je Windows 10 productsleutel niet opnieuw moet ingeven; de Windows 10-setup gaat automatisch je productsleutel opslaan in de UEFI-chip, zodat je die later niet meer opnieuw moet ingeven.}
 
-% \section{Basic Input/Output System (BIOS)}
-
-% Het eerste programma dat de processor uitvoert is het
-% \emph{Basic Input/Output System}, vaak afgekort tot
-% \emph{BIOS}. Het zorgt dat er communicatie mogelijk is
-% tussen enkele onderdelen van het computersysteem, in de eerste plaats
-% tussen secundaire opslagapparaten en het werkgeheugen. Zo kunnen
-% programma's van b.v. een harde schijf in het werkgeheugen geladen
-% worden, en kunnen deze programma's uitgevoerd worden. Het Basic
-% Input/Output System dankt zijn naam aan het feit dat het naast deze
-% communicatie ook zorgt voor uitvoer op het scherm, en de mogelijkheid
-% tot invoer via het toetsenbord. Je kan de BIOS zien als een klein en
-% eenvoudig besturingssysteem.
-
-% Aangezien het net de BIOS ervoor moet zorgen dat de
-% opslagapparaten bruikbaar worden kan de BIOS-code niet op een dergelijk
-% apparaat bewaard worden. Daarom wordt deze code in een ROM-chip op het
-% moederbord bewaard. Tegenwoordig wordt EEPROM gebruikt zodat het toch
-% mogelijk is een nieuwe versie van de code op de chip te zetten. Deze
-% chip wordt ook vaak gewoon 'BIOS' genoemd. Merk op dat de BIOS opnieuw
-% een voorbeeld is van firmware.
-
-% Omdat een processor altijd de opdracht uit het werkgeheugen
-% inleest waarvan het adres in de bevelenteller staat, wordt de inhoud van
-% de BIOS-chip beschikbaar gesteld via een deel van het adresbereik van
-% het werkgeheugen. Hiervoor is een deel van het Upper Memory\footnote{De Upper
-% Memory Area is de laatste 384 kilobyte van de eerste megabyte van het
-% werkgeheugen.} gereserveerd: van F0000h tot FFFFFh. In sommige systemen
-% blijft dit deel van het werkgeheugen leeg en wordt van de ROM-chip
-% gelezen. Andere systemen kopi\"eren de inhoud van de chip naar dit
-% gedeelte van het werkgeheugen omdat RAM sneller is dat ROM. Deze
-% techniek wordt \emph{ROM shadowing} genoemd.
-
-% Wanneer een processor geactiveerd wordt zal hij altijd beginnen
-% met de instructie op adres FFFF0h\footnote{Het adres FFFF0h wordt ook vaak
-% genoteerd als FFFF:0000. De eerste notatie is lineair vanaf de start van het
-% werkgeheugen. De tweede notatie geeft aan dat we werken in een geheugensegment
-% dat begint op FFFF0, en dat we vanaf dat adres 0 plaatsen verder moeten gaan.}.
-% Dit adres ligt in het gebied dat aan de BIOS is toegekend, maar ligt achteraan.
-% Hier staat dan een JMP (jump) instrucie naar de eigenlijke opstartcode.
-
 \begin{figure}
 \centering
 \includegraphics[scale=.25]{images/uefisartup.png}
@@ -117,27 +76,21 @@ UEFI voorziet \emph{boot services} en \emph{runtime services}. Boot services zij
 \label{uefiboot}
 \end{figure}
 
-De UEFI-specificatie voorziet een aantal fases tijdens het opstarten, zoals weergegeven in Figuur~\ref{uefiboot}.
-In de eerste fases gaat het systeem de EFI-runtime opstarten. Binnen deze runtime kunnen dan allerhande
-UEFI-applicaties uitgevoerd worden.
+De UEFI-specificatie voorziet een aantal fases tijdens het opstarten, zoals weergegeven in figuur~\ref{uefiboot}.
+De \emph{security phase} (SEC) controleert dat de code van de UEFI-implementatie correct is en niet aangepast
+werd door een potenti\"ele aanvaller. Als een hacker de opstartcode zou kunnen aanpassen, dan zou dat vanzelfsprekend
+een zeer groot beveiligingsprobleem zijn. Het doel van de \emph{pre-EFI initialization phase} (PEI) is het opzetten van
+een stuk werkgeheugen die de opstartcode kan gebruiken om bijvoorbeeld de UEFI-applicaties in te laden. De \emph{driver
+execution phase} (DXE) doet dan het meeste werk wat betreft de initialisatie van het systeem. Hier worden de boot- en
+runtime service opgezet, worden hardware-componenten ge\"initialiseerd (harde schijf, netwerk, ...), en worden er abstracties
+gecre\"erd voor onder andere de verschillende boot devices. 
 
-De UEFI-specificatie bepaalt niet hoe de machine opgestart moet worden. Typisch zullen UEFI-implementaties beginnen met
-het oplijsten van alle beschikbare stukken hardware en controleren of die correct werken. Het geheel van deze tests
-wordt \emph{Power-On Self Test}\index{power-on self test} genoemd, of kortweg \emph{POST}. Op sommige systemen kan je kiezen om deze POST
-aan te passen of grotendeels over te slaan. Het voordeel is dan dat je computer sneller opstart, maar je zal een aantal
-opties (zoals het opstarten vanaf een USB stick) niet meer kunnen gebruiken.
-
-% De BIOS-opstartcode begint met het testen van de vitale
-% systeemonderdelen. Het geheel van deze tests wordt \emph{Power-On
-% Self Test} genoemd, of kortweg \emph{POST}.
-% De aanwezigheid en/of correcte werking van b.v. de processor,
-% werkgeheugen en toetsenbord worden getest. De feedback gebeurt d.m.v.
-% geluidssignalen die we beeps noemen. Wanneer alles naar behoren werkt
-% wordt meestal 1 korte beep weergegeven. Bij problemen kan men aan het
-% aantal beeps en hun duur horen wat de oorzaak is. De concrete codes
-% hangen af van de producent van de BIOS. Soms wordt bijkomend gebruik
-% gemaakt van bijkomende indicaties van problemen, zoals een digitaal
-% display of LEDs.
+De UEFI-specificatie is nogal vaag over wat er precies moet gebeuren wanneer de machine opgestart wordt. Typisch zullen
+UEFI-implementaties tijdens de DXE-fase beginnen met het oplijsten van alle beschikbare stukken hardware en controleren
+of die correct werken. Het geheel van deze tests wordt \emph{Power-On Self Test}\index{power-on self test} genoemd, of
+kortweg \emph{POST}. Op sommige systemen kan je kiezen om deze POST aan te passen of grotendeels over te slaan. Het
+voordeel is dan dat je computer sneller opstart, maar je zal een aantal opties (zoals het opstarten vanaf een USB stick)
+niet meer kunnen gebruiken.
 
 Als de initialisatie succesvol voltooid is zal de UEFI-code beginnen met
 het laden van het besturingssysteem. Dit staat typisch op een
@@ -150,34 +103,7 @@ aanwezige apparaten naar een besturingssysteem gezocht moet worden
 staat in de zogenaamde \emph{opstartvolgorde} of
 \emph{boot sequence}\index{boot sequence}. De gebruiker kan deze opstartvolgorde naar eigen keuze aanpassen.
 
-% Naast de opstartvolgorde kan je
-% mogelijk ook instellingen voor bepaalde randapparaten of een paswoord
-% dat de instellingen wijzigen.
-
-% Omdat deze instellingen gewijzigd moeten kunnen worden kunnen ze
-% niet samen met de code van de BIOS bewaard worden in een ROM-chip.
-% Voor de veranderlijke BIOS-instellingen is een afzonderlijke CMOS-chip
-% voorzien, die door een batterij onder spanning gehouden wordt wanneer
-% het systeem uitgeschakeld is. Zo gaan de instellingen niet verloren.
-% Omdat het in het begin de enige component met CMOS-technologie was
-% wordt de chip met de BIOS-instellingen nog vaak 'CMOS' genoemd. In
-% hedendaagse computersystemen worden echter ook de processoren en het
-% werkgeheugen m.b.v. CMOS ge\"implementeerd.
-
 \section{Schijven en partities}
-
-% TODO: EFI System Partition
-
-%\begin{figure}
-%\begin{center}
-%\includegraphics[width=125mm]{images/diskmgr.png}
-%\end{center}
-%\caption{DE EFI System Partition}
-%\label{efisyspart}
-%\end{figure}
-
-% https://msdn.microsoft.com/en-us/library/windows/desktop/aa365449(v=vs.85).aspx
-
 
 Als in de opstartvolgorde verwezen wordt naar een harde schijf
 is de vraag weer hoe we het besturingssysteem terugvinden. De schijf kan in verschillende stukken
@@ -194,9 +120,9 @@ Het opsplitsen van een schijf in verschillende stukken heeft praktisch nut:
 \end{itemize}
 
 Indien de gebruiker op meerdere partities een besturingssysteem ge\"installeerd heeft, dan kan er een
-\emph{boot manager}\index{boot manager} gebruikt worden. De boot manager toont tijdens het opstartproces een lijst van alle
+\emph{boot menu}\index{boot menu} gebruikt worden. Het boot menu toont tijdens het opstartproces een lijst van alle
 ge\"installeerde besturingssystemen en laat de gebruiker kiezen welke hij wil opstarten. Figuur~\ref{fig:bootloaders}
-toont twee voorbeelden van boot managers.
+toont twee voorbeelden van boot menus.
 
 \begin{figure}
 \centering
@@ -230,92 +156,44 @@ Na de protective MBR staat de primaire GPT header. Deze header bevat informatie 
 
 Na de primaire GPT header volgt een lijst van \emph{partition entries}.\index{partition entry} Elk van deze entries kan informatie bevatten over \'e\'en partitie. Zo bevat een entry onder andere informatie over het partitietype, een uniek identificatienummer, de start- en eindsector, en de attributen van de partitie (alleen-lezen, verborgen, ...). Ook van de lijst van partition entries wordt een backup op het einde van de schijf bijgehouden.
 
+\begin{figure}
+\begin{center}
+\includegraphics[width=125mm]{images/diskmgr.png}
+\end{center}
+\caption{Drie GPT-partities}
+\label{efisyspart}
+\end{figure}
 
-% De code in de UEFI-implementatie zal een sprong uitvoeren naar opstartcode die
-% opgeslagen is op de eerste sector van de schijf, de \emph{Master
-% Boot Record} (\emph{MBR}). Deze code wordt
-% vaak Initial Program Loader (IPL) genoemd. Na het uitvoeren van de
-%BIOS-code zal de processor dus verdergaan met deze code uit de
-%MBR.
+Figuur~\ref{efisyspart} toont een harde schijf met drie partities. De eerste partitie
+is van het type \emph{EFI System Partition} en bevat o.a. alle programma's die in de 
+UEFI-implementatie uitgevoerd kunnen worden. De tweede partitie bevat in dit geval het
+besturingssysteem en is gemarkeerd als \emph{bootable}. Als laatste is er nog een partitie
+gedefini\"eerd voor recovery-doeleinden.
 
-%Een harde schijf kan logisch ingedeeld worden in
-%\emph{partities}. Hierdoor kunnen we meerdere
-%besturingssystemen op \'e\'en schijf bewaren, of kunnen we op \'e\'en schijf
-%verschillende bestandssystemen gebruiken (zie verder).
+Wanneer de UEFI-omgeving opgestart is (d.w.z. de DXE-fase klaar is, zie figuur~\ref{uefiboot}), moet er een
+boot device gekozen worden. Hiervoor wordt gebruik gemaakt van een \emph{boot menu}\index{boot menu}-applicatie
+die aan de gebruiker vraagt welk besturingssysteem hij wil opstarten. Indien er maar
+een besturingssysteem op de computer ge\"installeerd is, is de vraag natuurlijk overbodig
+en wordt dit OS direct opgestart. Deze applicatie kan meegeleverd worden door de UEFI-fabrikant, maar kan
+ook op de EFI System Partition worden ge\"installeerd bij de installatie van een besturingssysteem op je computer.
+Wanneer je bijvoorbeeld Windows installeert, zal de Windows-installatie Microsoft's
+boot menu op de EFI System Partition zetten waarmee Windows (en eventueel andere besturingssystemen)
+opgestart kan worden.
 
-%In de \emph{partitietabel} wordt het begin- en
-%eindpunt en het type van iedere partitie opgeslagen. Op het
-%PC-platform vind je de partitietabel in de MBR, achter de opstartcode.
-%De opstartcode neemt 446 bytes in beslag. Er is dan nog plaats voor 4
-%maal een partitiebeschrijving van 16 bytes, en een 'magic number' van
-%2 bytes. Dit magic number is een controlgetal, en het moet de waarde
-%0xAA55 bevatten, anders beschouwt de BIOS de MBR als ongeldig.
+Eenmaal de gebruiker een besturingssysteem geselecteerd heeft, wordt er een \emph{partition boot loader}\index{partition boot loader}-applicatie opgestart die het besturingssysteem op de geselecteerde partitie zal inladen. Afhankelijk van de gekozen
+partitie zal de juiste partition boot loader geselecteerd worden. De taak van de partition boot loader is om op de partitie 
+de code te zoeken die het besturingssysteem verder gaat inladen. Kwestie van de zaken wat gecompliceerd te maken, noemen ze deze code
+de \emph{boot loader}\index{boot loader}. Zorg dus dat je de termen \emph{boot loader} en \emph{partition boot loader} niet door elkaar
+haalt.
 
-%\begin{figure}
-%\begin{center}
-%\includegraphics[width=125mm]{images/fig0206.png}
-%\end{center}
-%\caption{Master Boot Record}
-%\label{mbr}
-%\end{figure}
+De boot loader staat op de partitie van het besturingssysteem en is dus geen deel van de UEFI-implementatie. Als de partitie
+bijvoorbeeld een (recente) Windows-installatie bevat, dan zal de boot loader in de eerste sector van de partitie staan\footnote{Indien de eerste sector van de schijf een boot loader bevat, wordt deze sector ook de \emph{partition boot block} of het \emph{partition boot record} genoemd.\index{boot sector}} en het
+programma \emph{BOOTMGR} opstarten. BOOTMGR is dan de laatste schakel in het bootproces. Dit programma gaat de feitelijke code van Windows inladen en opstarten. Figuur~\ref{bootsteps} geeft een overzicht van de verschillende stappen in het opstartproces.
 
-%Elk van de 4 elementen van de partitietabel beschrijft een
-%partitie, en bevat de volgende velden:
-
-%\begin{description}
-%\item[Active] geeft aan of deze partitie opgestart moet worden
-%\item[Start] Cylinder / Kop / Sector adres van de eerste sector van de partitie
-%\item[Type] Indicatie van het gebruikte bestandssysteem op de partitie
-%\item[End] Cylinder / Kop / Sector adres van de laatste sector van de partitie
-%\item[Startsector] LBA-adres van de eerste sector van de partitie
-%\item[Lengte] Lengte van de partitie
-%\end{description}
-
-%De volledige structuur van de MBR en de partitietabel vind je in figuur
-%\ref{mbr}.
-
-%De partities die in de partitietabel gedefinieerd worden noemen
-%we \emph{primaire partities}. Doordat schijven steeds
-%groter werden, was 4 partities voor \'e\'en schijf niet meer genoeg. Om
-%meer partitities toe te laten, introduceerde men \emph{logische
-%partities}. Er is geen plaats om de partitietabel uit te
-%breiden, dus wordt een primaire partitie onderverdeeld in logische
-%partities. Een primaire partitie die verder onderverdeeld wordt noemen
-%we een '\emph{extended partitie}'. Deze oplossing is
-%\emph{achterwaarts compatibel}. Een ouder systeem dat
-%niets afweet van het bestaan van extended partities kan de gewone
-%primaire partities nog steeds gebruiken.
-
-%In de partitietabel geven de types 0x05 of 0x0f een extended
-%partitie aan. Het start-veld bevat dan het adres van de eerste sector
-%van de eerste logische partitie. Iedere logische partitie verwijst
-%naar de volgende logische partitie. Zo is er geen beperking van het
-%aantal logische partities door de grootte van de gebruikte tabel. Een
-%structuur waarin ieder element verwijst naar het volgende noemen we
-%een \emph{gelinkte lijst}. Als limiet voor het aantal
-%logische partities wordt vaak 24 opgegeven. De gelinkte lijst kan
-%zonder problemen langer zijn, maar aangezien MS-DOS letters vanaf 'C'
-%toekent aan partities kunnen er niet meer dan 24 partities
-%zijn\footnote{Opgelet, als je 2 primaire partities en 1 extended partitie
-%cre\"eert, kan je in de extended partitie natuurlijk nog maar 22 logische
-%partities aanmaken als je wil dat MS-DOS ze allemaal kan bereiken.}.
-
-%Een logische partitie bevat een \emph{Extended
-%MBR} (\emph{EMBR}), met een eigen
-%partitietabel. Zo'n EMBR bevat een partitietabel die de structuur van
-%de tabel in de MBR volgt, maar slechts twee partities beschrijft: \'e\'en
-%logische en een nieuwe extended partitie. Deze extended partitie bevat
-%ook weer zo'n tabel die \'e\'en logische en \'e\'en extended partitie
-%beschrijft, enz.
-
-De taak van de opstartcode is om in de
-partitietabel de gewenste opstartpartitie op te sporen. De eerste sector van
-deze partitie heet de \emph{partition boot sector} of wordt soms ook de
-\emph{partition boot block} of het \emph{partition boot record} genoemd.\index{boot sector} Deze boot sector
-bevat ook weer een stuk opstartcode. De code in de UEFI-implementatie zal de bootsector van
-de gewenste GPT-partitie in het geheugen zetten, en die dan uitvoeren door er naar te springen. Het is de code in
-de boot sector die uiteindelijk het besturingssysteem op de partitie zal inladen en
-starten. Deze code wordt in de boot sector geplaatst tijdens
-de installatie van het besturingssysteem en verschilt dus ook van besturingssysteem tot besturingssysteem. In het geval van Windows zal de code in de boot sector het programma \emph{bootmgr} in het geheugen laden en opstarten. In het
-geval dat dit bestand niet gevonden wordt, zal er een foutmelding op het scherm getoond worden.
-Bootmgr is dan de laatste schakel in het bootproces. Dit programma gaat de feitelijke code van Windows inladen en opstarten.
+\begin{figure}
+\begin{center}
+\includegraphics[width=125mm]{images/startupsteps.png}
+\end{center}
+\caption{De stappen in het opstartproces}
+\label{bootsteps}
+\end{figure}

@@ -40,8 +40,8 @@ mode.
 Een besturingssysteem mag niet worden gezien als een soort
 superprogramma, dat voortdurend alle activiteiten in het computersysteem
 van boven af regelt. Het komt in tegendeel slechts in actie na een
-signaal vanuit de hardware of na een vraag vanuit de toepassingssoftware. 
-Men zegt dan ook dat een besturingssysteem \emph{gebeurtenisgestuurd}, 
+signaal vanuit de hardware of na een vraag vanuit de toepassingssoftware.
+Men zegt dan ook dat een besturingssysteem \emph{gebeurtenisgestuurd},
 of \emph{event driven} is.
 
 \begin{figure}
@@ -284,7 +284,14 @@ uiteindelijk eens voorkomen. Ze zijn ook onafhankelijk van en ongerelateerd met 
 
 Op de Intel x86 processor kunnen asynchrone interrupts gemaskeerd worden. Dat wil zeggen
 dat er tijdelijk gekozen kan worden om die interrupts niet af te handelen. Synchrone
-interrupts kunnen nooit gemaskeerd worden.
+interrupts kunnen nooit gemaskeerd worden, maar aangezien deze enkel gegenereerd worden
+door het actieve programma (en volledig afgehandeld worden eer het programma terug verder mag
+gaan) gaat de ene synchrone interrupt normaal nooit een andere onderbreken. Soms kan dit 
+echter toch het geval zijn wanneer er een fout zit in het besturingssysteem. Vaak resulteert
+dit in een crash van het besturingssysteem\footnote{Op Windows krijg je dan het alom bekende 
+\emph{blue screen of death}. Volgens Microsoft zijn ongeveer 25\% van de blue screens veroorzaakt
+door een echte fout in de code van Windows, terwijl de overige 75\% veroorzaakt worden door drivers
+van externe partijen.}.
 
 \subsection{Interrupts identificeren}
 
