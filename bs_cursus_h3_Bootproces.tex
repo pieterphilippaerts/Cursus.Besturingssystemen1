@@ -21,16 +21,38 @@ herstarten omdat de processor weer tijdelijk het reset-signaal ontvangt
 wanneer het power good signaal vanuit de voeding wegvalt.
 
 Wanneer het reset-signaal wegvalt kan de processor beginnen
-werken, maar welke code moet er uitgevoerd worden? Er zijn nog geen
-programma's in het werkgeheugen geladen, dus de opstartcode moet elders
+werken. De processor draait nu in kernel mode (d.i.: alle instructies 
+---ook de gepriviligeerde instructies--- zijn toegelaten) en gebruikt
+uit compatibiliteitsoverwegingen \emph{real mode}\index{real mode}
+als addresseringsmodus\footnote{Indien je niet meer weet wat \emph{real mode} 
+is, dan kan je dat best nog eens opzoeken in hoofdstuk 3 van de cursus
+Computersystemen}. Maar welke code moet er uitgevoerd worden? Er zijn nog geen
+instructies in het werkgeheugen geladen, dus de opstartcode moet elders
 gevonden worden.
+
+De oplossing voor dit probleem is om bepaalde adressen in de geheugenruimte niet
+mappen op het werkgeheugen maar op iets anders. Dit noemt men \emph{memory mapped I/O}. Figuur~\ref{memorymapped}
+toont de layout van de x86-geheugenruimte en welke stukken waarop gemapped worden.
+Het rode stuk in de tekening is het stuk van de geheugenruimte waar de processor
+de opstartcode verwacht. Concreet begint de processor instructies uit te voeren 
+vanaf adres 0xFFFFFFF0 (merk op dat dit adres binnen het rode stuk valt). Wanneer
+de processor het geheugenadres 0xFFFFFFF0 opvraagt aan de geheugen controller, zal
+die echter geen bytes vanuit het werkgeheugen halen, maar zal die de data halen uit
+een ROM-chip op het moederbord. Deze ROM-chip bevat dan het opstartprogramma.
+
+\begin{figure}
+\centering
+\includegraphics[scale=.75]{images/iomappedmemory.png}
+\caption{De x86 memory layout. Leer deze grafiek alsjeblieft niet vanbuiten!}
+\label{memorymapped}
+\end{figure}
 
 \section{Unified Extensible Firmware Interface}
 
 Moderne systemen volgen de \emph{Unified Extensible Firmware Interface}-specificatie
 (\emph{UEFI})\index{UEFI} om de computer verder op te starten. De UEFI-standaard zorgt voor afspraken omtrent een zogenaamde
 \emph{pre-boot execution environment} die er voor zorgt dat de hardware ge\"initialiseerd
-wordt en het besturingssysteem ingeladen wordt. Implementaties van deze standaard zijn in essentie een 
+wordt en het besturingssysteem ingeladen wordt. Implementaties van deze standaard zijn in essentie een
 mini-besturingssysteem die een aantal basisfunctionaliteiten aanbieden (zoals bijvoorbeeld
 het starten van het hoofdbesturingssysteem).
 
@@ -87,6 +109,17 @@ UEFI voorziet \emph{boot services} en \emph{runtime services}. Boot services zij
 % dat begint op FFFF0, en dat we vanaf dat adres 0 plaatsen verder moeten gaan.}.
 % Dit adres ligt in het gebied dat aan de BIOS is toegekend, maar ligt achteraan.
 % Hier staat dan een JMP (jump) instrucie naar de eigenlijke opstartcode.
+
+\begin{figure}
+\centering
+\includegraphics[scale=.25]{images/uefisartup.png}
+\caption{Het UEFI boot-proces}
+\label{uefiboot}
+\end{figure}
+
+De UEFI-specificatie voorziet een aantal fases tijdens het opstarten, zoals weergegeven in Figuur~\ref{uefiboot}.
+In de eerste fases gaat het systeem de EFI-runtime opstarten. Binnen deze runtime kunnen dan allerhande
+UEFI-applicaties uitgevoerd worden.
 
 De UEFI-specificatie bepaalt niet hoe de machine opgestart moet worden. Typisch zullen UEFI-implementaties beginnen met
 het oplijsten van alle beschikbare stukken hardware en controleren of die correct werken. Het geheel van deze tests
@@ -273,14 +306,14 @@ Na de primaire GPT header volgt een lijst van \emph{partition entries}.\index{pa
 %de tabel in de MBR volgt, maar slechts twee partities beschrijft: \'e\'en
 %logische en een nieuwe extended partitie. Deze extended partitie bevat
 %ook weer zo'n tabel die \'e\'en logische en \'e\'en extended partitie
-%beschrijft, enz. 
+%beschrijft, enz.
 
 De taak van de opstartcode is om in de
 partitietabel de gewenste opstartpartitie op te sporen. De eerste sector van
 deze partitie heet de \emph{partition boot sector} of wordt soms ook de
 \emph{partition boot block} of het \emph{partition boot record} genoemd.\index{boot sector} Deze boot sector
-bevat ook weer een stuk opstartcode. De code in de UEFI-implementatie zal de bootsector van 
-de gewenste GPT-partitie in het geheugen zetten, en die dan uitvoeren door er naar te springen. Het is de code in 
+bevat ook weer een stuk opstartcode. De code in de UEFI-implementatie zal de bootsector van
+de gewenste GPT-partitie in het geheugen zetten, en die dan uitvoeren door er naar te springen. Het is de code in
 de boot sector die uiteindelijk het besturingssysteem op de partitie zal inladen en
 starten. Deze code wordt in de boot sector geplaatst tijdens
 de installatie van het besturingssysteem en verschilt dus ook van besturingssysteem tot besturingssysteem. In het geval van Windows zal de code in de boot sector het programma \emph{bootmgr} in het geheugen laden en opstarten. In het
