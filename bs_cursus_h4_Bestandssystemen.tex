@@ -156,7 +156,7 @@ Omwille van de grote nadelen is het gebruik van lineaire
 directories beperkt tot kleine bestandsystemen in omgevingen met
 slechts \'e\'en gebruiker.
 
-\section{Hi\"erarchisch bestandssysteem}
+\subsection{Hi\"erarchisch bestandssysteem}
 
 De meeste systemen maken gebruik van een hi\"erarchische
 directorystructuur. Hierbij wordt de volledige verzameling bestanden
@@ -892,7 +892,7 @@ is binair zoeken niet zoveel effici\"enter, aangezien we geen
 rechtstreekse toegang hebben tot het middelste element.
 
 Bij het toevoegen en verwijderen daarentegen vermijden we het
-verschuiven van de achterliggende elementen op plaats te maken of om
+verschuiven van de achterliggende elementen om plaats te maken of om
 een vrijgekomen plaats op te vullen. We kunnen gewoon de verwijzingen
 aanpassen, en alle elementen kunnen op hun plaats blijven staan. Het
 geringe plaatsverlies door de verwijzing naar de volgende
@@ -1046,6 +1046,9 @@ bijgehouden wordt.
 
 \section{Voorbeeld 2: NTFS}
 
+% alle details op:
+% https://technet.microsoft.com/en-us/library/cc781134(v=ws.10).aspx
+
 NTFS\index{NTFS-bestandssysteem} staat voor New Technology File System. Het is het standaard
 bestandssysteem voor Windows NT, 2000, XP en hoger. Het lost
 enkele problemen met FAT op en bevat heel wat extra
@@ -1069,7 +1072,7 @@ is de MFT dus geen file map. De MFT bevat \'e\'en record per bestand, en
 niet \'e\'en record per blok op de schijf. Hierdoor is de grootte van de
 MFT variabel. Standaard wordt 12,5\% van de partitie voorzien voor de
 MFT, en de overige 87,5\% is beschikbaar voor gegevens. Wanneer het
-datagebied echter vol is, en de MFT neemt niet de voorzien 12,5\% van
+datagebied echter vol is, en de MFT neemt niet de voorziene 12,5\% van
 de partitie in kan die ook voor data gebruikt worden.
 
 \begin{figure}
@@ -1110,7 +1113,7 @@ Het data-attribuut in een MFT-record bevat verwijzingen naar
 blokken in het datagebied. We kunnen het data-attribuut dus beschouwen
 als een indexblok. Om de toegangssnelheid te verhogen en de
 hoeveelheid adresinformatie te beperken wordt gebruik gemaakt van
-extents, die in de context van NTFS vaak data runs of streams genoemd
+extents, die in de context van NTFS vaak data runs of streams\index{stream} genoemd
 worden (fig. \ref{dataruns}).
 
 Voor kleine bestanden wordt de inhoud van het bestand zelf
@@ -1118,7 +1121,7 @@ binnen het data-attribuut in het MFT-record opgeslagen. Dit zorgt
 ervoor dat met dergelijke bestanden zeer snel gewerkt kan worden. Zo
 gauw het bestand is opgezocht is directe toegang mogelijk zonder
 verdere schijftoegangen. Dit gebeurt typisch voor bestanden die
-kleiner zijn dan 1 tot 1,5KB. Als we dit geval als standaard
+kleiner zijn dan 900 bytes. Als we dit geval als standaard
 beschouwen, kunnen we zeggen dat als een bestand te groot wordt het
 data-attribuut non-resident gemaakt wordt.
 
