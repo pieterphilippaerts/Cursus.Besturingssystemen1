@@ -1180,17 +1180,17 @@ Unix File System. De blokken van de schijf kunnen worden ingedeeld in 4 soorten:
 \end{itemize}
 
 In het \emph{bootblok}\index{bootblok} staat bootstrap code die het besturingssysteem moet laden en opstarten.
-Het heeft geen specifieke functie in het bestandssysteem, en het is altijd . Het \emph{superblok}\index{superblok} bevat globale
+Het heeft geen specifieke functie in het bestandssysteem. Het \emph{superblok}\index{superblok} bevat globale
 gegevens over het bestandssysteem, en enkele instellingen.
 
-Met ieder bestand in ext2 wordt een gegevensstructuur geassoci\"eerd, die \emph{inode} wordt genoemd.
+Met ieder bestand in ext2 wordt een gegevensstructuur geassoci\"eerd, die \emph{inode}\index{inode} wordt genoemd.
 Hierin vinden we alle metadata en de verwijzingen naar de datablokken waarin de inhoud
 van het bestand opgeslagen is. Achter het superblok staat een lijst met inodeblokken\index{inodeblok}, soms ook
 I-list genoemd. De overige blokken in het bestandssysteem worden gebruikt om de inhoud van bestanden
 in weg te schrijven.
 
 Aangezien de broncode van Linux vrij beschikbaar is, kunnen we de eigenlijke structuur van een inode
-bekijken.\index{inode} Linux is geschreven in C, en de inode struct\footnote{Een struct in C kan je vergelijken
+bekijken. Linux is geschreven in C, en de inode struct\footnote{Een struct in C kan je vergelijken
 met een vereenvoudigde klasse uit Java. Een struct in C bevat enkel dataleden, en geen methodes.}
 wordt gedefini\"eerd in het bestand \verb|include/ext2_fs.h|. Dit komt uit de broncode van versie 1.0
 van de Linux kernel (1994):
