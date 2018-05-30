@@ -23,6 +23,7 @@
 \usepackage{tikz}
 \usepackage{epigraph}
 \usepackage{lipsum}
+\usepackage{csquotes}
 %
 % Zorgt voor headers die over de marge lopen
 %
@@ -56,7 +57,7 @@
     \thispagestyle{empty}%              % Empty header styles
     \newpage%
     \if@twocolumn\hbox{}\newpage\fi\fi\fi}
-%\def\printauthor{{\large \@author}}              
+%\def\printauthor{{\large \@author}}
 \makeatother
 \author{%
     Gerben Dierick \\
@@ -72,6 +73,8 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \newcommand{\byte}[1]{\fcolorbox{black}{lightgray}{\texttt{{#1}}}}
+
+\newcommand{\TODO}[1]{\textbf{\textcolor{red}{TODO:~#1}}}
 
 %
 % Zorgt voor sans font in math
@@ -114,8 +117,8 @@
   (c) --
   ++(135:2.5) --
   ++(45:2.5) --
-  ++(-45:2.5) coordinate[pos=0.3] (d);   
-\draw 
+  ++(-45:2.5) coordinate[pos=0.3] (d);
+\draw
   (d) -- +(45:1);
 \end{scope}
 \end{tikzpicture}%
@@ -166,8 +169,9 @@
 \include{bs_cursus_h4_Bestandssystemen}
 \include{bs_cursus_h5_Procesbeheer}
 %\include{bs_cursus_h6_Threads}
-%\include{bs_cursus_h7_Geheugenbeheer}
+\include{bs_cursus_h7_Geheugenbeheer}
+\include{bs_cursus_a1_DOS_Virussen}
 
-\printindex 
+\printindex
 
 \end{document}

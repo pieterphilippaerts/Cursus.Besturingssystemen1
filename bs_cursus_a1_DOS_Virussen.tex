@@ -1,0 +1,30 @@
+\appendix
+\chapter{MS-DOS Virussen}
+
+Een belangrijke functie van het besturingssysteem is het beveiligen van het systeem. Met de geconnecteerde wereld die we vandaag kennen, is dit misschien zelfs \'e\'en van de hoofdtaken geworden van het besturingssysteem. Dat is echter niet altijd zo geweest: zoals besproken in Hoofdstuk~\ref{hfdstk:inleiding} is een besturingssysteem origineel ontstaan als een programma om het beheer van processen te vereenvoudigen. Ook het eerste besturingssysteem van Microsoft, het \emph{Microsoft Disk Operating System (MS-DOS)} diende vooral om het procesbeheer te vergemakkelijken en het aansturen van bepaalde hardware (zoals bijvoorbeeld de harde schijf) te vereenvoudigen. Het bood echter geen bescherming. Zo draaide elk proces bijvoorbeeld in kernel mode, waardoor het dus toegang had tot de volledige instructieset die de processor aanbood. Hierdoor kunnen processen rechtstreeks communiceren met hardware en zijn ze dus niet verplicht om via de MS-DOS-aangeleverde routines de hardware te benaderen.
+
+Over het algemeen werkte dit principe goed. Er kon slechts \'e\'en proces tegelijkertijd actief zijn (MS-DOS ondersteunde dus geen multi-programmering), dus kan het actieve proces ook nooit in het vaarwater komen van andere processen aangezien die er niet zijn. De meeste programma's maakten ook gebruik van de services die MS-DOS aanbood om bijvoorbeeld bestanden te openen of uitvoer op het scherm te tonen.
+
+Omdat programma's echter niet gecontroleerd werden door het besturingssysteem, is het niet te verwonderen dat er ook heel wat \emph{malware} gebouwd is geweest voor MS-DOS. Dat nam typische de vorm aan van een virus dat het systeem infecteerde en op bepaalde tijdstippen de correcte werking van het systeem verstoorde. In dit hoofdstuk bespreken we enkele voorbeelden, en leggen we uit waarom deze virussen niet meer kunnen werken in hedendaagse besturingssystemen.
+
+\section{Virussen}
+
+De term \emph{virus} wordt door leken vaak gebruikt voor eender welk stuk software dat een ongewenste en/of kwaadaardige nevenwerking heeft op een computer. Dat is natuurlijk niet correct: een betere term hiervoor is \emph{malware} (wat komt van \emph{malicious software}, of kwaadaardige software). Een virus is een heel specifieke categorie van malware die vroeger veel voorkwam, maar vandaag de dag minder relevant is. De definitie van een virus die wij gebruiken, luidt als volgt:
+
+\begin{quotation}
+Een computer virus is een type van kwaadaardige software dat, wanneer het uitgevoerd wordt, zichzelf vermenigvuldigt door aan andere (onschuldige) computerprogramma's een kopie van zichzelf toe te voegen.
+\end{quotation}
+
+Cruciaal aan deze definitie is dat een virus dus een bestaand programma aanpast; het bestaat niet op zichzelf. Dit gedrag was belangrijk, want de manier waarop virussen zich vroeger verspreidden was door onschuldige software te infecteren die dan via diskette's onderling tussen mensen werd uitgewisseld. In die tijd wisten computergebruikers precies welk programmabestand overeenkwam met bijvoorbeeld de tekstverwerker die ze gebruikten. Onbekende programma's vielen dus direct op, en zouden niet snel opgestart worden.
+
+Vandaag de dag zijn er veel makkelijkere manieren om malware op een computer te krijgen. De eenvoudige aanpak van de \emph{Happy '99}-worm illustreert dit punt. Rond nieuwjaar 1999 kregen heel wat mensen een email met als onderwerp `Happy 99' die verder leeg was op een bijlage na. Deze bijlage was een uitvoerbaar bestand `Happy99.exe'. 
+
+Het internet zorgt er voor dat malware zich in een recordtempo op een ongeziene schaal kan verspreiden. Ook gebruiken meer mensen nu een computer, wat er toe leidt dat niet iedereen even goed weet hoe een computer werkt.
+
+\section{Bootsector-virussen}
+
+
+\section{.EXE infectors}
+
+
+\section{De viruswapenwedloop}
