@@ -1,4 +1,4 @@
-\chapter{Bootproces}
+\chapter{Bootproces}\label{bootproces}
 
 \section{Opstarten}
 
@@ -83,7 +83,7 @@ een zeer groot beveiligingsprobleem zijn. Het doel van de \emph{pre-EFI initiali
 een stuk werkgeheugen die de opstartcode kan gebruiken om bijvoorbeeld de UEFI-applicaties in te laden. De \emph{driver
 execution phase} (DXE) doet dan het meeste werk wat betreft de initialisatie van het systeem. Hier worden de boot- en
 runtime service opgezet, worden hardware-componenten ge\"initialiseerd (harde schijf, netwerk, ...), en worden er abstracties
-gecre\"erd voor onder andere de verschillende boot devices. 
+gecre\"erd voor onder andere de verschillende boot devices.
 
 De UEFI-specificatie is nogal vaag over wat er precies moet gebeuren wanneer de machine opgestart wordt. Typisch zullen
 UEFI-implementaties tijdens de DXE-fase beginnen met het oplijsten van alle beschikbare stukken hardware en controleren
@@ -165,7 +165,7 @@ Na de primaire GPT header volgt een lijst van \emph{partition entries}.\index{pa
 \end{figure}
 
 Figuur~\ref{efisyspart} toont een harde schijf met drie partities. De eerste partitie
-is van het type \emph{EFI System Partition} en bevat o.a. alle programma's die in de 
+is van het type \emph{EFI System Partition} en bevat o.a. alle programma's die in de
 UEFI-implementatie uitgevoerd kunnen worden. De tweede partitie bevat in dit geval het
 besturingssysteem en is gemarkeerd als \emph{bootable}. Als laatste is er nog een partitie
 gedefini\"eerd voor recovery-doeleinden.
@@ -181,7 +181,7 @@ boot menu op de EFI System Partition zetten waarmee Windows (en eventueel andere
 opgestart kan worden.
 
 Eenmaal de gebruiker een besturingssysteem geselecteerd heeft, wordt er een \emph{partition boot loader}\index{partition boot loader}-applicatie opgestart die het besturingssysteem op de geselecteerde partitie zal inladen. Afhankelijk van de gekozen
-partitie zal de juiste partition boot loader geselecteerd worden. De taak van de partition boot loader is om op de partitie 
+partitie zal de juiste partition boot loader geselecteerd worden. De taak van de partition boot loader is om op de partitie
 de code te zoeken die het besturingssysteem verder gaat inladen. Kwestie van de zaken wat gecompliceerd te maken, noemen ze deze code
 de \emph{boot loader}\index{boot loader}. Zorg dus dat je de termen \emph{boot loader} en \emph{partition boot loader} niet door elkaar
 haalt.
