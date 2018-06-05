@@ -1,28 +1,110 @@
 \chapter{Geheugenbeheer}
 
+Een van de belangrijkste taken die het besturingssysteem heeft, is het beheer
+van het werkgeheugen. Het besturingssysteem moet kiezen waar de programma's in
+het geheugen terecht komen, hoeveel geheugen elk programma toegewezen krijgt,
+welke stukken code aan welke stukken geheugen mogen komen, enz. Er zijn
+verschillende strategie\"en mogelijk om het geheugen te beheren, elk met zijn
+voor- en nadelen.
+
+\TODO{tekeningen toevoegen aan dit hoofdstuk}
+
+\section{Segmentatie}
+
+In het vak Computersystemen werd er al een vorm van geheugenbeheer besproken:
+\emph{segmentatie}. Een programma wordt hierbij in verschillende stukken
+gebroken --- \emph{segmenten} --- die elk logisch bij elkaar horen. Zo kan er bijvoorbeeld een
+codesegment zijn waar alle instructies van het programma in staan. Het
+datasegment bevat dan weer de data van de applicatie, en het stapelsegment bevat
+de data die het programma op de stapel opslaagt. De Intel x86-processor biedt
+ondersteuning voor een maximum van zes segmenten per programma.
+
+Elk segment heeft een beginpunt (de \emph{basis}) en een bepaalde grootte. Het
+besturingssysteem kiest bij het inladen van het programma waar elk segment
+terecht komt in het werkgeheugen. Aangezien segmenten geen vaste plaats in het geheugen hebben, kan
+een programma dus geen gebruik maken van absolute adressering (d.w.z. het
+gebruik van de fysische adressen zoals ze door het RAM-geheugen gebruikt
+worden). In de plaats daarvan wordt relatieve adressering gebruikt, waarbij een
+programma altijd werkt met een \emph{verplaatsing} binnen een segment.
+
+\TODO{Figuur op slide 27 ch8.ppt van silberschatz toevoegen}
+
+Om segmentatie effici\"ent te laten werken, is ondersteuning van de hardware
+vereist. In het geval van de Intel x86-processor vertaalt zich dat naar de
+volgende componenten:
+
+\begin{itemize}
+\item{Descriptor} Een descriptor is een gegevensstructuur die
+een segment beschrijft. Het bevat onder andere het beginadres van het segment en
+de lengte van het segment.
+\item{Descriptorentabel} Er kunnen meerdere
+programma's tegelijkertijd in het geheugen geladen zijn, en elk programma kan
+meerdere segmenten hebben. Al de descriptoren die bij deze segmenten horen,
+staan opgeslagen in de descriptorentabel. Deze tabel staat ergens in het
+werkgeheugen opgeslagen en kan maximaal 8192 descriptoren bevatten.
+\item{Segmentselector} Om een bepaalde descriptor uit de descriptorentabel aan
+te duiden, kunnen we een getal gebruiken dat het volgnummer van de descriptor in
+de tabel voorstelt. Dit getal noemen we een segmentselector.
+\item{Segmentregister} De processor voorziet zes registers die tijdens de
+uitvoering van een programma kunnen gebruikt worden om informatie over de
+segmenten op te zoeken. Deze registers bevatten segmentselectors, waarmee de
+processor dan naar de descriptorentabel kan gaan om de informatie van het
+segment uit te lezen.
+\end{itemize}
+
+Wanneer een besturingssysteem een proces selecteert om uit te voeren, zullen de
+segmentregisters ge\"initialiseerd worden met de correcte segmentselectors die
+bij het programma horen. Bijvoorbeeld, in segmentregister \texttt{ds} komt de segmentselector
+van de descriptor die het datasegment van de applicatie beschrijft.
+
+Wanneer een applicatie een een instructie oproept die het geheugen aanspreekt, zal de instructie telkens de gewenste verplaatsing \'en het gewenste segment bevatten. Bijvoorbeeld, de instructie \texttt{mov al, [ds:1234]} haalt de byte op uit het geheugen die staat in het datasegment op verplaatsing 1234. Bij de uitvoering van deze instructie zal de processor een adresberekening doen. Eerst wordt door middel van de segmentselector in segmentregister \texttt{ds} de gevraagde descriptor opgehaald uit de descriptorentabel. De verplaatsing wordt vergeleken met de grootte van het segment; indien de gevraagde verplaatsing groter is zal de processor een fout genereren. Uiteindelijk zal bij de verplaatsing de basis opgeteld worden, om zo het fysieke adres te krijgen dat uit het werkgeheugen moet opgehaald worden.
+
+\TODO{figuur i.v.m. adresberekening toevoegen}
+
+Segmentatie heeft een aantal belangrijke voordelen. Zo kan een programma een groter stuk geheugen aanspreken dan dat de woordgrootte van de processor toelaat. Bijvoorbeeld, op een 16-bit processor bestaat een verplaatsing uit 16 bits. Dit wil zeggen dat de maximum grootte van een segment 2\textsuperscript{16} of 65536 bytes is. Wanneer er meer geheugen beschikbaar is, dan kan de applicatie gebruik maken van meerdere segmenten die elk een ander stuk fysisch geheugen beslaan.
+
+De verschillende segmenten van een programma kunnen ook andere toegangsrechten krijgen. Zo kan het codesegment bijvoorbeeld allen-lezen gemaakt worden, en het datasegment niet-uitvoerbaar. Dit is van belang om er voor te zorgen dat bepaalde softwarefouten niet uitgebuit kunnen worden door een aanvaller.
+
+Aangezien er enkel met verplaatsingen gewerkt wordt, is het programma verplaatsbaar in het geheugen. Elke keer dat het programma opgestart wordt, kan het ergens anders in het geheugen ingeladen worden. Ook kan hetzelfde programma meerdere keren in het geheugen staan. Deze eigenschap zorgt er voor dat het geheugenbeheer een stuk geavanceerder kan verlopen. Zo kan het besturingssysteem bij het inladen van het programma de meest-optimale plaats in het geheugen voor het programma zoeken. Wanneer een programma twee keer gestart wordt, kan het besturingssysteem er ook voor kiezen om bijvoorbeeld het codesegment te delen.
+
+Het grootste nadeel van segmentatie heeft te maken met \emph{externe fragmentatie}. Net zoals bij het beheer van aaneengesloten bestanden, kunnen er bij segmentatie gaten vallen in het geheugen. Wanneer een klein segment verwijderd wordt, kan het stuk vrij geheugen te klein zijn om er een nieuw (groter) segment in te steken. Naarmate de tijd vordert, kan dit oplopen tot een aanzienlijk stuk van het geheugen dat niet meer gebruikt kan worden.
+
+Een tweede nadeel is dat de segmenten van een programma altijd in hun geheel moeten worden ingeladen in het geheugen, ook al wordt er slechts een deel van het segment daadwerkelijk actief gebruikt.
+
+\section{Paginatie}
+
+Een manier om de twee nadelen van segmentatie op te lossen, is door te werken met \emph{pagina's} in plaats van segmenten. Een pagina is een stuk geheugen met een vaste grootte (bijv. 4KB). Een programma kan dan opgedeeld worden in meerdere pagina's. Het werkgeheugen wordt op een gelijkaardige manier opgedeeld in \emph{frames}; dit zijn blokken die dezelfde grootte hebben als een pagina. Wanneer een programma dan in het geheugen geladen wordt, moet het besturingssysteem de pagina's van het proces inladen in frames van het werkgeheugen die nog vrij zijn. De volgorde van de pagina's in een proces en de frames in het werkgeheugen staat volledig los van elkaar. Zo moeten opeenvolgende pagina's van een proces niet per se in opeenvolgende frames van het werkgeheugen gestoken worden.
+
+\TODO{figuur?}
+
+Deze manier van werken vermijdt externe fragmentatie omdat de frames die vrij komen steeds kunnen worden hergebruikt voor pagina's van nieuwe processen. Dit komt omdat de pagina's van alle processen steeds dezelfde grootte hebben. Omdat een proces opgedeeld moet worden in blokken, kan er zich echter wel \emph{interne fragmentatie} voordoen. Dit is het geheugen dat verloren gaat omdat een programma soms niet exact past in een bepaald aantal blokken. In dat geval zullen een aantal bytes van het laatste blok niet gebruikt worden. Gemiddeld gezien verliezen we een halve blok per programma aan deze interne fragmentatie. Programma's hoeven ook niet meer in hun geheel ingeladen te worden. Enkel de pagina's die nodig zijn moeten in het werkgeheugen te staan.
+
+Wanneer een programma een adres gebruikt, wordt dat opgesplitst in twee delen: een \emph{paginanummer} en een \emph{offset}. Stel dat we werken met 32-bit adressen en pagina's van 4KB. Om elke byte van een 4KB-pagina te kunnen adresseren, zal de offset moeten bestaan uit 12 bits ($2^{12} = 4096$). De resterende 20 bits van het adres stellen dus het paginanummer voor, wat betekent dat er in ons voorbeeld maximaal $2^{20} = 1048576$ pagina's zijn. Aangezien deze adressen ge\"interpreteerd moeten worden en dus niet rechtstreeks overeenkomen met een adres in het werkgeheugen, noemen we ze \emph{virtuele adressen}.
+
+Per proces maakt het besturingssysteem ook een \emph{paginatabel} (of \emph{page table}) aan. In deze tabel wordt de mapping tussen de pagina's van het proces en de frames van het werkgeheugen bijgehouden. Aangezien elk proces een andere paginatabel heeft, moet de CPU weten welke tabel hij wanneer moet gebruiken. De processor maakt hier een speciaal register voor beschikbaar, dat door het besturingssysteem beheerd wordt. Het zogenaamde \emph{page table pointer} register bevat te allen tijde het adres van de actieve paginatabel. Wanneer het besturingssysteem een nieuw proces actief maakt, moet het dus de waarde in dit register aanpassen.
+
+\TODO{Figuur 8.3 vanuit sliberschatz slide 16}
+
+\subsection{Two-level page table}
+
+Probleem: voor elke pagina een entry in de page table, dan wordt die groot! beter: multi-level.
+
+\subsection{Multi-level page table}
+
+\TODO{Voorbeeld toevoegen van 4-level x64 page table}
+
+\section{Geheugenbescherming}
+
+\section{Swapping en Thrasing}
+
 \TODO{aanvullen}
 
-\section{Segmentation}
+\section{Virtueel geheugen}
+
+Logical vs. physical address space
+
+virtual memory
 
 \TODO{aanvullen}
 
-\section{Paging}
-
-\TODO{aanvullen}
-
-\section{Swapping}
-
-\TODO{aanvullen}
-
-\section{Virtual Memory}
-
-\TODO{aanvullen}
-
-\subsection{Demand Paging}
-
-
-\subsection{Page Replacement}
-
-
-\subsection{Trashing}
 
