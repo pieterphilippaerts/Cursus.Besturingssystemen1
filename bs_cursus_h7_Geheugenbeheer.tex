@@ -81,15 +81,33 @@ Deze manier van werken vermijdt externe fragmentatie omdat de frames die vrij ko
 
 Wanneer een programma een adres gebruikt, wordt dat opgesplitst in twee delen: een \emph{paginanummer} en een \emph{offset}. Stel dat we werken met 32-bit adressen en pagina's van 4KB. Om elke byte van een 4KB-pagina te kunnen adresseren, zal de offset moeten bestaan uit 12 bits ($2^{12} = 4096$). De resterende 20 bits van het adres stellen dus het paginanummer voor, wat betekent dat er in ons voorbeeld maximaal $2^{20} = 1048576$ pagina's zijn. Aangezien deze adressen ge\"interpreteerd moeten worden en dus niet rechtstreeks overeenkomen met een adres in het werkgeheugen, noemen we ze \emph{virtuele adressen}.
 
-Per proces maakt het besturingssysteem ook een \emph{paginatabel} (of \emph{page table}) aan. In deze tabel wordt de mapping tussen de pagina's van het proces en de frames van het werkgeheugen bijgehouden. Aangezien elk proces een andere paginatabel heeft, moet de CPU weten welke tabel hij wanneer moet gebruiken. De processor maakt hier een speciaal register voor beschikbaar, dat door het besturingssysteem beheerd wordt. Het zogenaamde \emph{page table pointer} register bevat te allen tijde het adres van de actieve paginatabel. Wanneer het besturingssysteem een nieuw proces actief maakt, moet het dus de waarde in dit register aanpassen.
+Per proces maakt het besturingssysteem ook een \emph{paginatabel} (of \emph{page table}) aan. In deze tabel wordt de mapping tussen de pagina's van het proces en de frames van het werkgeheugen bijgehouden. Aangezien elk proces een andere paginatabel heeft, moet de CPU weten welke tabel hij wanneer moet gebruiken. De processor maakt hier een speciaal register voor beschikbaar, dat door het besturingssysteem beheerd wordt. Het zogenaamde \emph{page table pointer}-register bevat te allen tijde het adres van de actieve paginatabel. Wanneer het besturingssysteem een nieuw proces actief maakt, moet het dus de waarde in dit register aanpassen.
 
 \TODO{Figuur 8.3 vanuit sliberschatz slide 16}
 
 \subsection{Two-level page table}
 
-Probleem: voor elke pagina een entry in de page table, dan wordt die groot! beter: multi-level.
+Als we met hetzelfde voorbeeld van een computer met 32-bit adressen en 4KB pagina's verder gaan, dan kunnen we berekenen hoe groot een page table wordt. In een page table moet voor elk frame in het geheugen een \emph{page table entry} bijgehouden worden. Aangezien er $2^{20}$ frames zijn, moeten er dus evenveel entries beschikbaar zijn. Op de x86-processor is een page table entry 4 bytes groot, dus dan kunnen we berekenen dat een volledige page table 4MB groot is. Merk op dat elk proces een aparte page table heeft, en er dus voor elk proces 4MB geheugen gealloceerd moet worden, ook al gebruikt het proces slechts een klein stuk geheugen.
+
+Om page tables effici\"enter in het geheugen op te slaan, kunnen we gebruik maken van een \emph{two-level page table}. Er wordt dan gebruik gemaakt van een hi\"erarchische structuur zoals beschreven in Figuur \TODO{ref figuur} waarbij een \emph{page directory} links bevat naar verschillende (kleinere) page tables. Niet elke link van de page directory moet in gebruik zijn; indien het programma weinig geheugen gebruikt, is \'e\'en link misschien al voldoende.
+
+In dit geval wordt het 32-bit adres opgesplitst in 3 stukken: 12 bits voor de offset binnen de pagina, 10 bits die het paginanummer voorstellen en 10 bits die de index binnen de page directory voorstellen. Hieruit kunnen we afleiden dat in een page table en de page directory slechts $2^{10} = 1024$ entries kunnen.
+
+\TODO{figuur van x86 page table}
+
+Een programma dat heel veel geheugen gebruikt, zal elke entry in de page directory gebruiken. Er zullen dus 1024 page tables gebruikt worden die elk 4KB groot zijn (= 4 bytes * 1024 entries per page table). Wat het geheugengebruik betreft is in dit geval de grootte van de two-level page table vergelijkbaar met de grootte van het vorige systeem waar er slechts \'e\'en page table per proces was.
+
+Het voordeel van de two-level page table is pas te zien wanneer de applicatie weinig geheugen gebruikt. In dit geval gebruikt de applicatie slechts \'e\'en kleine page table, wat neerkomt op een geheugengebruik van 8KB (= 4KB voor de page table en 4KB voor de page directory). Dat is aanzienlijk minder dan de 4MB die nodig zou zijn zonder een two-level page table.
 
 \subsection{Multi-level page table}
+
+Een two-level page table werkt goed voor een processor met een 32-bits geheugenruimte, maar het systeem schaalt niet zo goed naar 64 bits. Stel dat we een two-level page table willen toepassen op een 64-bit processor en dat we pagina's van 4KB gebruiken. Van de 64 bits in een adres, worden 12 bits gebruikt voor de offset binnen in een pagina. De resterende 52 bits kunnen dan opgesplitst worden voor de offset van de page directory en het paginanummer. Als we de bits evenredig zouden verdelen, da zouden we 26 bits voor de page directory kunnen gebruiken en 26 bits voor het paginanummer. Dit wil echter zeggen dat zowel de page directory als de page tables $2^{26} = 67108864$ entries moeten kunnen bevatten. Als we er van uit gaan dat de entries in de page directory en de page tables elk 8 bytes groot zijn, dan zouden we hier spreken over een minimaal geheugengebruik van 1GB per proces. Dat is natuurlijk niet realistisch.
+
+De Intel x86-64 processor gebruikt dan ook geen two-level page table, maar een four-level page table. Figuur \TODO{figuur toevoegen} geeft een schematische voorstelling van deze structuur. Van het 64-bit adres worden 9 bits gebruikt als offset voor de \emph{page map level-4 table}. Deze tabel bevat wijzers naar \emph{page directory pointer tables}, die op hun beurt wijzers bevatten naar \emph{page directory tables}. Deze page directory tables verwijzen dan naar de page tables van het proces.
+
+Merk op dat van het 64-bit adres slechts 48 bits gebruikt worden. De overige 16 bits kunnen later gebruikt worden, wanneer een computer meer dan $2^{48} bytes = 256TB$ aan werkgeheugen heeft.
+
+Een proces dat weinig geheugen gebruikt, heeft slechts \'e\'en page map level-4, page directory pointer, page directory en page table nodig. Elk van deze gegevensstructuren zijn 4KB, dus in totaal wordt er slechts 16KB geheugen gebruikt om te beschrijven welke frames het proces bezit.
 
 \TODO{Voorbeeld toevoegen van 4-level x64 page table}
 
