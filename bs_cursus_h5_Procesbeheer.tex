@@ -235,6 +235,8 @@ een geschikte maat is voor batchverwerking.
 
 \section{Niet-pre\"emptieve Scheduling-strategie\"en}
 
+\TODO{toevoegen van grafieken van de uitvoering}
+
 Bij deze eerste strategie\"en heeft de scheduler niet de
 mogelijkheid een proces te onderbreken. Eens een proces uitgevoerd wordt
 kan alleen het proces zelf de processor terug vrijgeven, hetzij doordat
@@ -252,7 +254,7 @@ Dit algoritme\index{first come first served} gaat de processen verwerken in deze
 waarin ze in de wachtrij werden geplaatst. We noemen zo'n wachtrij ook
 een First In First Out of FIFO wachtrij. De scheduler moet enkel het
 eerste element uit de FIFO-rij nemen. Je kan het vergelijken met een
-rij mensen die aanschuift aan een loket.
+rij mensen die aanschuift aan een loket. Figuur~\ref{fig:schedfcfs} geeft de werking van het FCFS-algoritme schematisch weer.
 
 Dit is een erg eenvoudig algoritme, en het lijkt natuurlijk erg
 rechtvaardig. Om dit na te gaan bekijken we een situatie met 4 processen. Het
@@ -416,6 +418,7 @@ Voor $a=0,5$ krijgen we voor $T_4$ bijvoorbeeld:
 T_4 = \frac{1}{2}t_3 + \frac{1}{4}t_2 + \frac{1}{8}t_1 + \frac{1}{8}T_1
 \end{displaymath}
 
+Figuur~\ref{fig:schedsjf} toont dit algoritme. Merk op dat wanneer proces 5 de eerste keer uitgevoerd heeft proces 4 zijn opvolger wordt. Dit lijkt vreemd, omdat op dat moment ook proces 1 en proces 6 klaar zijn en betere keuzes zouden zijn. Het algoritme heeft op dat moment echter nog nooit proces 4 en 6 uitgevoerd, dus het weet niet wat de verwachtte uitvoertijd is. Het maakt een onge\"informeerde keuze, die in dit geval suboptimaal is.
 
 \subsection{Priority Scheduling}
 
@@ -443,6 +446,24 @@ prioriteit van alle processen in de wachtrij met 1 kunnen verhogen (tot een
 maximale waarde). Op die manier zal uiteindelijk elk proces binnen een redelijke
 termijn aan bod komen.
 
+Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \emph{p}. Hoe hoger \emph{p}, hoe belangrijker het proces. We kunnen zien aan de grafiek dat dit algoritme niet-pre\"emptief is omdat het belangrijkste proces soms moet wachten op andere (minder-belangrijke) processen. Ook zien we dat het aging-mechanisme de prioriteit van proces 6 zo opdrijft dat het soms voorrang krijgt op hogere-prioriteitsprocessen.
+
+\begin{figure}
+\centering
+  \includegraphics[width=\linewidth]{images/schedule_fcfs.png}
+  \caption{First come first served}
+  \label{fig:schedfcfs}
+  \centering
+  \includegraphics[width=\linewidth]{images/schedule_sjf.png}
+  \caption{Shortest job first}
+  \label{fig:schedsjf}
+  \centering
+  \includegraphics[width=\linewidth]{images/schedule_ps_noqua_age.png}
+  \caption{Priority scheduling (met aging)}
+  \label{fig:schedpsnopre}
+  \includegraphics[width=0.8\linewidth]{images/legende.png}
+\end{figure}
+
 \section{Pre\"emptieve Scheduling-strategie\"en}
 
 \TODO{aanvullen}
@@ -459,6 +480,23 @@ termijn aan bod komen.
 
 \TODO{aanvullen}
 
+\begin{figure}
+\centering
+  \includegraphics[width=\linewidth]{images/schedule_rr.png}
+  \caption{Round robin}
+  \label{fig:schedfcfs}
+  \centering
+  \includegraphics[width=\linewidth]{images/schedule_srt.png}
+  \caption{Shortest remaining time}
+  \label{fig:schedsjf}
+  \centering
+  \includegraphics[width=\linewidth]{images/schedule_ps_qua_age.png}
+  \caption{Priority scheduling (met aging)}
+  \label{fig:schedpsnopre}
+  \includegraphics[width=0.8\linewidth]{images/legende.png}
+\end{figure}
+
+
 \section{Voorbeeld: de Windows scheduler}
 
 \TODO{aanvullen}
@@ -466,3 +504,7 @@ termijn aan bod komen.
 Numa cores
 Energiebeheer
 Variabele klokfrequentie
+
+% https://msdn.microsoft.com/en-us/library/windows/desktop/ms685096(v=vs.85).aspx
+%https://pdfs.semanticscholar.org/presentation/132c/457aad36535a4764ec1a2ee6f219c2e1df46.pdf
+%http://www.i.u-tokyo.ac.jp/edu/training/ss/lecture/new-documents/Lectures/03-ThreadScheduling/ThreadScheduling.pdf
