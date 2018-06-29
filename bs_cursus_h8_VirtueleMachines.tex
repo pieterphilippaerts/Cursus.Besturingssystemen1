@@ -1,0 +1,38 @@
+\chapter{Virtuele Machines}
+
+\TODO{Afwerken!}
+
+Virtualization abstracts hardware that allows multiple workloads to share a common set of resources. On shared virtualized hardware, a variety of workloads can co-locate while maintaining full isolation from each other, freely migrate across infrastructures, and scale as needed.
+Businesses tend to gain significant capital and operational efficiencies through virtualization because it leads to improved server utilization and consolidation, dynamic resource allocation and management, workload isolation, security, and automation. Virtualization makes on-demand self-provisioning of services and software-defined orchestration of resources possible, scaling anywhere in a hybrid cloud on-premise or off-premise per specific business needs.
+Intel® Virtualization Technology (Intel® VT) represents a growing portfolio of technologies and features that make virtualization practical by eliminating performance overheads and improving security. Intel® Virtualization Technology (Intel® VT) provides hardware assist to the virtualization software, reducing its size, cost, and complexity. Special attention is also given to reduce the virtualization overheads occurring in cache, I/O, and memory. Over the last decade or so, a significant number of hypervisor vendors, solution developers, and users have been enabled with Intel® Virtualization Technology
+(Intel® VT), which is now serving a broad range of customers in the consumer, enterprise, cloud, communication, technical computing, and many more sectors.
+Intel® Virtualization Technology (Intel® VT) portfolio currently includes (but not limited to):
+
+\section{Virtualisatiehardware}
+
+\subsection{Processorvirtualisatie}
+
+CPU virtualization features enable faithful abstraction of the full prowess of Intel® CPU to a virtual machine (VM). All software in the VM can run without any performance or compatibility hit, as if it was running natively on a dedicated CPU. Live migration from one Intel® CPU generation to another, as well as nested virtualization, is possible.
+
+\subsection{Geheugenvirtualisatie}
+
+Memory virtualization features allow abstraction isolation and monitoring of memory on a per virtual machine (VM) basis. These features may also make live migration of VMs possible, add to fault tolerance, and enhance security. Example features include direct memory access (DMA) remapping and extended page tables (EPT), including their extensions: accessed and dirty bits, and fast switching of EPT contexts.
+
+Let op: virtueel geheugen heeft niets te maken met geheugenvirtualisatie!
+
+\subsection{I/O-virtualisatie}
+
+I/O virtualization features facilitate offloading of multi-core packet processing to network adapters as well as direct assignment of virtual machines to virtual functions, including disk I/O. Examples include Intel® Virtualization Technology for Directed I/O (VT-d), Virtual Machine Device Queues (VMDQ), Single Root I/O Virtualization (SR-IOV, a PCI-SIG standard), and Intel® Data Direct I/O Technology (Intel® DDIO) enhancements.
+
+
+\subsection{Grafische virtualisatie}
+
+Intel® Graphics Virtualization Technology (Intel® GVT) allows VMs to have full and/or shared assignment of the graphics processing units (GPU) as well as the video transcode accelerator engines integrated in Intel system-on-chip products. It enables usages such as workstation remoting, desktop-as-a-service, media streaming, and online gaming.
+
+\subsection{Netwerkvirtualisatie}
+
+Virtualization of Security and Network functions enables transformation of traditional network and security workloads into compute. Virtual functions can be deployed on standard high volume servers anywhere in the data center, network nodes, or cloud, and smartly co-located with business workloads. Examples of technologies making it happen include Intel® QuickAssist Technology (Intel® QAT) and the Data Plane Development Kit (DPDK).
+
+\section{Hypervisors}
+
+
