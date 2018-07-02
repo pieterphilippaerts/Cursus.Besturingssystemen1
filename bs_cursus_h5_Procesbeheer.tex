@@ -235,8 +235,6 @@ een geschikte maat is voor batchverwerking.
 
 \section{Niet-pre\"emptieve Scheduling-strategie\"en}
 
-\TODO{toevoegen van grafieken van de uitvoering}
-
 Bij deze eerste strategie\"en heeft de scheduler niet de
 mogelijkheid een proces te onderbreken. Eens een proces uitgevoerd wordt
 kan alleen het proces zelf de processor terug vrijgeven, hetzij doordat
@@ -459,14 +457,17 @@ Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \
   \label{fig:schedsjf}
   \centering
   \includegraphics[width=\linewidth]{images/schedule_ps_noqua_age.png}
-  \caption{Priority scheduling (met aging)}
+  \caption{Priority scheduling (niet-pre\"emptief, met aging)}
   \label{fig:schedpsnopre}
   \includegraphics[width=0.8\linewidth]{images/legende.png}
 \end{figure}
 
 \section{Pre\"emptieve Scheduling-strategie\"en}
 
-\TODO{aanvullen}
+Naast de niet-pre\"emptieve strategie\"en die in de vorige sectie besproken werden, bestaan er natuurlijk ook pre\"emptieve algoritmes. Hier zal het besturingssysteem de controle van de processor kunnen terugeisen, ook al is het actieve programma nog niet klaar. In het schema van de toestanden van een proces, is er hier dus w\'el een overgang van `actief' naar `gereed'. 
+
+
+
 
 \subsection{Round Robin}
 
@@ -507,4 +508,4 @@ Variabele klokfrequentie
 
 % https://msdn.microsoft.com/en-us/library/windows/desktop/ms685096(v=vs.85).aspx
 %https://pdfs.semanticscholar.org/presentation/132c/457aad36535a4764ec1a2ee6f219c2e1df46.pdf
-%http://www.i.u-tokyo.ac.jp/edu/training/ss/lecture/new-documents/Lectures/03-ThreadScheduling/ThreadScheduling.pdf
+%http://www.i.u-tokyo.ac.jp/edu/training/ss/lecture/new-documents/Lectures/03-ThreadScheduling/ThreadScheduling.pdf 

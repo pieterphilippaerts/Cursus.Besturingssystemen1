@@ -7,10 +7,6 @@ welke stukken code aan welke stukken geheugen mogen komen, enz. Er zijn
 verschillende strategie\"en mogelijk om het geheugen te beheren, elk met zijn
 voor- en nadelen.
 
-\TODO{tekeningen toevoegen aan dit hoofdstuk}
-
-\TODO{misschien definitie geven van logisch en fysiek adres?}
-
 \section{Segmentatie}
 
 In het vak Computersystemen werd er al een vorm van geheugenbeheer besproken:
@@ -34,18 +30,18 @@ vereist. In het geval van de Intel x86-processor vertaalt zich dat naar de
 volgende componenten:
 
 \begin{itemize}
-\item{Descriptor} Een descriptor is een gegevensstructuur die
+\item{\textbf{Descriptor}} Een descriptor is een gegevensstructuur die
 een segment beschrijft. Het bevat onder andere het beginadres van het segment en
 de lengte van het segment.
-\item{Descriptorentabel} Er kunnen meerdere
+\item{\textbf{Descriptorentabel}} Er kunnen meerdere
 programma's tegelijkertijd in het geheugen geladen zijn, en elk programma kan
 meerdere segmenten hebben. Al de descriptoren die bij deze segmenten horen,
 staan opgeslagen in de descriptorentabel. Deze tabel staat ergens in het
 werkgeheugen opgeslagen en kan maximaal 8192 descriptoren bevatten.
-\item{Segmentselector} Om een bepaalde descriptor uit de descriptorentabel aan
+\item{\textbf{Segmentselector}} Om een bepaalde descriptor uit de descriptorentabel aan
 te duiden, kunnen we een getal gebruiken dat het volgnummer van de descriptor in
 de tabel voorstelt. Dit getal noemen we een segmentselector.
-\item{Segmentregister} De processor voorziet zes registers die tijdens de
+\item{\textbf{Segmentregister}} De processor voorziet zes registers die tijdens de
 uitvoering van een programma kunnen gebruikt worden om informatie over de
 segmenten op te zoeken. Deze registers bevatten segmentselectors, waarmee de
 processor dan naar de descriptorentabel kan gaan om de informatie van het
@@ -83,7 +79,7 @@ Een manier om de twee nadelen van segmentatie op te lossen, is door te werken me
 
 Per proces maakt het besturingssysteem ook een \emph{paginatabel} (of \emph{page table}) aan. In deze tabel wordt de mapping tussen de pagina's van het proces en de frames van het werkgeheugen bijgehouden. Aangezien elk proces een andere paginatabel heeft, moet de CPU weten welke tabel hij wanneer moet gebruiken. De processor maakt hier een speciaal register voor beschikbaar, dat door het besturingssysteem beheerd wordt. Dit register wijst te allen tijde naar het adres van de actieve paginatabel. Wanneer het besturingssysteem een nieuw proces actief maakt, moet het dus de waarde in dit register aanpassen.
 
-Figuur~\ref{pages-frames} geeft een voorbeeld van hoe de pagina's van een programma door middel van een page table gemapped kunnen worden op de frames van het werkgeheugen. 
+Figuur~\ref{pages-frames} geeft een voorbeeld van hoe de pagina's van een programma door middel van een page table gemapped kunnen worden op de frames van het werkgeheugen.
 
 \begin{figure}
 \begin{center}
@@ -111,7 +107,7 @@ Als we met hetzelfde voorbeeld van een computer met 32-bit adressen en 4KB pagin
 
 Om page tables effici\"enter in het geheugen op te slaan, kunnen we gebruik maken van een \emph{two-level page table}. Er wordt dan gebruik gemaakt van een hi\"erarchische structuur zoals beschreven in Figuur~\ref{paging-x86} waarbij een \emph{page directory} links bevat naar verschillende (kleinere) page tables. Niet elke link van de page directory moet in gebruik zijn; indien het programma weinig geheugen gebruikt, is \'e\'en link misschien al voldoende. Per proces is er slechts \'e\'en page directory. De processor weet waar die tabel in het geheugen staat, omdat het besturingssysteem het adres ervan in een speciaal register zet (op de Intel x86-processoren heet dit register \emph{control register 3} of kortweg \texttt{CR3}).
 
-In dit geval wordt het 32-bit adres opgesplitst in 3 stukken: 12 bits voor de offset binnen de pagina, 10 bits die het paginanummer voorstellen en 10 bits die de index binnen de page directory voorstellen. Hieruit kunnen we afleiden dat in een page table en de page directory slechts $2^{10} = 1024$ entries kunnen. 
+In dit geval wordt het 32-bit adres opgesplitst in 3 stukken: 12 bits voor de offset binnen de pagina, 10 bits die het paginanummer voorstellen en 10 bits die de index binnen de page directory voorstellen. Hieruit kunnen we afleiden dat in een page table en de page directory slechts $2^{10} = 1024$ entries kunnen.
 
 \begin{figure}
 \begin{center}

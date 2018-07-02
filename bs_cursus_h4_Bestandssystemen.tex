@@ -1260,7 +1260,7 @@ Bestanden kunnen in ext2 niet-aaneengesloten gealloceerd worden. In de inode is 
 adressen van 15 blokken te bewaren. De eerste 12 zijn directe blokadressen, die verwijzen naar blokken
 die data bevatten. Het dertiende adres verwijst naar een indexblok, waarin de adressen van datablokken kunnen
 opgeslagen worden. Dit wordt een indirect adres genoemd. Het veertiende en vijftiende adres in de inode
-zijn respectievelijk dubbel en driedubbel indirect. Het twaalfde adres verwijst dus naar een datablok met
+zijn respectievelijk dubbel en driedubbel indirect. Het veertiende adres verwijst dus naar een datablok met
 daarin adressen van indexblokken. Deze structuur wordt weergegeven in fig. \ref{extAdressering}.
 
 \begin{figure}
@@ -1273,21 +1273,15 @@ daarin adressen van indexblokken. Deze structuur wordt weergegeven in fig. \ref{
 
 Het grote voordeel van deze structuur is dat de adresinformatie voor kleine bestanden volledig in het werkgeheugen
 beschikbaar is. Met bestanden die maximaal 12 datablokken in beslag nemen kan dus erg snel gewerkt worden. Dat de
-grootte van een bestand in ext2 beperkt is, volgt ook uit deze adresseringsstructuur. De maximale bestandsgrootte
+grootte van een bestand in ext2 beperkt is, volgt ook uit deze adresseringsstructuur. De maximale theoretische bestandsgrootte
 in bytes wordt gegeven door:
 
 \begin{displaymath}
 S_{max} = \left[12 + \left(\frac{b}{4}\right) + \left(\frac{b}{4}\right)^{2} + \left(\frac{b}{4}\right)^{3}\right]b
 \end{displaymath}
 
-\TODO{FIX! Is niet helemaal juist ... max limiet is 2TB}
-% http://www.nongnu.org/ext2-doc/ext2.html
-% https://en.wikipedia.org/wiki/Ext2
-% http://ext2read.sourceforge.net/old/ext2fs.htm
-
-
 Hierin is $b$ de blokgrootte in bytes, en gaan we uit van adressen van 32 bits, dus 4 bytes per adres. Voor een
-blokgrootte van 1KB geeft dit een maximale grootte van 16GB.
+blokgrootte van 1KB geeft dit een maximale grootte van 16GB. Naast de adresseringsstructuur zijn er nog andere limieten in het spel die er voor zorgen dat de maximale grootte van een bestand nooit meer dan 2TB is, onafhankelijk van de blokgrootte. Voor een blokgrootte van 8KB, wat volgens de bovenstaande formule een maximale theoretische bestandsgrootte van 64TB zou opleveren, is de praktische bestandsgrootte dus toch 2TB.
 
 \subsection{Vrije blokken en inodes}
 
