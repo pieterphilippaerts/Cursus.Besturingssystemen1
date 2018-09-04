@@ -416,7 +416,7 @@ Voor $a=0,5$ krijgen we voor $T_4$ bijvoorbeeld:
 T_4 = \frac{1}{2}t_3 + \frac{1}{4}t_2 + \frac{1}{8}t_1 + \frac{1}{8}T_1
 \end{displaymath}
 
-Figuur~\ref{fig:schedsjf} toont dit algoritme. Merk op dat wanneer proces 5 de eerste keer uitgevoerd heeft proces 4 zijn opvolger wordt. Dit lijkt vreemd, omdat op dat moment ook proces 1 en proces 6 klaar zijn en betere keuzes zouden zijn. Het algoritme heeft op dat moment echter nog nooit proces 4 en 6 uitgevoerd, dus het weet niet wat de verwachtte uitvoertijd is. Het maakt een onge\"informeerde keuze, die in dit geval suboptimaal is.
+Figuur~\ref{fig:schedsjf} toont dit algoritme. Merk op dat wanneer proces 5 de eerste keer uitgevoerd heeft proces 4 zijn opvolger wordt. Dit lijkt vreemd, omdat op dat moment ook proces 1 en proces 6 gereed zijn en betere keuzes zouden zijn. Het algoritme heeft op dat moment echter nog nooit proces 4 en 6 uitgevoerd, dus het weet niet wat de verwachtte uitvoertijd is. Het maakt een onge\"informeerde keuze, die in dit geval suboptimaal is.
 
 \subsection{Priority Scheduling}
 
@@ -447,6 +447,7 @@ termijn aan bod komen.
 Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \emph{p}. Hoe hoger \emph{p}, hoe belangrijker het proces. We kunnen zien aan de grafiek dat dit algoritme niet-pre\"emptief is omdat het belangrijkste proces soms moet wachten op andere (minder-belangrijke) processen. Ook zien we dat het aging-mechanisme de prioriteit van proces 6 zo opdrijft dat het soms voorrang krijgt op hogere-prioriteitsprocessen.
 
 \begin{figure}
+\begin{center}
 \centering
   \includegraphics[width=\linewidth]{images/schedule_fcfs.png}
   \caption{First come first served}
@@ -460,18 +461,24 @@ Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \
   \caption{Priority scheduling (niet-pre\"emptief, met aging)}
   \label{fig:schedpsnopre}
   \includegraphics[width=0.8\linewidth]{images/legende.png}
+\end{center}
 \end{figure}
 
 \section{Pre\"emptieve Scheduling-strategie\"en}
 
-Naast de niet-pre\"emptieve strategie\"en die in de vorige sectie besproken werden, bestaan er natuurlijk ook pre\"emptieve algoritmes. Hier zal het besturingssysteem de controle van de processor kunnen terugeisen, ook al is het actieve programma nog niet klaar. In het schema van de toestanden van een proces, is er hier dus w\'el een overgang van `actief' naar `gereed'. 
+Naast de niet-pre\"emptieve strategie\"en die in de vorige sectie besproken werden, bestaan er natuurlijk ook pre\"emptieve algoritmes. Hier zal het besturingssysteem de controle van de processor kunnen terugeisen, ook al is het actieve programma nog niet klaar. In het schema van de toestanden van een proces, is er hier dus w\'el een overgang van `actief' naar `gereed'. In deze sectie bekijken we de pre\"emptieve versies van de drie scheduling-strategie\"en die we eerder besproken hebben.
 
-
-
+\TODO{hoe maak je een algo preemptive? Door gebruik te maken van een timer en interrupts...}
 
 \subsection{Round Robin}
 
-\TODO{aanvullen}
+Het \emph{round robin}\index{round robin}-algoritme past dezelfde strategie toe als het FCFS-algoritme, maar dwingt voor elk proces een maximale uitvoertijd af. Een proces dat geselecteerd wordt om uit te voeren krijgt dus een bepaalde hoeveelheid tijd toegewezen waarin het de processor mag gebruiken. Het tijdsbestek waarin het proces actief mag zijn, wordt ook een \emph{time slice}\index{time slice} of een \emph{quantum}\index{quantum} genoemd.
+
+Wanneer het proces blokkeert (bijv. omdat het een bestand wil lezen) voordat zijn quantum afgelopen is, zal het scheduling-algoritme het proces in de lijst van geblokkeerde processen steken. Het eerstvolgende proces dat gereed is wordt dan gekozen en actief gemaakt. Indien het proces blijft rekenen totdat zijn quantum afloopt, dan zal de scheduler het proces onderbreken en achteraan in de lijst steken van processen die gereed zijn. Het eerstvolgende proces dat gereerd is wordt dan uit de lijst gehaald en actief gemaakt. Merk op dat dit hetzelfde proces kan zijn, in het geval er verder geen processen gereed zijn.
+
+Net als het FCFS-algoritme is round robin een eerlijk algoritme zonder starvation. Omwille van de korte quantums zal een proces de processor ook nooit voor lange tijd kunnen opeisen. Hierdoor zal elk proces snel aan de beurt komen, wat de responstijd van het algortime sterk verbetert. Langs de andere kant zorgt het frequente wisselen van processen weer voor een extra overhead en zal de doorvoer iets minder goed zijn dan bij FCFS.
+
+Figuur~\ref{fig:schedrr}
 
 \subsection{Shortest Remaining Time}
 
@@ -482,19 +489,20 @@ Naast de niet-pre\"emptieve strategie\"en die in de vorige sectie besproken werd
 \TODO{aanvullen}
 
 \begin{figure}
-\centering
+\begin{center}
   \includegraphics[width=\linewidth]{images/schedule_rr.png}
   \caption{Round robin}
-  \label{fig:schedfcfs}
+  \label{fig:schedrr}
   \centering
   \includegraphics[width=\linewidth]{images/schedule_srt.png}
   \caption{Shortest remaining time}
-  \label{fig:schedsjf}
+  \label{fig:schedsrt}
   \centering
   \includegraphics[width=\linewidth]{images/schedule_ps_qua_age.png}
   \caption{Priority scheduling (met aging)}
-  \label{fig:schedpsnopre}
+  \label{fig:schedpspre}
   \includegraphics[width=0.8\linewidth]{images/legende.png}
+\end{center}
 \end{figure}
 
 
