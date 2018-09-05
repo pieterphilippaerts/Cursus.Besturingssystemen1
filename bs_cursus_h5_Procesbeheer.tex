@@ -468,7 +468,11 @@ Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \
 
 Naast de niet-pre\"emptieve strategie\"en die in de vorige sectie besproken werden, bestaan er natuurlijk ook pre\"emptieve algoritmes. Hier zal het besturingssysteem de controle van de processor kunnen terugeisen, ook al is het actieve programma nog niet klaar. In het schema van de toestanden van een proces, is er hier dus w\'el een overgang van `actief' naar `gereed'. In deze sectie bekijken we de pre\"emptieve versies van de drie scheduling-strategie\"en die we eerder besproken hebben.
 
-\TODO{hoe maak je een algo preemptive? Door gebruik te maken van een timer en interrupts...}
+\subsection{Hardware-ondersteuning}
+
+Om een pre\"emptief algoritme te schrijven, is hardware-ondersteuning nodig. Eenmaal de scheduler een proces actief gemaakt heeft, krijgt dat proces de controle over de processor. Het besturingssysteem is op dat moment niet meer actief. Het proces kan in principe dus blijven rekenen (of vastzitten in een oneindige lus omwille van een programmeerfout), zonder dat er een oproep gedaan wordt naar het besturingssysteem. Op een of andere manier moet het besturingssysteem dus de mogelijkheid hebben om de controle over de processor terug te krijgen, zonder dat het proces meewerkt. Dit kan door gebruik te maken van de interrupt-functionaliteiten die al eerder beschreven werden in hoofdstuk~\ref{chap:basis}.
+
+De lijst van \emph{soorten interrupts} (sectie~\ref{sec:soorten}) geeft aan dat er een klok interrupt is die de processor zelf genereert wanneer er een bepaalde tijdsperiode verstreken is. Een scheduling-algoritme kan dan deze klok instellen net voordat het een nieuw proces actief maakt. Wanneer het proces begint te rekenen en de controle van de processor behoudt, zal uiteindelijk de klok aflopen en de processor de bijhorende klok-interrupt genereren. Hierdoor wordt het interrupt-mechanisme opgeroepen en krijgt het besturingssysteem de kans om de interrupt af te handelen. In dit geval zal het besturingssysteem dan zien dat het quantum van het actieve proces afgelopen is, en dat een nieuw proces moet geactiveerd worden.
 
 \subsection{Round Robin}
 
@@ -476,9 +480,9 @@ Het \emph{round robin}\index{round robin}-algoritme past dezelfde strategie toe 
 
 Wanneer het proces blokkeert (bijv. omdat het een bestand wil lezen) voordat zijn quantum afgelopen is, zal het scheduling-algoritme het proces in de lijst van geblokkeerde processen steken. Het eerstvolgende proces dat gereed is wordt dan gekozen en actief gemaakt. Indien het proces blijft rekenen totdat zijn quantum afloopt, dan zal de scheduler het proces onderbreken en achteraan in de lijst steken van processen die gereed zijn. Het eerstvolgende proces dat gereerd is wordt dan uit de lijst gehaald en actief gemaakt. Merk op dat dit hetzelfde proces kan zijn, in het geval er verder geen processen gereed zijn.
 
-Net als het FCFS-algoritme is round robin een eerlijk algoritme zonder starvation. Omwille van de korte quantums zal een proces de processor ook nooit voor lange tijd kunnen opeisen. Hierdoor zal elk proces snel aan de beurt komen, wat de responstijd van het algortime sterk verbetert. Langs de andere kant zorgt het frequente wisselen van processen weer voor een extra overhead en zal de doorvoer iets minder goed zijn dan bij FCFS.
+Net als het FCFS-algoritme is round robin een eerlijk algoritme zonder starvation. Omwille van de korte quantums zal een proces de processor ook nooit voor lange tijd kunnen opeisen. Hierdoor zal elk proces snel aan de beurt komen, wat de responstijd van het algortime sterk verbetert. Langs de andere kant zorgt het frequente wisselen van processen weer voor een extra overhead en zal de doorvoer iets minder goed zijn dan bij FCFS. Figuur~\ref{fig:schedrr} toont de uitvoer van het round robin-algoritme\footnote{Merk op dat in de figuur het wisselen tussen processen geen vertraging oplevert. Hierdoor lijkt de throughput van round robin hetzelfde als bij FCFS, maar dit is natuurlijk niet realistisch.}. Vergelijk deze figuur met de uitvoer van FCFS (figuur~\ref{fig:schedfcfs}) en verifieer dat voor korte processen (bijv. proces 1) de responstijd veel korter is bij round robin dan bij FCFS.
 
-Figuur~\ref{fig:schedrr}
+Een belangrijke keuze die de ontwikkelaar van het besturingssysteem moet maken, is de keuze van de lengte van de tijdsquantums. Kortere tijdsquantums zorgen er voor dat de responstijd van programma's verbetert, maar zorgt ook voor meer overhead omdat er vaker moet gewisseld worden tussen processen. Hoe langer de quantums gemaakt worden, hoe meer het algoritme op FCFS begint te lijken. Men kan zeggen dat FCFS eigenlijk round robin is waarbij de tijdsquantums oneindig lang zijn.
 
 \subsection{Shortest Remaining Time}
 
