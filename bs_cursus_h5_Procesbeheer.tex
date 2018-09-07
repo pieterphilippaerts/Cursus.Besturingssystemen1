@@ -298,7 +298,7 @@ Hierdoor is FCFS ook voordelig voor verwerkingsgebonden
 processen, omdat I/O-gebonden processen de processor zelf vlugger
 vrijgeven en dan weer achteraan de FIFO-rij moeten gaan staan.
 
-\subsection{Shortest Job First (SJF)}
+\subsection{Shortest Job First (SJF)}\label{sec:sjf}
 
 De bevoordeling van langere processen door FCFS kan verminderd
 worden door telkens dat proces te kiezen dat het minst lang actief zal
@@ -447,7 +447,6 @@ termijn aan bod komen.
 Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \emph{p}. Hoe hoger \emph{p}, hoe belangrijker het proces. We kunnen zien aan de grafiek dat dit algoritme niet-pre\"emptief is omdat het belangrijkste proces soms moet wachten op andere (minder-belangrijke) processen. Ook zien we dat het aging-mechanisme de prioriteit van proces 6 zo opdrijft dat het soms voorrang krijgt op hogere-prioriteitsprocessen.
 
 \begin{figure}
-\begin{center}
 \centering
   \includegraphics[width=\linewidth]{images/schedule_fcfs.png}
   \caption{First come first served}
@@ -461,7 +460,6 @@ Figuur~\ref{fig:schedpsnopre} toont 6 processen met verschillende prioriteiten \
   \caption{Priority scheduling (niet-pre\"emptief, met aging)}
   \label{fig:schedpsnopre}
   \includegraphics[width=0.8\linewidth]{images/legende.png}
-\end{center}
 \end{figure}
 
 \section{Pre\"emptieve Scheduling-strategie\"en}
@@ -482,10 +480,26 @@ Wanneer het proces blokkeert (bijv. omdat het een bestand wil lezen) voordat zij
 
 Net als het FCFS-algoritme is round robin een eerlijk algoritme zonder starvation. Omwille van de korte quantums zal een proces de processor ook nooit voor lange tijd kunnen opeisen. Hierdoor zal elk proces snel aan de beurt komen, wat de responstijd van het algortime sterk verbetert. Langs de andere kant zorgt het frequente wisselen van processen weer voor een extra overhead en zal de doorvoer iets minder goed zijn dan bij FCFS. Figuur~\ref{fig:schedrr} toont de uitvoer van het round robin-algoritme\footnote{Merk op dat in de figuur het wisselen tussen processen geen vertraging oplevert. Hierdoor lijkt de throughput van round robin hetzelfde als bij FCFS, maar dit is natuurlijk niet realistisch.}. Vergelijk deze figuur met de uitvoer van FCFS (figuur~\ref{fig:schedfcfs}) en verifieer dat voor korte processen (bijv. proces 1) de responstijd veel korter is bij round robin dan bij FCFS.
 
-Een belangrijke keuze die de ontwikkelaar van het besturingssysteem moet maken, is de keuze van de lengte van de tijdsquantums. Kortere tijdsquantums zorgen er voor dat de responstijd van programma's verbetert, maar zorgt ook voor meer overhead omdat er vaker moet gewisseld worden tussen processen. Hoe langer de quantums gemaakt worden, hoe meer het algoritme op FCFS begint te lijken. Men kan zeggen dat FCFS eigenlijk round robin is waarbij de tijdsquantums oneindig lang zijn.
+Een belangrijke keuze die de ontwikkelaar van het besturingssysteem moet maken, is de keuze van de lengte van de tijdsquantums. Kortere tijdsquantums zorgen er voor dat de responstijd van de processen verbetert, maar zorgt ook voor meer overhead omdat er vaker moet gewisseld worden tussen processen. Hoe langer de quantums worden, hoe meer het algoritme op FCFS begint te lijken. Men kan zeggen dat FCFS eigenlijk round robin is waarbij de tijdsquantums oneindig lang zijn.
 
 \subsection{Shortest Remaining Time}
 
+Het shortest job first-algoritme uit sectie~\ref{sec:sjf} probeert de gemiddelde wachttijd en omlooptijd van de processen te minimaliseren door korte processen voorrang te geven op langere processen (t.t.z., het geeft processen voorrang waarvan het algoritme \emph{denkt} dat ze het kortst zullen uitvoeren). SJF is echter niet-pre\"emptief, wat betekent dat wanneer er een proces geselecteerd is dat het niet meer onderbroken wordt totdat het zelf de processor teruggeeft.
+
+Stel dat er slechts \'e\'en proces klaar is en dat dit proces zeer lang moet uitvoeren. Het SJF-algoritme gaat natuurlijk dit proces activeren, omdat er geen enkel ander proces klaar is. Stel dat n\'et nadat het proces geactiveerd is, er een tweede (en veel korter) proces klaar is om uitgevoerd te worden. Dit korte proces zal moeten wachten totdat het langere proces uitgevoerd is, alhoewel het eigenlijk beter is dat het actieve proces onderbroken wordt en het korte proces voorrang krijgt.
+
+Het shortest remaining time-algoritme is een pre\"emptieve versie van het SJF-algoritme. Wanneer een nieuw proces geactiveerd moet worden, zal SRT --- net zoals SJF --- het proces activeren waarvan verwacht wordt dat het het kortst gaat uitvoeren. Wanneer er echter een nieuw proces in de ready queue gezet wordt, zal SRT nagaan of het nieuwe proces korter is dan de verwachte resterende uitvoertijd van het actieve proces. Indien het nieuwe proces korter is, zal dat geactiveerd worden.
+
+\begin{figure}
+\centering
+  \includegraphics[width=0.5\linewidth]{images/srtsjfvgl-1.png}
+  \includegraphics[width=0.75\linewidth]{images/srtsjfvgl-sjf.png}
+  \caption{De uitvoering van de processen, volgens shortest job first}
+  \includegraphics[width=0.75\linewidth]{images/srtsjfvgl-srt.png}
+  \caption{De uitvoering van de processen, volgens shortest remaining time}
+\end{figure}
+
+average waiting time SJF: 4, SRT: 3
 \TODO{aanvullen}
 
 \subsection{Priority Scheduling}
@@ -493,7 +507,7 @@ Een belangrijke keuze die de ontwikkelaar van het besturingssysteem moet maken, 
 \TODO{aanvullen}
 
 \begin{figure}
-\begin{center}
+\centering
   \includegraphics[width=\linewidth]{images/schedule_rr.png}
   \caption{Round robin}
   \label{fig:schedrr}
@@ -506,17 +520,14 @@ Een belangrijke keuze die de ontwikkelaar van het besturingssysteem moet maken, 
   \caption{Priority scheduling (met aging)}
   \label{fig:schedpspre}
   \includegraphics[width=0.8\linewidth]{images/legende.png}
-\end{center}
 \end{figure}
 
 
-\section{Voorbeeld: de Windows scheduler}
-
-\TODO{aanvullen}
-
-Numa cores
-Energiebeheer
-Variabele klokfrequentie
+%\section{Voorbeeld: de Windows scheduler}
+%\TODO{aanvullen}
+%Numa cores
+%Energiebeheer
+%Variabele klokfrequentie
 
 % https://msdn.microsoft.com/en-us/library/windows/desktop/ms685096(v=vs.85).aspx
 %https://pdfs.semanticscholar.org/presentation/132c/457aad36535a4764ec1a2ee6f219c2e1df46.pdf
