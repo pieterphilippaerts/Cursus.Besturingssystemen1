@@ -180,7 +180,7 @@ processen}\index{I/O-gebonden processen}. Processen die veel rekenwerk doen en z
 externe gebeurtenissen wachten noemen we verwerkingsgebonden of
 \emph{CPU-gebonden} processen.\index{CPU-gebonden processen}
 
-\TODO{5-toestandsdiagram van een proces?}
+% \TODO{5-toestandsdiagram van een proces?}
 
 \section{Scheduling}
 
@@ -494,17 +494,16 @@ Het shortest remaining time-algoritme is een pre\"emptieve versie van het SJF-al
 \centering
   \includegraphics[width=0.5\linewidth]{images/srtsjfvgl-1.png}
   \includegraphics[width=0.75\linewidth]{images/srtsjfvgl-sjf.png}
-  \caption{De uitvoering van de processen, volgens shortest job first}
+  \caption{De uitvoering van de processen, volgens shortest job first}\label{fig:execsjf}
   \includegraphics[width=0.75\linewidth]{images/srtsjfvgl-srt.png}
-  \caption{De uitvoering van de processen, volgens shortest remaining time}
+  \caption{De uitvoering van de processen, volgens shortest remaining time}\label{fig:execsrt}
 \end{figure}
 
-average waiting time SJF: 4, SRT: 3
-\TODO{aanvullen}
+Figuren~\ref{fig:execsjf} en \ref{fig:execsrt} tonen het verschil in uitvoer tussen respectievelijk het SJF- en SRT-algoritme. De processen in figuur~\ref{fig:execsjf} worden niet meer onderbroken eenmaal ze geactiveerd zijn, wat op tijdstip 2 leidt tot een niet-optimale situatie. Wanneer proces 2 binnenkomt, moet proces 1 nog 5 tijdseenheden uitvoeren. Het SRT-algoritme in figuur~\ref{fig:execsrt} zal op dat punt de processor geven aan proces 2. Als we de gemiddelde wachttijd berekenen voor beide algoritmes, komen we uit op een gemiddelde wachttijd van 4 tijdseenheden voor SJF, tegen 3 tijdseenheden voor SRT (reken na!).
 
 \subsection{Priority Scheduling}
 
-\TODO{aanvullen}
+Een nadeel van de niet-pre\"emptieve versie van het priority scheduling algoritme is dat een lang lage-prioriteitsproces de processor voor grote stukken tijd kan controleren. Processen met een hogere prioriteit zullen dan moeten wachten totdat het actieve lage-prioriteitsproces afgewerkt is. Dit probleem kan eenvoudig opgelost worden door hoge-prioriteitsprocessen voorrang te geven op processen met lagere prioriteit. Ook wanneer twee processen dezelfde prioriteit hebben, moet er afgewisseld worden. Figuur~\ref{fig:schedpspre} toont de werking van dit aangepast algoritme. Merk op dat we ook hier het probleem van starvation moeten oplossen door gebruik te maken van aging.
 
 \begin{figure}
 \centering
@@ -528,7 +527,6 @@ average waiting time SJF: 4, SRT: 3
 %Numa cores
 %Energiebeheer
 %Variabele klokfrequentie
-
 % https://msdn.microsoft.com/en-us/library/windows/desktop/ms685096(v=vs.85).aspx
-%https://pdfs.semanticscholar.org/presentation/132c/457aad36535a4764ec1a2ee6f219c2e1df46.pdf
-%http://www.i.u-tokyo.ac.jp/edu/training/ss/lecture/new-documents/Lectures/03-ThreadScheduling/ThreadScheduling.pdf 
+% https://pdfs.semanticscholar.org/presentation/132c/457aad36535a4764ec1a2ee6f219c2e1df46.pdf
+% http://www.i.u-tokyo.ac.jp/edu/training/ss/lecture/new-documents/Lectures/03-ThreadScheduling/ThreadScheduling.pdf 

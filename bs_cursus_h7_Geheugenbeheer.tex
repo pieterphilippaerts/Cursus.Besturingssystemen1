@@ -215,7 +215,15 @@ De verwijderde pagina mag natuurlijk niet zomaar weggegooid worden. Het programm
 
 De manier waarop het besturingssysteem kiest welke pagina verwijderd moet worden, is belangrijk. Zo mag de pagina best niet in de nabije toekomst terug gebruikt worden. Het besturingssysteem kan dat natuurlijk nooit met zekerheid weten, maar kan wel gokken hoe `populair' een pagina is. Een pagina van een hoge-prioriteitsproces is bijvoorbeeld al een minder goede kandidaat om uit te swappen dan een pagina van een lage-prioriteitsproces.
 
-Swapping laat toe om meer geheugen te gebruiken dan dat er fysisch in de computer zit. Indien de computer 2GB werkgeheugen heeft en een swap file van 1GB, dan kan het besturingssysteem voor 3GB aan data in het geheugen steken. Op eender welk moment zal er natuurlijk maximaal 2GB echt in het fysieke werkgeheugen aanwezig zijn; de rest zit dan in de swap file.
+Swapping laat toe om meer geheugen te gebruiken dan dat er fysisch in de computer zit. Indien de computer 2GB werkgeheugen heeft en een swap file van 1GB, dan kan het besturingssysteem voor 3GB aan data in het geheugen steken. Op eender welk moment zal er natuurlijk maximaal 2GB echt in het fysieke werkgeheugen aanwezig zijn; de rest zit dan in de swap file. Figuur~\ref{taskmgr_mem} toont de geheugeninformatie van een systeem met 32GB werkgeheugen. Merk op dat onder ``Committed'' staat dat er 36.7GB geheugen beschikbaar is. Dat wil dus zeggen dat het systeem een swap file van 4.7GB heeft.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{images/taskmgr_mem.png}
+\end{center}
+\caption{Algemene geheugeninformatie in Task Manager.}
+\label{taskmgr_mem}
+\end{figure}
 
 \subsection{Sharing}
 
@@ -224,6 +232,16 @@ Een interessante manier om geheugen uit te sparen is door pagina's tussen proces
 Conceptueel is het delen van pagina's eenvoudig: het besturingssysteem moet in de verschillende page tables van de processen gewoon hetzelfde frame mappen. Beide processen kunnen dan aan de data van dat frame aan. Deze techniek kan perfect gebruikt worden voor effici\"ente inter-proces communicatie. Het ene proces kan bijvoorbeeld data schrijven naar dat frame, wat het andere proces dan kan uitlezen.
 
 Deze eenvoudige manier van delen is echter minder geschikt voor het delen van code. Het is natuurlijk niet wenselijk dat kwaadaardige software de pagina van een gedeelde bibliotheek kan aanpassen die ook door andere programma's gebruikt wordt. Een aanvaller zou zo een bepaalde functie in een bibliotheek kunnen aanpassen om zo de controle van andere programma's over te nemen. Om dit probleem op te lossen, heeft elke pagina \emph{toegangsrechten}. Hiermee kan het besturingssysteem pagina's als \emph{alleen-lezen} (\emph{read only}) markeren, of \emph{niet-uitvoerbaar} (\emph{no-execute}). Pagina's van gedeelde bibliotheken zijn alleen-lezen, waardoor iedereen ze kan lezen en uitvoeren, maar niet aanpassen. Pagina's van de stapel, bijvoorbeeld, zijn meestal niet-uitvoerbaar; de stapel bevat dan ook geen programmacode.
+
+Figuur~\ref{taskmgr_memdet} toont (een deel van) de gedetailleerde geheugeninformatie per proces die je kan opvragen. In de kolom ``working set'' staat het aantal kilobytes dat een proces gebruikt in het fysieke geheugen (m.a.w. hoeveel kilobytes aan pagina's die gemapped zijn op een frame). Deze pagina's kunnen opgedeeld worden in private pagina's die bij \'e\'en enkel proces horen, en gedeelde pagina's die tussen processen gedeeld kunnen worden. De laatste kolom toont het aantal page faults dat een proces gegenereerd heeft.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{images/taskmgr_memdet.png}
+\end{center}
+\caption{Gedetailleerde geheugeninformatie per proces in Task Manager.}
+\label{taskmgr_memdet}
+\end{figure}
 
 \subsection{Thrasing}
 
