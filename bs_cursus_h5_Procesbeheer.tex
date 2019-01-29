@@ -8,7 +8,7 @@ ook mogelijk zijn.
 \section{Processen}
 
 Een \emph{proces}\index{proces} is niet hetzelfde als een
-programma. Een proces is een programma in uitvoering. Een programma is
+programma. Een proces is een programma\index{programma} in uitvoering. Een programma is
 niet meer dan uitvoerbare code.
 
 Wanneer zo'n programma uitgevoerd wordt moet de code in het
@@ -95,7 +95,7 @@ de multiprogrammatie, aangezien het nu later voltooid zal zijn.
 
 Naast het optimaliseren van het processorgebruik zorgt
 multiprogrammatie ook voor een lagere gemiddelde responstijd. De
-\emph{responstijd} is de tijd tussen het geven van een
+\emph{responstijd}\index{responstijd} is de tijd tussen het geven van een
 opdracht en het moment dat de ontvangst van het antwoord begint. Dit
 is van belang bij interactief werken met een systeem. Bij timesharing
 is het dus van belang om de responstijd zo laag mogelijk voor alle
@@ -114,7 +114,7 @@ uit te kunnen voeren. Dit onderbreken noemen we
 \subsection{Toestanden van een proces}
 
 Tijdens zijn uitvoering doorloopt een proces een aantal
-toestanden. De overgangen tussen deze verschillende toestanden worden
+toestanden.\index{procestoestand} De overgangen tussen deze verschillende toestanden worden
 teweeggebracht door de werking van het uitgevoerde programma ofwel
 door de scheduler.
 
@@ -248,7 +248,7 @@ voor voorspelbaarheid of een lage responstijd kan zorgen.
 
 \subsection{First Come First Served (FCFS)}
 
-Dit algoritme\index{first come first served} gaat de processen verwerken in dezelfde volgorde
+Dit algoritme\index{scheduling!first come first served} gaat de processen verwerken in dezelfde volgorde
 waarin ze in de wachtrij werden geplaatst. We noemen zo'n wachtrij ook
 een First In First Out of FIFO wachtrij. De scheduler moet enkel het
 eerste element uit de FIFO-rij nemen. Je kan het vergelijken met een
@@ -302,7 +302,7 @@ vrijgeven en dan weer achteraan de FIFO-rij moeten gaan staan.
 
 De bevoordeling van langere processen door FCFS kan verminderd
 worden door telkens dat proces te kiezen dat het minst lang actief zal
-zijn, m.a.w. het kortste proces. Deze strategie\index{shortest job first} kan wel leiden tot
+zijn, m.a.w. het kortste proces. Deze strategie\index{scheduling!shortest job first} kan wel leiden tot
 \emph{starvation}\index{starvation}: langere processen
 \emph{verhongeren} zolang er een aanvoer is van
 kortere processen.
@@ -424,7 +424,7 @@ In dit algoritme wordt met elk proces een prioriteit $p$
 verbonden. We selecteren dan telkens het proces met de hoogste
 prioriteit (veelal, maar niet altijd, aangeduid door de grootste
 waarde van $p$). Het vorige algoritme, SJF, is eigenlijk een voorbeeld
-van priority scheduling\index{priority scheduling}. Voor een proces dat een hoeveelheid T processortijd
+van priority scheduling\index{scheduling!priority scheduling}. Voor een proces dat een hoeveelheid T processortijd
 nodig heeft neemt men dan $p = \frac{1}{T}$ als waarde voor de prioriteit.
 Prioriteiten kunnen intern bepaald zijn, d.w.z. afgeleid van een eigenschap van
 het betrokken proces, zoals het gebruik van hulpbronnen, de geschatte
@@ -437,7 +437,7 @@ Een probleem bij priority scheduling is terug het verhongeren
 van een proces. De mogelijkheid bestaat dat een proces met de
 laagste prioriteit voortdurend wordt voorafgegaan door nieuwe
 processen met een hogere prioriteit, en zo nooit aan de beurt komt. Om dit te
-voorkomen wordt meestal een systeem van \emph{veroudering} (\emph{aging}\index{aging})
+voorkomen wordt meestal een systeem van \emph{veroudering} (\emph{aging}\index{veroudering (aging)})
 ingevoerd. Dit betekent dat de prioriteit van een proces stijgt naarmate het
 proces langer in de wachtrij zit. De scheduler zou b.v. bij elke tussenkomst de
 prioriteit van alle processen in de wachtrij met 1 kunnen verhogen (tot een
@@ -474,7 +474,7 @@ De lijst van \emph{soorten interrupts} (sectie~\ref{sec:soorten}) geeft aan dat 
 
 \subsection{Round Robin}
 
-Het \emph{round robin}\index{round robin}-algoritme past dezelfde strategie toe als het FCFS-algoritme, maar dwingt voor elk proces een maximale uitvoertijd af. Een proces dat geselecteerd wordt om uit te voeren krijgt dus een bepaalde hoeveelheid tijd toegewezen waarin het de processor mag gebruiken. Het tijdsbestek waarin het proces actief mag zijn, wordt ook een \emph{time slice}\index{time slice} of een \emph{quantum}\index{quantum} genoemd.
+Het \emph{round robin}\index{scheduling!round robin}-algoritme past dezelfde strategie toe als het FCFS-algoritme, maar dwingt voor elk proces een maximale uitvoertijd af. Een proces dat geselecteerd wordt om uit te voeren krijgt dus een bepaalde hoeveelheid tijd toegewezen waarin het de processor mag gebruiken. Het tijdsbestek waarin het proces actief mag zijn, wordt ook een \emph{time slice}\index{time slice} of een \emph{quantum}\index{quantum} genoemd.
 
 Wanneer het proces blokkeert (bijv. omdat het een bestand wil lezen) voordat zijn quantum afgelopen is, zal het scheduling-algoritme het proces in de lijst van geblokkeerde processen steken. Het eerstvolgende proces dat gereed is wordt dan gekozen en actief gemaakt. Indien het proces blijft rekenen totdat zijn quantum afloopt, dan zal de scheduler het proces onderbreken en achteraan in de lijst steken van processen die gereed zijn. Het eerstvolgende proces dat gereerd is wordt dan uit de lijst gehaald en actief gemaakt. Merk op dat dit hetzelfde proces kan zijn, in het geval er verder geen processen gereed zijn.
 
@@ -488,7 +488,7 @@ Het shortest job first-algoritme uit sectie~\ref{sec:sjf} probeert de gemiddelde
 
 Stel dat er slechts \'e\'en proces klaar is en dat dit proces zeer lang moet uitvoeren. Het SJF-algoritme gaat natuurlijk dit proces activeren, omdat er geen enkel ander proces klaar is. Stel dat n\'et nadat het proces geactiveerd is, er een tweede (en veel korter) proces klaar is om uitgevoerd te worden. Dit korte proces zal moeten wachten totdat het langere proces uitgevoerd is, alhoewel het eigenlijk beter is dat het actieve proces onderbroken wordt en het korte proces voorrang krijgt.
 
-Het shortest remaining time-algoritme is een pre\"emptieve versie van het SJF-algoritme. Wanneer een nieuw proces geactiveerd moet worden, zal SRT --- net zoals SJF --- het proces activeren waarvan verwacht wordt dat het het kortst gaat uitvoeren. Wanneer er echter een nieuw proces in de ready queue gezet wordt, zal SRT nagaan of het nieuwe proces korter is dan de verwachte resterende uitvoertijd van het actieve proces. Indien het nieuwe proces korter is, zal dat geactiveerd worden.
+Het shortest remaining time-algoritme (SRT)\index{scheduling!shortest remaining time} is een pre\"emptieve versie van het SJF-algoritme. Wanneer een nieuw proces geactiveerd moet worden, zal SRT --- net zoals SJF --- het proces activeren waarvan verwacht wordt dat het het kortst gaat uitvoeren. Wanneer er echter een nieuw proces in de ready queue gezet wordt, zal SRT nagaan of het nieuwe proces korter is dan de verwachte resterende uitvoertijd van het actieve proces. Indien het nieuwe proces korter is, zal dat geactiveerd worden.
 
 \begin{figure}
 \centering
@@ -501,7 +501,7 @@ Het shortest remaining time-algoritme is een pre\"emptieve versie van het SJF-al
 
 Figuren~\ref{fig:execsjf} en \ref{fig:execsrt} tonen het verschil in uitvoer tussen respectievelijk het SJF- en SRT-algoritme. De processen in figuur~\ref{fig:execsjf} worden niet meer onderbroken eenmaal ze geactiveerd zijn, wat op tijdstip 2 leidt tot een niet-optimale situatie. Wanneer proces 2 binnenkomt, moet proces 1 nog 5 tijdseenheden uitvoeren. Het SRT-algoritme in figuur~\ref{fig:execsrt} zal op dat punt de processor geven aan proces 2. Als we de gemiddelde wachttijd berekenen voor beide algoritmes, komen we uit op een gemiddelde wachttijd van 4 tijdseenheden voor SJF, tegen 3 tijdseenheden voor SRT (reken na!).
 
-\subsection{Priority Scheduling}
+\subsection{Priority Scheduling}\index{scheduling!priority scheduling}
 
 Een nadeel van de niet-pre\"emptieve versie van het priority scheduling algoritme is dat een lang lage-prioriteitsproces de processor voor grote stukken tijd kan controleren. Processen met een hogere prioriteit zullen dan moeten wachten totdat het actieve lage-prioriteitsproces afgewerkt is. Dit probleem kan eenvoudig opgelost worden door hoge-prioriteitsprocessen voorrang te geven op processen met lagere prioriteit. Ook wanneer twee processen dezelfde prioriteit hebben, moet er afgewisseld worden. Figuur~\ref{fig:schedpspre} toont de werking van dit aangepast algoritme. Merk op dat we ook hier het probleem van starvation moeten oplossen door gebruik te maken van aging.
 

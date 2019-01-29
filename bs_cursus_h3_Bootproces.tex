@@ -23,7 +23,7 @@ wanneer het power good signaal vanuit de voeding wegvalt.
 Wanneer het reset-signaal wegvalt kan de processor beginnen
 werken. De processor draait nu in kernel mode (d.i.: alle instructies
 ---ook de gepriviligeerde instructies--- zijn toegelaten) en gebruikt
-uit compatibiliteitsoverwegingen \emph{real mode}\index{real mode}
+uit compatibiliteitsoverwegingen \emph{real mode}\index{re\"ele mode (real mode)}
 als addresseringsmodus\footnote{Indien je niet meer weet wat \emph{real mode}
 is, dan kan je dat best nog eens opzoeken in hoofdstuk 3 van de cursus
 Computersystemen}. Maar welke code moet er uitgevoerd worden? Er zijn nog geen
@@ -31,7 +31,7 @@ instructies in het werkgeheugen geladen, dus de opstartcode moet elders
 gevonden worden.
 
 De oplossing voor dit probleem is om bepaalde adressen in de geheugenruimte niet
-mappen op het werkgeheugen maar op iets anders. Dit noemt men \emph{memory mapped I/O}. Figuur~\ref{memorymapped}
+mappen op het werkgeheugen maar op iets anders. Dit noemt men \emph{memory mapped I/O}\index{memory mapped I/O}. Figuur~\ref{memorymapped}
 toont de layout van de x86-geheugenruimte en welke stukken waarop gemapped worden.
 Het rode stuk in de tekening is het stuk van de geheugenruimte waar de processor
 de opstartcode verwacht. Concreet begint de processor instructies uit te voeren
@@ -101,7 +101,7 @@ besturingssysteem kan op een harde schijf staan, maar het zou ook op
 een CD-ROM, diskette of USB-opslagapparaat. In welke volgorde op alle
 aanwezige apparaten naar een besturingssysteem gezocht moet worden
 staat in de zogenaamde \emph{opstartvolgorde} of
-\emph{boot sequence}\index{boot sequence}. De gebruiker kan deze opstartvolgorde naar eigen keuze aanpassen.
+\emph{boot sequence}\index{opstartvolgorde (boot sequence)}. De gebruiker kan deze opstartvolgorde naar eigen keuze aanpassen.
 
 \section{Schijven en partities}
 
@@ -144,7 +144,7 @@ toont twee voorbeelden van boot menus.
 
 Informatie over de partities wordt op de schijf zelf opgeslagen op een gestandardiseerde manier. UEFI ondersteunt de oudere \emph{master boot record}-manier\index{master boot record} (MBR) om partitie-informatie op te slaan, maar deze manier biedt maar ondersteuning voor schijven tot 2TB. Bij voorkeur wordt dan ook het nieuwere \emph{GUID partition table}-systeem\index{GUID partition table} (GPT) gebruikt. GPT biedt ondersteuning voor schijven tot 8ZB (d.i. 8 miljard TB).
 
-Figuur~\ref{fig:gpt-layout} toont de layout van een GPT-schijf. Het eerste blok bevat een \emph{protective master boot record}\index{protective master boot record} voor compatibiliteitsdoeleinden met oudere systemen die geen GPT ondersteunen. Deze protective master boot record is grotendeels leeg, en bevat slechts informatie over \'e\'en partitie die de hele schijf beslaat (of voor schijven groter dan 2TB: zo veel plaats beslaat als mogelijk). Het partitietype staat op \byte{EE} wat betekent dat de partitie in feite een GPT-partitie is. Tools die GPT niet ondersteunen zullen dit partitietype niet herkennen, en zouden normaal gezien de partitie (en dus de schijf) met rust laten.
+Figuur~\ref{fig:gpt-layout} toont de layout van een GPT-schijf. Het eerste blok bevat een \emph{protective master boot record}\index{master boot record!protective} voor compatibiliteitsdoeleinden met oudere systemen die geen GPT ondersteunen. Deze protective master boot record is grotendeels leeg, en bevat slechts informatie over \'e\'en partitie die de hele schijf beslaat (of voor schijven groter dan 2TB: zo veel plaats beslaat als mogelijk). Het partitietype staat op \byte{EE} wat betekent dat de partitie in feite een GPT-partitie is. Tools die GPT niet ondersteunen zullen dit partitietype niet herkennen, en zouden normaal gezien de partitie (en dus de schijf) met rust laten.
 
 \begin{figure}
 \centering

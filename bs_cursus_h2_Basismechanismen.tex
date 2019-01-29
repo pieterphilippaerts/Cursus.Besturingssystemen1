@@ -4,12 +4,12 @@
 
 Kenmerkend voor het besturingssysteem is dat de programma's, die
 er deel van uitmaken, worden uitgevoerd in
-\emph{kernel-toestand}\index{kernel mode}\index{supervisor mode} (kernel mode, ook wel supervisor-
+\emph{kernel-toestand}\index{kernel mode}\index{supervisor mode}\index{monitor-toestand} (kernel mode, ook wel supervisor-
 of monitor-toestand genoemd). Hiermee duidt men een bijzondere toestand
 aan van de processor. Wanneer de processor zich in kernel-toestand
 bevindt, beschikt hij over al zijn mogelijkheden. Wanneer de processor
 niet in kernel-toestand is, maar in
-\emph{gebruikerstoestand} (user mode)\index{user mode}, zijn bepaalde
+\emph{gebruikerstoestand} (user mode)\index{gebruikerstoestand (user mode)}, zijn bepaalde
 instructies niet toegelaten.
 
 Tussen de machine-instructies, ingebouwd in de processor, zijn er
@@ -88,7 +88,7 @@ geprivilegieerde (en dus niet toegelaten) instructie gebruikt.
 
 Deze verschillende types van interrupts moeten allemaal op andere manieren behandeld worden. Om het een en ander te vereenvoudigen bestaat er een \emph{interrupttabel}\index{interrupttabel} die voor elk type interrupt een geheugenadres van een methode bijhoudt die opgeroepen moet worden wanneer een overeenkomstige interrupt request binnenkomt.
 
-Op de Intel x86-processor bestaat de interrupttabel uit 256 waardes (ook wel \emph{interrupt vectors} genoemd). De eerste 32 waardes zijn gereserveerd voor Intel en worden gebruikt om processorfouten af te handelen. De overige waardes kunnen ingesteld worden door het besturingssysteem, afhankelijk van de hardware die aanwezig is in het systeem. Als er bijvoorbeeld een netwerkkaart aanwezig is, kan het besturingssysteem bijvoorbeeld het interrupt nummer 97 toekennen aan die kaart (eender welk vrij nummer kan natuurlijk gekozen worden). Wanneer die netwerkkaart dan een netwerkpakketje binnenkrijgt, moet het een interrupt request met waarde 97 sturen naar de processor. Zo weet het besturingssysteem dat de interrupt van de netwerkkaart komt. Een overzicht vind je in figuur~\ref{table:ivt}.
+Op de Intel x86-processor bestaat de interrupttabel uit 256 waardes (ook wel \emph{interrupt vectors}\index{interrupt vector} genoemd). De eerste 32 waardes zijn gereserveerd voor Intel en worden gebruikt om processorfouten af te handelen. De overige waardes kunnen ingesteld worden door het besturingssysteem, afhankelijk van de hardware die aanwezig is in het systeem. Als er bijvoorbeeld een netwerkkaart aanwezig is, kan het besturingssysteem bijvoorbeeld het interrupt nummer 97 toekennen aan die kaart (eender welk vrij nummer kan natuurlijk gekozen worden). Wanneer die netwerkkaart dan een netwerkpakketje binnenkrijgt, moet het een interrupt request met waarde 97 sturen naar de processor. Zo weet het besturingssysteem dat de interrupt van de netwerkkaart komt. Een overzicht vind je in figuur~\ref{table:ivt}.
 
 \begin{figure}
 \centering
@@ -230,7 +230,7 @@ Merk op dat het proces in schema~\ref{fig:progflowwithint} een aanzienlijke tijd
 \subsection{Soorten interrupts}\label{sec:soorten}
 
 Er zijn twee soorten interrupts: externe en interne.
-\emph{Externe interrupts} komen van hardware buiten de
+\emph{Externe interrupts}\index{interrupt!extern} komen van hardware buiten de
 processor. Enkele voorbeelden:
 
 \begin{description}
@@ -249,7 +249,7 @@ kan.
  een printer die een papierstoring detecteert, wordt er een interrupt request gegenereerd.
 \end{description}
 
-\emph{Interne interrupts} worden veroorzaakt
+\emph{Interne interrupts}\index{interrupt!intern} worden veroorzaakt
 door een gebeurtenis binnen de processor en kunnen nog eens worden
 opgesplitst in twee groepen: uitzonderingen en software
 interrupts.
@@ -263,7 +263,7 @@ overtredende programma af te sluiten en dit aan de gebruiker mee te
 delen. Uitzonderingen die door het besturingssysteem kunnen hersteld worden noemen we we in
 het Engels \emph{faults}. Zo valt een deling door nul onder de noemer 'faults', omdat het besturingssysteem die situatie kan corrigeren door bijvoorbeeld een exception in het desbetreffende programma te gooien. Andere uitzonderingen die niet hersteld kunnen worden, noemen we \emph{aborts}. Een abort kan je bijvoorbeeld krijgen wanneer er een deling door nul optreedt tijdens de uitvoering van een interruptroutine.
 
-\emph{Traps} of \emph{software interrupts} zijn het gevolg van de uitvoering van speciaal
+\emph{Traps}\index{trap} of \emph{software interrupts}\index{interrupt!software} zijn het gevolg van de uitvoering van speciaal
 daarvoor voorziene instructies in een programma. Zo kunnen programma's
 ook gebruik maken van de mogelijkheden van het interrupt mechanisme en
 de hulp inroepen van het besturingssysteem. Als een programma b.v.
@@ -273,7 +273,7 @@ software interrupt aan te geven. Met deze instructie kan een getal
 tussen 0 en 255 meegegeven worden.
 
 Er is een subtiel verschil tussen de verschillende interrupt types: interne interrupts zijn
-\emph{synchroon}, terwijl externe interrupts \emph{asynchroon} zijn.
+\emph{synchroon}\index{interrupt!synchroon}, terwijl externe interrupts \emph{asynchroon}\index{interrupt!asynchroon} zijn.
 
 Bij synchrone interrupts gebeurt de afhandeling ``actief'' in die zin dat de code van de
 actieve applicatie verwacht dat de interrupts afgehandeld worden en hier zelfs op steunt.
@@ -307,7 +307,7 @@ te kiezen. In Intel x86 assembler is dit het getal dat je meegeeft aan de
 INT-instructie. Natuurlijk hangt de betekenis van het getal af van het
 gebruikte besturingssysteem.
 
-In Intel x86 assembler programma's voor MS-DOS wordt vaak 'INT 21h'
+In Intel x86 assembler programma's voor MS-DOS\index{besturingssysteem!MS-DOS} wordt vaak 'INT 21h'
 opgeroepen. Deze software interrupt zorgt ervoor dat MS-DOS een
 interrupt handler uitvoert. Deze specifieke interrupt handler is een
 soort manusje-van-alles in MS-DOS, en je moet via het AH-register
@@ -412,8 +412,8 @@ hogere prioriteit.
 \section{System Calls}\label{systemcalls}
 
 Interrupts vormen de schakel tussen het besturingssysteem en de
-hardware. \emph{System calls}\index{system calls} of
-\emph{systeemaanroepen} leggen een link tussen de
+hardware. \emph{System calls} of
+\emph{systeemaanroepen}\index{systeemaanroep (system call)} leggen een link tussen de
 overige software en het besturingssysteem (zie figuur \ref{sysint}). Bij alle
 activiteiten, uitgevoerd in gebruikerstoestand, is immers zeer frequent de
 tussenkomst nodig van het besturingssysteem om operaties te kunnen uitvoeren die
@@ -501,7 +501,7 @@ gebruikers)
 \subsection{Voorbeeld}
 
 In het volgende voorbeeld simuleren we een oproep van de
-read-system call in Linux. Deze kan in de programmeertaal C opgeroepen
+read-system call in Linux\index{besturingssysteem!Linux}. Deze kan in de programmeertaal C opgeroepen
 worden d.m.v. de functie \texttt{read(file\_desc, buffer, nbytes)}. Wanneer een
 programma deze functie aanroept zal het volgende gebeuren:
 

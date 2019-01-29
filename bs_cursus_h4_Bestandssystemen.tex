@@ -68,7 +68,7 @@ ze een naam, en opdat het bestandssysteem de gegevens kan terugvinden
 moeten de adressen van de gebruikte sectoren bijgehouden worden. Het
 bestandssysteem verzamelt alle gegevens over een bestand in de
 \emph{bestandsbeschrijving} of \emph{file
-descriptor}.\index{file descriptor}
+descriptor}.\index{bestandsbeschrijving (file descriptor)}
 
 De \emph{bestandsnaam} verhoogt het gebruiksgemak
 doordat de gebruiker zijn bestanden eenvoudig kan identificeren. Voor de
@@ -134,7 +134,7 @@ bestandsbeschrijvingen van de elementen (bestanden) bevat.
 
 De meest eenvoudige organisatievorm voor een bestandssysteem is
 de \emph{lineaire of vlakke directory}
-(\emph{flat directory}\index{flat directory}). Hierbij worden de
+(\emph{flat directory}\index{directory!flat}). Hierbij worden de
 bestandsbeschrijvingen van alle in het bestandssysteem aanwezige
 bestanden in \'e\'en enkele directory opgenomen. Hoewel dit een erg
 eenvoudige organisatievorm is, vertoont hij enkele zeer belangrijke
@@ -192,7 +192,7 @@ toevoegen en verwijderen van directories. Om het werken in deze
 structuur te vereenvoudigen wordt ook vaak een positie gedefinieerd.
 De directory waarin de gebruiker zich bevindt wordt de
 \emph{werkdirectory} (\emph{working
-directory}\index{working directory}) genoemd. Hierdoor moet niet telkens het
+directory}\index{directory!working}) genoemd. Hierdoor moet niet telkens het
 volledige pad gebruikt worden om een bestand aan te duiden. Een pad
 dat vertrekt van de huidige werkdirectory wordt een
 \emph{relatief pad} genoemd, een pad dat vertrekt
@@ -529,7 +529,7 @@ bestand terug te vinden, kleiner zijn omdat het aantal delen kleiner
 is.
 
 Kleinere eenheden hebben dan weer als voordeel dat het
-plaatsverlies aan \emph{interne fragmentatie}\index{interne fragmentatie} kleiner
+plaatsverlies aan \emph{interne fragmentatie}\index{fragmentatie!intern} kleiner
 zal zijn. Bij het verdelen van een bestand over een aantal blokken zal
 het laatste blok zelden volledig gevuld zijn. Het laatste stuk van dit
 laatste blok is onbruikbaar om andere gegevens op te slaan, en gaat
@@ -901,7 +901,7 @@ operaties.
 
 \section{Voorbeeld 1: FAT}
 
-Het FAT-bestandssysteem\index{FAT-bestandssysteem} is het oorspronkelijke bestandssysteem van
+Het FAT-bestandssysteem\index{bestandssysteem!FAT} is het oorspronkelijke bestandssysteem van
 het MS-DOS besturingssysteem. Voor steeds groter wordende harde schijven
 raadt Microsoft vanaf Windows NT het NTFS bestandssysteem aan, maar FAT
 wordt nog steeds gebruikt op diskettes en allerlei USB-opslagmedia zoals
@@ -1049,7 +1049,7 @@ bijgehouden wordt.
 % alle details op:
 % https://technet.microsoft.com/en-us/library/cc781134(v=ws.10).aspx
 
-NTFS\index{NTFS-bestandssysteem} staat voor New Technology File System. Het is het standaard
+NTFS\index{bestandssysteem!NTFS} staat voor New Technology File System. Het is het standaard
 bestandssysteem voor Windows NT, 2000, XP en hoger. Het lost
 enkele problemen met FAT op en bevat heel wat extra
 functionaliteit.
@@ -1113,7 +1113,7 @@ Het data-attribuut in een MFT-record bevat verwijzingen naar
 blokken in het datagebied. We kunnen het data-attribuut dus beschouwen
 als een indexblok. Om de toegangssnelheid te verhogen en de
 hoeveelheid adresinformatie te beperken wordt gebruik gemaakt van
-extents, die in de context van NTFS vaak data runs of streams\index{stream} genoemd
+extents, die in de context van NTFS vaak data runs\index{data run} of streams\index{stream} genoemd
 worden (fig. \ref{dataruns}).
 
 Voor kleine bestanden wordt de inhoud van het bestand zelf
@@ -1162,7 +1162,7 @@ toevoegen van elementen toelaten.
 
 Hoewel je bij het installeren van een Linux-distributie de keuze krijgt
 uit een hele lijst met bestandssystemen om de partities te formatteren,
-wordt het \emph{Extended File System}\index{extended file system} vaak beschouwd als het standaard-bestandssysteem
+wordt het \emph{Extended File System}\index{bestandssysteem!extended file system} vaak beschouwd als het standaard-bestandssysteem
 voor Linux. De meest recente versie is het Fourth Extended File System of ext4. We zullen
 ons hier beperken tot een analyse van de werking van ext2.
 
